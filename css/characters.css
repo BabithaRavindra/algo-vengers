@@ -1,0 +1,236 @@
+/* ==========================================================================
+   ALGO-VENGERS — PIXEL ART CHARACTERS & HERO STAGES
+   Pixel Character Sprites, Idle Animations & Speech Bubbles
+   ========================================================================== */
+
+.character-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.character-stage.stage-right {
+  align-items: flex-end;
+}
+
+.character-stage.stage-left {
+  align-items: flex-start;
+}
+
+/* Pixel Character Frame Container */
+.pixel-sprite-container {
+  position: relative;
+  width: 260px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* Background Character Aura / Energy Ring */
+.character-aura {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.35;
+  z-index: 1;
+  pointer-events: none;
+  animation: auraPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes auraPulse {
+  0% { transform: scale(0.9); opacity: 0.25; }
+  100% { transform: scale(1.15); opacity: 0.45; }
+}
+
+/* Pixel Art Vector Sprite */
+.pixel-sprite {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 12px 16px rgba(0,0,0,0.7));
+}
+
+.pixel-sprite svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* CHARACTER SPECIFIC IDLE ANIMATIONS */
+
+/* 1. IRON MAN (Hero Section) */
+.ironman-stage .character-aura {
+  background: radial-gradient(circle, #ff3838 0%, #f5b722 100%);
+}
+
+.ironman-sprite {
+  animation: ironmanHover 3.5s ease-in-out infinite;
+}
+
+@keyframes ironmanHover {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(1deg); }
+}
+
+.arc-pulse {
+  animation: arcFlash 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes arcFlash {
+  0% { fill: #00f0ff; filter: drop-shadow(0 0 2px #00f0ff); }
+  100% { fill: #e0ffff; filter: drop-shadow(0 0 10px #00f0ff); }
+}
+
+/* 2. CAPTAIN AMERICA (Section 02) */
+.captain-stage .character-aura {
+  background: radial-gradient(circle, #1e90ff 0%, #ffffff 100%);
+}
+
+.captain-sprite {
+  animation: captainIdle 4s ease-in-out infinite;
+}
+
+@keyframes captainIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.shield-shine {
+  animation: shieldGlint 2.8s ease-in-out infinite;
+}
+
+@keyframes shieldGlint {
+  0%, 75% { opacity: 0.3; }
+  85% { opacity: 1; filter: drop-shadow(0 0 8px #ffffff); }
+  95%, 100% { opacity: 0.3; }
+}
+
+/* 3. THOR (Section 03) */
+.thor-stage .character-aura {
+  background: radial-gradient(circle, #00d2d3 0%, #ffd32a 100%);
+}
+
+.thor-sprite {
+  animation: thorFloat 3.8s ease-in-out infinite;
+}
+
+@keyframes thorFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.mjolnir-spark {
+  animation: lightningFlicker 1.4s steps(2, start) infinite;
+}
+
+@keyframes lightningFlicker {
+  0%, 80% { opacity: 0.2; }
+  85%, 95% { opacity: 1; filter: drop-shadow(0 0 8px #00f0ff); }
+  100% { opacity: 0.2; }
+}
+
+/* 4. HULK (Section 04) */
+.hulk-stage .character-aura {
+  background: radial-gradient(circle, #10ac84 0%, #5f27cd 100%);
+}
+
+.hulk-sprite {
+  animation: hulkBreathe 3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes hulkBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04, 1.02); }
+}
+
+/* 5. BLACK WIDOW (Section 05) */
+.widow-stage .character-aura {
+  background: radial-gradient(circle, #ff3838 0%, #2f3542 100%);
+}
+
+.widow-sprite {
+  animation: widowSway 3.6s ease-in-out infinite;
+}
+
+@keyframes widowSway {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.widow-hourglass {
+  animation: hourglassGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes hourglassGlow {
+  0% { fill: #d63031; filter: drop-shadow(0 0 2px #d63031); }
+  100% { fill: #ff4757; filter: drop-shadow(0 0 9px #ff4757); }
+}
+
+/* 6. HAWKEYE (Section 06) */
+.hawkeye-stage .character-aura {
+  background: radial-gradient(circle, #8854d0 0%, #ff9f43 100%);
+}
+
+.hawkeye-sprite {
+  animation: hawkeyeAim 3.4s ease-in-out infinite;
+}
+
+@keyframes hawkeyeAim {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(-1deg); }
+}
+
+/* 7. SPIDER-MAN (Section 07) */
+.spiderman-stage .character-aura {
+  background: radial-gradient(circle, #eb4d4b 0%, #3867d6 100%);
+}
+
+.spiderman-swing-wrapper {
+  transform-origin: top center;
+  animation: spideyPendulum 4s ease-in-out infinite alternate;
+}
+
+@keyframes spideyPendulum {
+  0% { transform: rotate(-7deg); }
+  100% { transform: rotate(7deg); }
+}
+
+.web-line {
+  stroke-dasharray: 4;
+  animation: webVibrate 0.3s linear infinite;
+}
+
+@keyframes webVibrate {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 8; }
+}
+
+/* HUD Badge under Character */
+.character-hud-tag {
+  margin-top: 14px;
+  background: #090e1f;
+  border: 2px solid #202d58;
+  padding: 6px 14px;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  box-shadow: 0 4px 0 #000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.character-hud-tag span {
+  color: var(--color-gold);
+}

@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MISSIONS // S.H.I.E.L.D. Algorithm Division — ALGO-VENGERS</title>
+  
+  <meta name="description" content="S.H.I.E.L.D. Algorithm Division Mission Selection Directory. Select from 5 core DAA Missions.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Google Fonts: Pixel + HUD + Clean Academic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================================================
+       DESIGN TOKENS & ROOT VARIABLES (LIGHT THEME CONSISTENT WITH HOME PAGE)
+       ======================================================================== */
+    :root {
+      --bg-main: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-card: #ffffff;
+      --border-dark: #0f172a;
+
+      /* Text Colors */
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+      --text-highlight: #020617;
+
+      /* Avengers Accent Colors */
+      --avenger-ironman: #dc2626;
+      --avenger-ironman-accent: #f59e0b;
+      --avenger-captain: #2563eb;
+      --avenger-captain-accent: #ef4444;
+      --avenger-thor: #0284c7;
+      --avenger-thor-accent: #eab308;
+      --avenger-hulk: #16a34a;
+      --avenger-hulk-accent: #7c3aed;
+      --avenger-widow: #e11d48;
+      --avenger-widow-accent: #1e293b;
+
+      /* Generic Accents */
+      --color-gold: #d97706;
+      --color-cyan: #0284c7;
+      --color-green: #16a34a;
+
+      /* Fonts */
+      --font-pixel: 'Press Start 2P', 'Silkscreen', monospace;
+      --font-pixel-sub: 'Silkscreen', 'Chakra Petch', monospace;
+      --font-hud: 'Chakra Petch', 'Orbitron', monospace;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+      /* Layout */
+      --nav-height: 72px;
+      --container-max: 1240px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.6;
+      background-color: var(--bg-main);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Technical Blueprint Grid */
+    .cyber-grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #fx-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .crt-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9998;
+      background: linear-gradient(
+        rgba(15, 23, 42, 0) 50%, 
+        rgba(15, 23, 42, 0.04) 50%
+      );
+      background-size: 100% 4px;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    body.crt-disabled .crt-overlay {
+      display: none !important;
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Typography */
+    .pixel-heading {
+      font-family: var(--font-pixel);
+      letter-spacing: 1px;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .pixel-subheading {
+      font-family: var(--font-pixel-sub);
+      letter-spacing: 0.5px;
+    }
+
+    /* Buttons */
+    .pixel-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 20px;
+      font-family: var(--font-pixel);
+      font-size: 0.72rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 3px solid var(--border-dark);
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 5px 0 0 var(--border-dark);
+    }
+
+    .pixel-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 7px 0 0 var(--border-dark);
+    }
+
+    .pixel-btn:active {
+      transform: translateY(3px);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 2px 0 0 var(--border-dark);
+    }
+
+    .pixel-btn-primary {
+      background: #facc15;
+      color: #0f172a;
+      font-weight: bold;
+    }
+    .pixel-btn-primary:hover {
+      background: #fde047;
+    }
+
+    .pixel-btn-secondary {
+      background: #ffffff;
+      color: var(--color-cyan);
+    }
+    .pixel-btn-secondary:hover {
+      background: #f0f9ff;
+    }
+
+    /* ========================================================================
+       STICKY PIXEL NAVIGATION BAR
+       ======================================================================== */
+    .pixel-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--border-dark);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: #facc15;
+      border: 2px solid var(--border-dark);
+      box-shadow: 0 3px 0 var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--border-dark);
+    }
+
+    .brand-text {
+      font-family: var(--font-pixel);
+      font-size: 1.05rem;
+      color: var(--border-dark);
+      letter-spacing: 1px;
+    }
+
+    .brand-text span {
+      color: var(--avenger-ironman);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--border-dark);
+      border-bottom-color: var(--border-dark);
+      font-weight: bold;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hq-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 4px 10px;
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      color: var(--color-green);
+      box-shadow: 0 2px 0 var(--border-dark);
+      font-weight: bold;
+    }
+
+    .hud-status-led {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      background-color: var(--color-green);
+      box-shadow: 0 0 6px var(--color-green);
+      animation: ledPulse 1.8s infinite;
+      border-radius: 50%;
+    }
+
+    @keyframes ledPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.9); }
+    }
+
+    .nav-toggle-btn {
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      color: var(--text-main);
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      padding: 5px 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 0 var(--border-dark);
+      transition: all 0.15s ease;
+    }
+
+    .nav-toggle-btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+    }
+
+    .nav-toggle-btn.active {
+      background: #fef08a;
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 6px 10px;
+      color: var(--border-dark);
+      font-family: var(--font-pixel);
+      font-size: 0.72rem;
+      cursor: pointer;
+      box-shadow: 0 2px 0 var(--border-dark);
+    }
+
+    /* ========================================================================
+       PAGE MAIN LAYOUT & S.H.I.E.L.D. HEADER
+       ======================================================================== */
+    main {
+      flex: 1;
+      padding-top: calc(var(--nav-height) + 36px);
+      padding-bottom: 60px;
+    }
+
+    .shield-header {
+      text-align: center;
+      margin-bottom: 46px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* S.H.I.E.L.D. Emblem */
+    .shield-emblem-wrap {
+      width: 74px;
+      height: 74px;
+      margin-bottom: 14px;
+      position: relative;
+      filter: drop-shadow(0 4px 8px rgba(15, 23, 42, 0.15));
+      animation: shieldFloat 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes shieldFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    .shield-emblem-wrap svg {
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+    }
+
+    .shield-agency-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      box-shadow: 0 3px 0 var(--border-dark);
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--color-cyan);
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .shield-main-title {
+      font-size: clamp(2rem, 4.2vw, 3.2rem);
+      color: var(--text-highlight);
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+
+    .shield-subtitle {
+      font-family: var(--font-pixel-sub);
+      font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+      color: var(--color-gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .shield-supporting-line {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 540px;
+    }
+
+    /* ========================================================================
+       5 MISSION CARDS: EXACT 3 + 2 CENTERED LAYOUT
+       ======================================================================== */
+    .missions-directory {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    /* Row 1: 3 cards */
+    .missions-row-top {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      width: 100%;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    /* Row 2: 2 cards centered beneath row 1 */
+    .missions-row-bottom {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    /* Large Square Mission Tile */
+    .mission-tile {
+      width: 340px;
+      min-height: 430px;
+      background: #ffffff;
+      border: 3px solid var(--border-dark);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 7px 0 0 var(--border-dark);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      overflow: hidden;
+    }
+
+    .mission-tile:hover {
+      transform: translateY(-6px);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 12px 0 0 var(--border-dark);
+    }
+
+    /* Top Bar */
+    .tile-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .tile-mission-number {
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
+      color: var(--text-main);
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      transition: color 0.2s ease;
+    }
+
+    .tile-level-badge {
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      background: #f1f5f9;
+      border: 2px solid var(--border-dark);
+      padding: 3px 8px;
+      color: var(--text-main);
+      box-shadow: 0 2px 0 var(--border-dark);
+      font-weight: bold;
+    }
+
+    /* Dominant Character / Icon Area */
+    .tile-character-display {
+      width: 100%;
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 8px 0 14px;
+    }
+
+    .tile-character-aura {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      filter: blur(18px);
+      opacity: 0.25;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .tile-sprite {
+      position: relative;
+      z-index: 2;
+      width: 110px;
+      height: 130px;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 6px 10px rgba(15, 23, 42, 0.18));
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .tile-sprite svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mission-tile:hover .tile-sprite {
+      transform: scale(1.08) translateY(-4px);
+    }
+
+    .mission-tile:hover .tile-character-aura {
+      opacity: 0.45;
+      transform: scale(1.15);
+    }
+
+    /* Content Area */
+    .tile-body {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .tile-title {
+      font-family: var(--font-pixel);
+      font-size: 0.95rem;
+      color: var(--text-highlight);
+      letter-spacing: 0.5px;
+    }
+
+    .tile-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tile-topics-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .tile-topics-count {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      background: #f8fafc;
+      border: 1px solid var(--border-dark);
+      padding: 3px 8px;
+      color: var(--color-cyan);
+      font-weight: bold;
+    }
+
+    .tile-topics-subtle-list {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 280px;
+      transition: color 0.2s ease;
+    }
+
+    .mission-tile:hover .tile-topics-subtle-list {
+      color: var(--text-main);
+    }
+
+    /* Action / Button */
+    .tile-action-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding-top: 8px;
+    }
+
+    .tile-cta-btn {
+      width: 100%;
+      font-size: 0.7rem;
+    }
+
+    /* Specific Mission Theme Styles */
+    /* Mission 01: Captain America */
+    .tile-m1 .tile-character-aura { background: var(--avenger-captain); }
+    .tile-m1:hover { background: #f0f7ff; border-color: var(--avenger-captain); }
+    .tile-m1:hover .tile-mission-number { color: var(--avenger-captain); }
+    .tile-m1 .tile-cta-btn { background: #3b82f6; color: #ffffff; }
+    .tile-m1 .tile-cta-btn:hover { background: #2563eb; }
+
+    /* Mission 02: Hulk */
+    .tile-m2 .tile-character-aura { background: var(--avenger-hulk); }
+    .tile-m2:hover { background: #f0fdf4; border-color: var(--avenger-hulk); }
+    .tile-m2:hover .tile-mission-number { color: var(--avenger-hulk); }
+    .tile-m2 .tile-cta-btn { background: #22c55e; color: #ffffff; }
+    .tile-m2 .tile-cta-btn:hover { background: #16a34a; }
+
+    /* Mission 03: Iron Man */
+    .tile-m3 .tile-character-aura { background: var(--avenger-ironman); }
+    .tile-m3:hover { background: #fef2f2; border-color: var(--avenger-ironman); }
+    .tile-m3:hover .tile-mission-number { color: var(--avenger-ironman); }
+    .tile-m3 .tile-cta-btn { background: #facc15; color: #0f172a; }
+    .tile-m3 .tile-cta-btn:hover { background: #fde047; }
+
+    /* Mission 04: Thor */
+    .tile-m4 .tile-character-aura { background: var(--avenger-thor); }
+    .tile-m4:hover { background: #f0f9ff; border-color: var(--avenger-thor); }
+    .tile-m4:hover .tile-mission-number { color: var(--avenger-thor); }
+    .tile-m4 .tile-cta-btn { background: #0284c7; color: #ffffff; }
+    .tile-m4 .tile-cta-btn:hover { background: #0369a1; }
+
+    /* Mission 05: Black Widow */
+    .tile-m5 .tile-character-aura { background: var(--avenger-widow); }
+    .tile-m5:hover { background: #fff1f2; border-color: var(--avenger-widow); }
+    .tile-m5:hover .tile-mission-number { color: var(--avenger-widow); }
+    .tile-m5 .tile-cta-btn { background: #e11d48; color: #ffffff; }
+    .tile-m5 .tile-cta-btn:hover { background: #be123c; }
+
+    /* ========================================================================
+       BOTTOM AREA (MINIMAL DIVIDER + SYSTEM STATUS + RETURN TO HQ)
+       ======================================================================== */
+    .missions-bottom-area {
+      text-align: center;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .pixel-divider {
+      width: 180px;
+      height: 4px;
+      background: repeating-linear-gradient(
+        to right,
+        var(--border-dark) 0px,
+        var(--border-dark) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+      margin-bottom: 8px;
+    }
+
+    .bottom-db-label {
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
+      color: var(--text-highlight);
+      letter-spacing: 1px;
+    }
+
+    .bottom-system-status {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--color-cyan);
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 6px 14px;
+      box-shadow: 0 3px 0 var(--border-dark);
+    }
+
+    .bottom-hq-return-btn {
+      margin-top: 8px;
+    }
+
+    /* Footer */
+    .site-footer {
+      background: #ffffff;
+      border-top: 3px solid var(--border-dark);
+      padding: 28px 24px 24px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-pixel);
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+
+    /* ========================================================================
+       CUSTOM CURSOR SYSTEM
+       ======================================================================== */
+    
+
+    
+
+    
+
+    
+
+    
+
+    @media (hover: none) or (pointer: coarse) {
+      
+    }
+
+    /* ========================================================================
+       RESPONSIVE BREAKPOINTS
+       ======================================================================== */
+    /* Tablet */
+    @media (max-width: 1100px) {
+      .missions-row-top {
+        gap: 24px;
+      }
+      .missions-row-bottom {
+        gap: 24px;
+      }
+      .mission-tile {
+        width: 300px;
+        min-height: 410px;
+      }
+    }
+
+    @media (max-width: 960px) {
+      .missions-row-top,
+      .missions-row-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+      }
+      .missions-directory {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 24px;
+      }
+      .missions-row-top,
+      .missions-row-bottom {
+        margin-bottom: 0;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      .nav-menu {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        border-bottom: 3px solid var(--border-dark);
+        flex-direction: column;
+        padding: 20px;
+        gap: 14px;
+        transform: translateY(-150%);
+        transition: transform 0.25s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      .nav-menu.open {
+        transform: translateY(0);
+      }
+      .nav-controls .hq-status-pill {
+        display: none;
+      }
+      .mission-tile {
+        width: 100%;
+        max-width: 340px;
+      }
+    }
+  
+    .pixel-sprite-img {
+      max-width: 115px; max-height: 130px; width: auto; height: auto;
+      object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); transition: transform 0.2s ease;
+    }
+    .mission-card:hover .pixel-sprite-img { transform: scale(1.1) translateY(-4px); }
+  
+    /* Pixelated retro mouse pointer */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%230f172a' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), auto !important;
+    }
+    
+    /* Suppress browser pointer on interactive items for custom hero cursor */
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .reading-progress-track, [role="button"], [data-hero-cursor] {
+      cursor: none !important;
+    }
+
+    /* Floating Reading Progress Pill */
+    .reading-progress-pill {
+      position: fixed; top: 82px; right: 24px; z-index: 999;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px);
+      border: 3px solid var(--border-dark, #0f172a); border-radius: 999px;
+      padding: 6px 14px 6px 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15), 0 3px 0 var(--border-dark, #0f172a);
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .reading-progress-info { display: flex; flex-direction: column; min-width: 75px; }
+    .reading-progress-label { font-family: var(--font-pixel, monospace); font-size: 0.48rem; color: #64748b; letter-spacing: 0.5px; }
+    .reading-progress-pct { font-family: var(--font-pixel, monospace); font-size: 0.68rem; color: #0f172a; font-weight: bold; }
+    .reading-progress-track {
+      width: 140px; height: 12px; background: #e2e8f0; border: 2px solid var(--border-dark, #0f172a);
+      border-radius: 999px; position: relative; overflow: visible; cursor: pointer;
+    }
+    .reading-progress-bar { height: 100%; width: 0%; border-radius: 999px; transition: width 0.08s ease-out; }
+    .reading-hero-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 24px; height: 24px; pointer-events: none;
+      transition: left 0.08s ease-out, transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .reading-hero-icon { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+
+    /* Direct Hero Cursor Icon */
+    #hero-cursor-icon {
+      position: fixed; top: 0; left: 0; width: 38px; height: 38px; pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.12s ease;
+      display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
+    }
+    #hero-cursor-icon.active { opacity: 1; }
+    #hero-cursor-icon img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+
+  
+    /* Persistent Top Reading Progress Bar & Retro Pixel Cursor */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%230f172a' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), auto !important;
+    }
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, [role="button"], [data-hero-cursor] {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23dc2626' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), pointer !important;
+    }
+    #global-top-progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: 32px;
+      background: #0f172a; border-bottom: 2px solid #000; z-index: 10002;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .top-progress-hero-badge { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .top-hero-symbol-box {
+      width: 22px; height: 22px; background: #dbeafe; color: #2563eb;
+      border: 1.5px solid #2563eb; font-family: 'Press Start 2P', monospace; font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 2px;
+    }
+    .top-hero-title { font-family: 'Press Start 2P', monospace; font-size: 0.58rem; color: #f8fafc; letter-spacing: 0.5px; }
+    .top-progress-track-wrapper {
+      flex: 1; max-width: 650px; margin: 0 20px; height: 10px; background: #1e293b;
+      border: 1.5px solid #475569; border-radius: 999px; position: relative; cursor: pointer;
+    }
+    .top-progress-fill-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #2563eb, #38bdf8, #0f172a); border-radius: 999px;
+      transition: width 0.08s ease-out;
+    }
+    .top-progress-slider-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; background: #0f172a; border: 2px solid #2563eb;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #2563eb;
+      box-shadow: 0 0 10px #2563eb; pointer-events: none; transition: left 0.08s ease-out;
+    }
+    .top-progress-percent-readout {
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #facc15; min-width: 50px; text-align: right; flex-shrink: 0;
+    }
+    .pixel-navbar { top: 32px !important; }
+    main { padding-top: calc(var(--nav-height, 72px) + 32px + 24px) !important; }
+
+
+  
+    /* ========================================================================
+       NATIVE CSS HARDWARE-ACCELERATED HERO EMBLEM CURSORS (ZERO TRAILING)
+       ======================================================================== */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Cpath%20fill%3D%22%230f172a%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.5%22%20d%3D%22M2%202v18l5-5%204%208%203-1.5-4-8h6L2%202z%22/%3E%20%3C/svg%3E") 0 0, auto !important;
+    }
+
+    /* Default interactive elements: S.H.I.E.L.D. circular emblem */
+    a, button, .pixel-btn, [role="button"], input, select, label {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%230f172a%22%20stroke%3D%22%230284c7%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2023%2C14%2020%2C24%2016%2C22%2012%2C24%209%2C14%22%20fill%3D%22%230284c7%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221%22/%3E%20%3Cpolygon%20points%3D%2216%2C11%2020%2C15%2016%2C19%2012%2C15%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Mission 01: Captain America Blue Circle with Shield */
+    .tile-m1, .tile-m1 *, [data-hero-cursor="captain"], [data-hero-cursor="captain"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23dc2626%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2211%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%228%22%20fill%3D%22%23dc2626%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%232563eb%22/%3E%20%3Cpolygon%20points%3D%2216%2C12%2017.5%2C15.5%2021%2C15.5%2018%2C17.5%2019.5%2C21%2016%2C18.8%2012.5%2C21%2014%2C17.5%2011%2C15.5%2014.5%2C15.5%22%20fill%3D%22%23ffffff%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Mission 02: Hulk Green Circle with Clenched Gamma Fist */
+    .tile-m2, .tile-m2 *, [data-hero-cursor="hulk"], [data-hero-cursor="hulk"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%2315803d%22%20stroke%3D%22%23581c87%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%2211%22%20width%3D%2214%22%20height%3D%2213%22%20rx%3D%222%22%20fill%3D%22%2322c55e%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%228%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2213.5%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2217%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2220%22%20y%3D%229%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%2221%22%20width%3D%2212%22%20height%3D%223%22%20fill%3D%22%23581c87%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Mission 03: Iron Man Red Circle with Glowing Arc Reactor */
+    .tile-m3, .tile-m3 *, [data-hero-cursor="ironman"], [data-hero-cursor="ironman"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23991b1b%22%20stroke%3D%22%23facc15%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%230f172a%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%2338bdf8%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2018%2C13%2014%2C13%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2216%2C24%2014%2C19%2018%2C19%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%228%2C16%2013%2C14%2013%2C18%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2224%2C16%2019%2C18%2019%2C14%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Mission 04: Thor Circle with Mjolnir Hammer */
+    .tile-m4, .tile-m4 *, [data-hero-cursor="thor"], [data-hero-cursor="thor"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%231e293b%22%20stroke%3D%22%23ca8a04%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%228%22%20width%3D%2214%22%20height%3D%229%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2211%22%20y%3D%2210%22%20width%3D%2210%22%20height%3D%222%22%20fill%3D%22%23f8fafc%22/%3E%20%3Crect%20x%3D%2214%22%20y%3D%2217%22%20width%3D%224%22%20height%3D%229%22%20fill%3D%22%2378350f%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Cpath%20d%3D%22M16%209%20L14%2013%20L17%2013%20L15%2017%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Mission 05: Black Widow Black Circle with Red Sand Clock */
+    .tile-m5, .tile-m5 *, [data-hero-cursor="widow"], [data-hero-cursor="widow"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%230f172a%22%20stroke%3D%22%23e11d48%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2210%2C9%2022%2C9%2016%2C16%22%20fill%3D%22%23dc2626%22/%3E%20%3Cpolygon%20points%3D%2216%2C16%2022%2C23%2010%2C23%22%20fill%3D%22%23dc2626%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%221.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Persistent Top Reading Progress Bar (User Directive 3 & 4) -->
+  <div id="global-top-progress">
+    <div class="top-progress-hero-badge">
+      <div class="top-hero-symbol-box">[🛡]</div>
+      <div class="top-hero-title">MISSION DIRECTORY</div>
+    </div>
+    <div class="top-progress-track-wrapper" id="global-progress-track" title="Click anywhere along the bar to jump">
+      <div class="top-progress-fill-bar" id="global-progress-fill"></div>
+      <div class="top-progress-slider-marker" id="global-progress-marker">🛡</div>
+    </div>
+    <div class="top-progress-percent-readout" id="global-progress-pct">0%</div>
+  </div>
+
+
+  <!-- Background Technical Blueprint Grid & Ambient Particles -->
+  <div class="cyber-grid-bg" aria-hidden="true"></div>
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="crt-overlay" aria-hidden="true"></div>
+
+  <!-- Sticky Pixel Navigation -->
+  <header class="pixel-navbar" role="banner">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand" aria-label="Return to Algo-Vengers Home">
+        <div class="brand-icon">
+          <!-- 8-bit Avengers Logo -->
+          <svg viewBox="0 0 24 24" shape-rendering="crispEdges">
+            <polygon points="12,2 8,20 11,20 12,14 16,14 17,20 20,20 15,2" fill="#0f172a"/>
+            <polygon points="12,6 10,12 14,12" fill="#facc15"/>
+          </svg>
+        </div>
+        <div class="brand-text">ALGO-<span>VENGERS</span></div>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu" role="navigation">
+        <a href="index.html" class="nav-link">HOME</a>
+        <a href="index.html#what-is-daa" class="nav-link">ABOUT DAA</a>
+        <a href="missions.html" class="nav-link active">MISSIONS</a>
+        <a href="index.html#arsenal" class="nav-link">ALGORITHM ARSENAL</a>
+        <a href="index.html#how-we-learn" class="nav-link">LEARNING PATH</a>
+        <a href="index.html#choose-hero" class="nav-link">TOPICS</a>
+      </nav>
+
+      <div class="nav-controls">
+        <div class="hq-status-pill">
+          <span class="hud-status-led"></span>
+          <span>HQ ONLINE</span>
+        </div>
+
+        <button type="button" class="nav-toggle-btn active" id="sfx-toggle-btn" title="Toggle Sound">
+          🔊 SFX: ON
+        </button>
+
+        <button type="button" class="nav-toggle-btn" id="crt-toggle-btn" title="Toggle Scanlines">
+          📺 CRT: ON
+        </button>
+
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle">
+          [☰] MENU
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Reading Progress Pill -->
+  
+
+
+  <main role="main">
+    <div class="container">
+
+      <!-- ====================================================================
+           S.H.I.E.L.D. ALGORITHM DIVISION HEADER
+           ==================================================================== -->
+      <header class="shield-header">
+        
+        <!-- Animated S.H.I.E.L.D. Pixel Emblem -->
+        <div class="shield-emblem-wrap" title="Strategic Homeland Intervention, Enforcement and Logistics Division">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+            <!-- Outer Pixel Circular Ring -->
+            <rect x="10" y="1" width="12" height="2" fill="#0f172a"/>
+            <rect x="6" y="3" width="4" height="2" fill="#0f172a"/>
+            <rect x="22" y="3" width="4" height="2" fill="#0f172a"/>
+            <rect x="3" y="5" width="3" height="3" fill="#0f172a"/>
+            <rect x="26" y="5" width="3" height="3" fill="#0f172a"/>
+            <rect x="1" y="8" width="2" height="16" fill="#0f172a"/>
+            <rect x="29" y="8" width="2" height="16" fill="#0f172a"/>
+            <rect x="3" y="24" width="3" height="3" fill="#0f172a"/>
+            <rect x="26" y="24" width="3" height="3" fill="#0f172a"/>
+            <rect x="6" y="27" width="4" height="2" fill="#0f172a"/>
+            <rect x="22" y="27" width="4" height="2" fill="#0f172a"/>
+            <rect x="10" y="29" width="12" height="2" fill="#0f172a"/>
+
+            <!-- Inner Disc Fill -->
+            <rect x="3" y="8" width="26" height="16" fill="#f8fafc"/>
+            <rect x="6" y="5" width="20" height="22" fill="#f8fafc"/>
+
+            <!-- S.H.I.E.L.D. Stylized Pixel Eagle -->
+            <!-- Eagle Head / Beak -->
+            <rect x="15" y="7" width="2" height="4" fill="#0f172a"/>
+            <rect x="13" y="9" width="6" height="3" fill="#0f172a"/>
+            
+            <!-- Outstretched Geometric Wings -->
+            <rect x="7" y="11" width="18" height="2" fill="#0f172a"/>
+            <rect x="6" y="13" width="20" height="2" fill="#0f172a"/>
+            <rect x="5" y="15" width="22" height="2" fill="#0f172a"/>
+            
+            <!-- Feathers Stepped Down -->
+            <rect x="6" y="17" width="3" height="3" fill="#0f172a"/>
+            <rect x="11" y="17" width="2" height="3" fill="#0f172a"/>
+            <rect x="19" y="17" width="2" height="3" fill="#0f172a"/>
+            <rect x="23" y="17" width="3" height="3" fill="#0f172a"/>
+            
+            <!-- Center Shield / Tail -->
+            <polygon points="16,16 11,21 16,26 21,21" fill="#0284c7"/>
+            <circle cx="16" cy="21" r="1.5" fill="#facc15"/>
+          </svg>
+        </div>
+
+        <div class="shield-agency-tag">
+          <span class="hud-status-led"></span>
+          <span>S.H.I.E.L.D. // ALGORITHM DIVISION</span>
+        </div>
+
+        <h1 class="shield-main-title pixel-heading">MISSIONS</h1>
+        
+        <div class="shield-subtitle">SELECT YOUR MISSION</div>
+        
+        <p class="shield-supporting-line">
+          Five missions. Twenty topics. One algorithmic journey.
+        </p>
+      </header>
+
+      <!-- ====================================================================
+           5 LARGE SQUARE MISSION CARDS (3 TOP ROW + 2 CENTERED BOTTOM ROW)
+           ==================================================================== -->
+      <section class="missions-directory" aria-label="Available DAA Missions">
+
+        <!-- ROW 1 (3 CARDS) -->
+        <div class="missions-row-top">
+
+          <!-- MISSION 01: FOUNDATIONS (CAPTAIN AMERICA) -->
+          <a href="mission-01.html" class="mission-tile tile-m1" data-hero-cursor="captain" aria-label="Enter Mission 01: Foundations">
+            <div class="tile-top-bar">
+              <span class="tile-mission-number">MISSION 01</span>
+              <span class="tile-level-badge">LEVEL 01</span>
+            </div>
+
+            <!-- Captain America Dominant Visual Shield & Figure -->
+            <div class="tile-character-display">
+              <div class="tile-character-aura"></div>
+              <div class="tile-sprite"><img src="assets/captainamerica.png" class="pixel-sprite-img" alt="Captain America">
+              </div>
+            </div>
+
+            <div class="tile-body">
+              <h2 class="tile-title">FOUNDATIONS</h2>
+              <p class="tile-desc">
+                Understand how algorithms are measured, compared, and analyzed.
+              </p>
+              <div class="tile-topics-meta">
+                <span class="tile-topics-count">3 TOPICS</span>
+                <span class="tile-topics-subtle-list">Space Complexity • Time Complexity • Asymptotic Notations</span>
+              </div>
+            </div>
+
+            <div class="tile-action-wrap">
+              <span class="pixel-btn tile-cta-btn">ENTER MISSION</span>
+            </div>
+          </a>
+
+          <!-- MISSION 02: DATA STRUCTURES (HULK) -->
+          <a href="mission-02.html" class="mission-tile tile-m2" data-hero-cursor="hulk" aria-label="Enter Mission 02: Data Structures">
+            <div class="tile-top-bar">
+              <span class="tile-mission-number">MISSION 02</span>
+              <span class="tile-level-badge">LEVEL 02</span>
+            </div>
+
+            <!-- Hulk Dominant Visual Fist & Figure -->
+            <div class="tile-character-display">
+              <div class="tile-character-aura"></div>
+              <div class="tile-sprite"><img src="assets/hulk.png" class="pixel-sprite-img" alt="Hulk">
+              </div>
+            </div>
+
+            <div class="tile-body">
+              <h2 class="tile-title">DATA STRUCTURES</h2>
+              <p class="tile-desc">
+                Learn how data is organized, stored, accessed, and connected.
+              </p>
+              <div class="tile-topics-meta">
+                <span class="tile-topics-count">5 TOPICS</span>
+                <span class="tile-topics-subtle-list">Stacks • Queues • Trees • Dictionaries • Disjoint Sets</span>
+              </div>
+            </div>
+
+            <div class="tile-action-wrap">
+              <span class="pixel-btn tile-cta-btn">ENTER MISSION</span>
+            </div>
+          </a>
+
+          <!-- MISSION 03: SEARCH & SORT (IRON MAN) -->
+          <a href="mission-03.html" class="mission-tile tile-m3" data-hero-cursor="ironman" aria-label="Enter Mission 03: Search & Sort">
+            <div class="tile-top-bar">
+              <span class="tile-mission-number">MISSION 03</span>
+              <span class="tile-level-badge">LEVEL 03</span>
+            </div>
+
+            <!-- Iron Man Dominant Visual Helmet & Scanning HUD -->
+            <div class="tile-character-display">
+              <div class="tile-character-aura"></div>
+              <div class="tile-sprite"><img src="assets/ironman.png" class="pixel-sprite-img" alt="Iron Man">
+              </div>
+            </div>
+
+            <div class="tile-body">
+              <h2 class="tile-title">SEARCH & SORT</h2>
+              <p class="tile-desc">
+                Master efficient techniques for finding and organizing data.
+              </p>
+              <div class="tile-topics-meta">
+                <span class="tile-topics-count">4 TOPICS</span>
+                <span class="tile-topics-subtle-list">Max & Min • Binary Search • Merge Sort • Quick Sort</span>
+              </div>
+            </div>
+
+            <div class="tile-action-wrap">
+              <span class="pixel-btn tile-cta-btn">ENTER MISSION</span>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- ROW 2 (2 CARDS CENTERED BENEATH FIRST ROW) -->
+        <div class="missions-row-bottom">
+
+          <!-- MISSION 04: ADVANCED ALGORITHMS (THOR) -->
+          <a href="mission-04.html" class="mission-tile tile-m4" data-hero-cursor="thor" aria-label="Enter Mission 04: Advanced Algorithms">
+            <div class="tile-top-bar">
+              <span class="tile-mission-number">MISSION 04</span>
+              <span class="tile-level-badge">LEVEL 04</span>
+            </div>
+
+            <!-- Thor Dominant Visual Figure & Mjolnir with Lightning -->
+            <div class="tile-character-display">
+              <div class="tile-character-aura"></div>
+              <div class="tile-sprite"><img src="assets/thor.png" class="pixel-sprite-img" alt="Thor">
+              </div>
+            </div>
+
+            <div class="tile-body">
+              <h2 class="tile-title">ADVANCED ALGORITHMS</h2>
+              <p class="tile-desc">
+                Tackle powerful algorithms for optimization, graphs, matrices, and paths.
+              </p>
+              <div class="tile-topics-meta">
+                <span class="tile-topics-count">5 TOPICS</span>
+                <span class="tile-topics-subtle-list">Strassen's • Frac. Knapsack • MST • Kruskal/Prim • Dijkstra</span>
+              </div>
+            </div>
+
+            <div class="tile-action-wrap">
+              <span class="pixel-btn tile-cta-btn">ENTER MISSION</span>
+            </div>
+          </a>
+
+          <!-- MISSION 05: OPTIMIZATION (BLACK WIDOW) -->
+          <a href="mission-05.html" class="mission-tile tile-m5" data-hero-cursor="widow" aria-label="Enter Mission 05: Optimization">
+            <div class="tile-top-bar">
+              <span class="tile-mission-number">MISSION 05</span>
+              <span class="tile-level-badge">LEVEL 05</span>
+            </div>
+
+            <!-- Black Widow Dominant Visual Tactical Icon & Figure -->
+            <div class="tile-character-display">
+              <div class="tile-character-aura"></div>
+              <div class="tile-sprite"><img src="assets/blackwidow.png" class="pixel-sprite-img" alt="Black Widow">
+              </div>
+            </div>
+
+            <div class="tile-body">
+              <h2 class="tile-title">OPTIMIZATION</h2>
+              <p class="tile-desc">
+                Solve problems where every decision matters.
+              </p>
+              <div class="tile-topics-meta">
+                <span class="tile-topics-count">2 TOPICS</span>
+                <span class="tile-topics-subtle-list">Traveling Salesman Problem • 0/1 Knapsack Problem</span>
+              </div>
+            </div>
+
+            <div class="tile-action-wrap">
+              <span class="pixel-btn tile-cta-btn">ENTER MISSION</span>
+            </div>
+          </a>
+
+        </div>
+
+      </section>
+
+      <!-- ====================================================================
+           MINIMAL BOTTOM AREA
+           ==================================================================== -->
+      <section class="missions-bottom-area">
+        <div class="pixel-divider" aria-hidden="true"></div>
+        <div class="bottom-db-label pixel-heading">MISSION DATABASE</div>
+        <div class="bottom-system-status">
+          05 MISSIONS // 20 TOPICS // SYSTEM READY
+        </div>
+        <a href="index.html" class="pixel-btn pixel-btn-secondary bottom-hq-return-btn">
+          ← RETURN TO HQ
+        </a>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        ALGO-VENGERS // S.H.I.E.L.D. ALGORITHM DIVISION
+      </div>
+      <div>
+        Design & Analysis of Algorithms CIA Project • Christ University
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       EMBEDDED JAVASCRIPT: PARTICLES + AUDIO + DYNAMIC CURSORS
+       ======================================================================== -->
+  <script>
+    /* 1. Pleasant Audio Synthesizer */
+    class RetroAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      toggle() {
+        this.enabled = !this.enabled;
+        if (this.enabled) {
+          this.init();
+          this.playToggle(true);
+        }
+        return this.enabled;
+      }
+      playHover() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(659.25, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.035, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.04);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.04);
+        } catch (e) {}
+      }
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.04);
+        } catch (e) {}
+      }
+      playToggle(on = true) {
+        if (!this.enabled && on) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(on ? 440 : 330, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(on ? 660 : 220, this.ctx.currentTime + 0.05);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.05);
+        } catch (e) {}
+      }
+    }
+
+    const retroAudio = new RetroAudioEngine();
+
+    /* 2. Ambient Particles */
+    class PixelParticleCanvas {
+      constructor(canvasId = 'fx-canvas') {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.count = 32;
+        this.colors = ['#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#8b5cf6'];
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.init();
+      }
+      init() {
+        this.resize();
+        window.addEventListener('resize', () => this.resize(), { passive: true });
+        for (let i = 0; i < this.count; i++) {
+          this.particles.push(this.createParticle());
+        }
+        this.render();
+      }
+      createParticle(randomY = true) {
+        return {
+          x: Math.random() * this.width,
+          y: randomY ? Math.random() * this.height : this.height + 10,
+          size: Math.random() > 0.6 ? 3 : 2,
+          speedY: -(0.2 + Math.random() * 0.5),
+          speedX: (Math.random() - 0.5) * 0.3,
+          color: this.colors[Math.floor(Math.random() * this.colors.length)],
+          alpha: 0.15 + Math.random() * 0.35,
+          pulse: Math.random() * Math.PI
+        };
+      }
+      resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+      }
+      render() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        for (let i = 0; i < this.particles.length; i++) {
+          const p = this.particles[i];
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.pulse += 0.02;
+          if (p.y < -10 || p.x < -10 || p.x > this.width + 10) {
+            this.particles[i] = this.createParticle(false);
+          }
+          this.ctx.fillStyle = p.color;
+          this.ctx.globalAlpha = Math.max(0.1, p.alpha + Math.sin(p.pulse) * 0.15);
+          this.ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+        }
+        this.ctx.globalAlpha = 1.0;
+        requestAnimationFrame(() => this.render());
+      }
+    }
+
+    /* 4. Controls Init */
+    document.addEventListener('DOMContentLoaded', () => {
+      new PixelParticleCanvas();
+      const sfxBtn = document.getElementById('sfx-toggle-btn');
+      const crtBtn = document.getElementById('crt-toggle-btn');
+      const mobileToggle = document.getElementById('mobile-nav-toggle');
+      const navMenu = document.getElementById('nav-menu');
+
+      sfxBtn?.addEventListener('click', () => {
+        const enabled = retroAudio.toggle();
+        sfxBtn.textContent = enabled ? '🔊 SFX: ON' : '🔇 SFX: OFF';
+        sfxBtn.classList.toggle('active', enabled);
+      });
+
+      crtBtn?.addEventListener('click', () => {
+        document.body.classList.toggle('crt-disabled');
+        const disabled = document.body.classList.contains('crt-disabled');
+        crtBtn.textContent = disabled ? '📺 CRT: OFF' : '📺 CRT: ON';
+        crtBtn.classList.toggle('active', !disabled);
+        retroAudio.playToggle(!disabled);
+      });
+
+      mobileToggle?.addEventListener('click', () => {
+        navMenu?.classList.toggle('open');
+        const open = navMenu?.classList.contains('open');
+        mobileToggle.textContent = open ? '[✕] MENU' : '[☰] MENU';
+        retroAudio.playClick();
+      });
+
+      // Top Reading Progress Tracking
+      const topFillBar = document.getElementById('global-progress-fill');
+      const topMarker = document.getElementById('global-progress-marker');
+      const topPct = document.getElementById('global-progress-pct');
+      const topTrack = document.getElementById('global-progress-track');
+
+      function updateTopProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+        if (topFillBar) topFillBar.style.width = pct + '%';
+        if (topPct) topPct.textContent = pct + '%';
+        if (topMarker) topMarker.style.left = pct + '%';
+      }
+      window.addEventListener('scroll', updateTopProgress, { passive: true });
+      updateTopProgress();
+
+      topTrack?.addEventListener('click', (e) => {
+        const rect = topTrack.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        window.scrollTo({ top: ratio * docHeight, behavior: 'smooth' });
+      });
+
+      // Audio feedback on interactive elements
+      const hubInteractive = 'a, button, .pixel-btn, .mission-tile, input, select, label, .top-progress-track-wrapper, [role="button"]';
+      document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(hubInteractive)) {
+          retroAudio?.playHover();
+        }
+      });
+      document.addEventListener('click', (e) => {
+        if (e.target.closest(hubInteractive)) {
+          retroAudio?.playClick();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

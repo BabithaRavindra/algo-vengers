@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUEUES // [✊] HULK — ALGO-VENGERS</title>
+  
+  <meta name="description" content="Design & Analysis of Algorithms: QUEUES. Mission 02: DATA STRUCTURES.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for beautiful math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --border-dark: #0f172a;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --color-gold: #d97706;
+      --color-cyan: #0284c7;
+      --hero-accent: #16a34a;
+      --badge-bg: #dcfce7;
+
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-pixel-sub: 'Silkscreen', monospace;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+      --top-bar-height: 32px;
+      --nav-height: 72px;
+      --container-max: 1100px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Pixelated retro mouse pointer */
+    html, body {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Cpath%20fill%3D%22%230f172a%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.5%22%20d%3D%22M2%202v18l5-5%204%208%203-1.5-4-8h6L2%202z%22/%3E%20%3C/svg%3E") 0 0, auto !important;
+    }
+    
+    body {
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-main);
+    }
+
+    /* Native CSS Circular Hero Emblem Cursor on all interactive elements (ZERO TRAILING) */
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, .hero-speech-bubble, [role="button"], [data-hero-cursor], .quiz-opt-btn {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%2315803d%22%20stroke%3D%22%23581c87%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%2211%22%20width%3D%2214%22%20height%3D%2213%22%20rx%3D%222%22%20fill%3D%22%2322c55e%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%228%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2213.5%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2217%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2220%22%20y%3D%229%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%2221%22%20width%3D%2212%22%20height%3D%223%22%20fill%3D%22%23581c87%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    .cyber-grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none; z-index: 0;
+    }
+    .container { max-width: var(--container-max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .pixel-heading { font-family: var(--font-pixel); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Pixel Buttons */
+    .pixel-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; font-family: var(--font-pixel); font-size: 0.65rem;
+      text-decoration: none; text-transform: uppercase; border: 3px solid var(--border-dark);
+      position: relative; user-select: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 4px 0 0 var(--border-dark);
+    }
+    .pixel-btn:hover { transform: translateY(-2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 6px 0 0 var(--border-dark); }
+    .pixel-btn:active { transform: translateY(2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 2px 0 0 var(--border-dark); }
+    .pixel-btn-primary { background: #facc15; color: #0f172a; font-weight: bold; }
+    .pixel-btn-secondary { background: #ffffff; color: var(--color-cyan); }
+    .pixel-btn-accent { background: var(--hero-accent); color: #ffffff; }
+
+    /* Sticky Navbar */
+    .pixel-navbar {
+      position: fixed; top: var(--top-bar-height); left: 0; width: 100%; height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--border-dark); z-index: 1000; display: flex; align-items: center;
+    }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; background: #facc15; border: 2px solid var(--border-dark); display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 22px; height: 22px; fill: var(--border-dark); }
+    .brand-text { font-family: var(--font-pixel); font-size: 1.05rem; color: var(--border-dark); }
+    .brand-text span { color: #dc2626; }
+    .breadcrumbs { font-family: var(--font-pixel); font-size: 0.6rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .breadcrumbs a { color: var(--color-cyan); text-decoration: none; }
+
+    /* Persistent Top Reading Progress Bar */
+    #global-top-progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--top-bar-height);
+      background: #0f172a; border-bottom: 2px solid #000; z-index: 10002;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .top-progress-hero-badge {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .top-hero-symbol-box {
+      width: 22px; height: 22px; background: #dcfce7; color: #16a34a;
+      border: 1.5px solid #16a34a; font-family: var(--font-pixel); font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 2px;
+    }
+    .top-hero-title {
+      font-family: var(--font-pixel); font-size: 0.58rem; color: #f8fafc; letter-spacing: 0.5px;
+    }
+    .top-progress-track-wrapper {
+      flex: 1; max-width: 650px; margin: 0 20px; height: 10px; background: #1e293b;
+      border: 1.5px solid #475569; border-radius: 999px; position: relative; cursor: pointer;
+    }
+    .top-progress-fill-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #16a34a, #22c55e, #86efac); border-radius: 999px;
+      transition: width 0.08s ease-out;
+    }
+    .top-progress-slider-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; background: #0f172a; border: 2px solid #16a34a;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-pixel); font-size: 0.65rem; color: #16a34a;
+      box-shadow: 0 0 10px #16a34a; pointer-events: none; transition: left 0.08s ease-out;
+    }
+    .top-progress-percent-readout {
+      font-family: var(--font-pixel); font-size: 0.65rem; color: #facc15; min-width: 50px; text-align: right; flex-shrink: 0;
+    }
+
+    /* Main Container */
+    main { flex: 1; padding-top: calc(var(--nav-height) + var(--top-bar-height) + 24px); padding-bottom: 60px; }
+
+    /* Topic Hero Section */
+    .topic-hero {
+      background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: 0 6px 0 var(--border-dark); padding: 32px;
+      margin-bottom: 32px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+    }
+    .hero-sprite-frame {
+      width: 120px; height: 130px; background: var(--badge-bg);
+      border: 3px solid var(--border-dark); display: flex; align-items: center; justify-content: center;
+      position: relative; box-shadow: 0 4px 0 var(--border-dark); overflow: hidden;
+    }
+    .hero-avatar-img {
+      max-width: 100px; max-height: 112px; width: auto; height: auto;
+      object-fit: contain; image-rendering: pixelated;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .topic-hero:hover .hero-avatar-img { transform: scale(1.1) translateY(-3px); }
+
+    .hero-meta-tag {
+      display: inline-block; font-family: var(--font-pixel); font-size: 0.6rem;
+      background: #ffffff; border: 2px solid var(--border-dark); padding: 3px 10px;
+      margin-bottom: 10px; font-weight: bold; color: var(--hero-accent); box-shadow: 0 2px 0 var(--border-dark);
+    }
+    .hero-title { font-size: 1.6rem; margin-bottom: 12px; line-height: 1.3; color: var(--border-dark); }
+    .hero-tagline { font-family: var(--font-code); font-size: 0.95rem; color: var(--text-muted); margin-bottom: 14px; font-weight: 600; }
+    .hero-quote-box {
+      background: #f1f5f9; border-left: 4px solid var(--hero-accent);
+      padding: 10px 14px; font-style: italic; color: #1e293b; font-size: 0.88rem;
+    }
+
+    /* Content Cards */
+    .content-card {
+      background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: 0 5px 0 var(--border-dark); padding: 28px; margin-bottom: 28px;
+    }
+    .card-heading {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-pixel); font-size: 0.85rem; color: var(--border-dark);
+      margin-bottom: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;
+    }
+    .card-desc-text { font-size: 0.95rem; color: #1e293b; line-height: 1.7; margin-bottom: 16px; }
+    
+    .math-callout {
+      background: #f1f5f9; border: 2px solid var(--border-dark); padding: 16px 20px;
+      font-size: 0.95rem; margin-bottom: 16px; color: #0f172a;
+      box-shadow: 0 3px 0 var(--border-dark); overflow-x: auto;
+    }
+
+    /* Table */
+    .algo-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+    .algo-table th, .algo-table td { border: 2px solid var(--border-dark); padding: 12px 14px; text-align: left; }
+    .algo-table th { background: #f8fafc; font-family: var(--font-pixel); font-size: 0.65rem; color: var(--border-dark); }
+    .complexity-badge {
+      display: inline-block; font-family: var(--font-code); font-weight: bold;
+      background: var(--badge-bg); color: var(--hero-accent); border: 1px solid var(--hero-accent);
+      padding: 3px 8px; border-radius: 4px; font-size: 0.85rem;
+    }
+
+    /* Code Block */
+    .code-box {
+      background: #0f172a; color: #f8fafc; border: 3px solid var(--border-dark);
+      padding: 20px; font-family: var(--font-code); font-size: 0.85rem; line-height: 1.6;
+      overflow-x: auto; position: relative; box-shadow: 0 5px 0 var(--border-dark);
+    }
+    .code-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; font-family: var(--font-pixel); font-size: 0.65rem; color: #94a3b8;
+    }
+
+    /* Interactive Visualizer Canvas */
+    .viz-container {
+      background: #f8fafc; border: 2px dashed var(--border-dark); padding: 20px;
+      border-radius: 4px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+
+    /* Speech Bubble */
+    .hero-speech-bubble { transition: transform 0.15s ease; }
+    .hero-speech-bubble:hover { transform: translateY(-2px); }
+
+    /* Bottom Actions */
+    .bottom-section {
+      text-align: center; margin-top: 30px; display: flex; flex-direction: column;
+      align-items: center; gap: 16px;
+    }
+    .pixel-divider { width: 180px; height: 4px; background: repeating-linear-gradient(to right, var(--border-dark) 0px, var(--border-dark) 8px, transparent 8px, transparent 16px); }
+  </style>
+</head>
+<body>
+
+  <div class="cyber-grid-bg"></div>
+
+  <!-- Persistent Top Reading Progress Bar -->
+  <div id="global-top-progress">
+    <div class="top-progress-hero-badge">
+      <div class="top-hero-symbol-box">[✊]</div>
+      <div class="top-hero-title">HULK // Gamma Fist of Strength</div>
+    </div>
+    <div class="top-progress-track-wrapper" id="global-progress-track" title="Click anywhere along the bar to jump in the dossier">
+      <div class="top-progress-fill-bar" id="global-progress-fill"></div>
+      <div class="top-progress-slider-marker" id="global-progress-marker">✊</div>
+    </div>
+    <div class="top-progress-percent-readout" id="global-progress-pct">0%</div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <header class="pixel-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 8,20 11,20 12,14 16,14 17,20 20,20 15,2"/><polygon points="12,6 10,12 14,12" fill="#facc15"/></svg></div>
+        <div class="brand-text">ALGO-<span>VENGERS</span></div>
+      </a>
+
+      <div class="breadcrumbs">
+        <a href="index.html">HQ</a> <span>▶</span>
+        <a href="missions.html">MISSIONS</a> <span>▶</span>
+        <a href="mission-02.html">MISSION 02</a> <span>▶</span>
+        <span style="color: var(--border-dark); font-weight: bold;">TOPIC 02</span>
+      </div>
+
+      <div>
+        <a href="mission-02.html" class="pixel-btn pixel-btn-secondary" style="padding: 6px 12px; font-size: 0.6rem;">← MISSION HUB</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Topic Hero Section -->
+      <section class="topic-hero">
+        <div class="hero-sprite-frame">
+          <img src="assets/hulk.png" alt="HULK" class="hero-avatar-img">
+        </div>
+        <div>
+          <span class="hero-meta-tag">MISSION 02 // [✊] HULK</span>
+          <h1 class="hero-title pixel-heading">QUEUES</h1>
+          <div class="hero-tagline">FIFO SMASH BUFFER PIPELINE // FIFO Buffer Smash & Queue Throughput</div>
+          <div class="hero-quote-box">"Hulk smash queue bottlenecks! First chariot into Gamma arena is first chariot to strike target!"</div>
+        </div>
+      </section>
+
+      <!-- 01. S.H.I.E.L.D. Mission Briefing & Marvel Story -->
+      <section class="content-card" style="border-left: 6px solid #16a34a;">
+        <h2 class="card-heading">
+          <span>01. S.H.I.E.L.D. MISSION BRIEFING // OP-HULK-05</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">GAMMA CONVOY FIFO EVACUATION</span>
+        </h2>
+        <div class="card-desc-text" style="font-size: 1.02rem; font-weight: 500; color: #0f172a; margin-bottom: 12px;">
+          A Chitauri orbital bombardment has compromised the Manhattan bridge. Hulk is stationed at the Stark tunnel terminal to guide civilian evacuation transports. To prevent civil chaos and gridlock, transports must be evacuated in the exact order they arrive: First-In, First-Out (FIFO).
+        </div>
+        <div style="background: #f1f5f9; border: 2px dashed #475569; padding: 12px 16px; margin-bottom: 10px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #dc2626; margin-bottom: 4px;">CRITICAL CRISIS:</div>
+          <div style="font-size: 0.9rem; color: #334155;">In a linear array queue, dequeued front slots become dead, unusable memory, causing False Overflow even when capacity remains. Hulk cannot allow memory bottlenecks during evacuation!</div>
+        </div>
+        <div style="background: #ecfdf5; border: 2px solid #10b981; padding: 12px 16px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #059669; margin-bottom: 4px;">TACTICAL OBJECTIVE:</div>
+          <div style="font-size: 0.9rem; color: #065f46;">Help Hulk enqueue arriving transport chariots at the REAR and dequeue evacuated transports from the FRONT.</div>
+        </div>
+      </section>
+
+      <!-- 02. Formal Specification & Problem Invariants -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>02. FORMAL PROBLEM SPECIFICATION & INVARIANTS</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">ACADEMIC CURRICULUM</span>
+        </h2>
+        <div class="card-desc-text">
+<p>A <strong>Queue</strong> is a linear data structure governed by the <strong>FIFO (First-In, First-Out)</strong> structural invariant. Elements are added at one end called the <strong>REAR</strong> (or Tail) and deleted from the opposite end called the <strong>FRONT</strong> (or Head).</p>
+<p>Core Queue Primitive Operations:</p>
+<ul>
+  <li><code>enqueue(x)</code>: Appends item \(x\) to the rear of the queue. Time Complexity: \(O(1)\).</li>
+  <li><code>dequeue()</code>: Removes and returns the item from the front of the queue. Time Complexity: \(O(1)\).</li>
+  <li><code>front()</code>: Inspects the front item without extraction. Time Complexity: \(O(1)\).</li>
+  <li><code>isFull()</code> & <code>isEmpty()</code>: Validates capacity limits to prevent overflow and underflow faults.</li>
+</ul>
+<p><strong>Primary Applications in DAA:</strong> Breadth-First Search (BFS) graph traversal, CPU process scheduling (Round-Robin), asynchronous printer spooling buffers, and network packet routing.</p>
+</div>
+      </section>
+
+      <!-- Speech Bubble Callout 1 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #dcfce7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/hulk.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="Hulk">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #16a34a; margin-bottom: 4px;">
+          [✊] COMM-LINK // Hulk
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "Hulk hate false overflow! Linear array wastes slots in front. Always use circular modulo ring so Hulk can recycle memory and smash forever!"
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 03. Naive Approach vs Optimal Formulation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>03. BRUTE FORCE VS ALGORITHMIC OPTIMALITY</span>
+          <span style="font-size: 0.6rem; color: var(--color-gold);">STRATEGIC COMPARISON</span>
+        </h2>
+        <div class="card-desc-text">
+<p>A linear array queue suffers from <em>False Overflow</em>: as elements are enqueued and dequeued, the front and rear pointers march towards the end of the array. Even if the front of the array is completely empty, <code>rear == capacity - 1</code> triggers overflow! The optimal solution is the <strong>Circular Queue</strong>, wrapping pointers back to index 0 using modulo arithmetic: <code>(rear + 1) % capacity</code>.</p>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:12px;">
+  <div style="background:#fee2e2; border:2px solid #ef4444; padding:12px; font-size:0.85rem;">
+    <strong style="color:#b91c1c;">LINEAR QUEUE (FALSE OVERFLOW)</strong><br>
+    Front and rear advance linearly.<br>
+    Problem: Dequeued slots at array beginning become dead, unusable memory.<br>
+    Requires expensive \(O(n)\) array sliding or re-centering.
+  </div>
+  <div style="background:#dcfce7; border:2px solid #16a34a; padding:12px; font-size:0.85rem;">
+    <strong style="color:#15803d;">CIRCULAR QUEUE (MODULO RING)</strong><br>
+    Wrap-around via <code>(idx + 1) % N</code>.<br>
+    Recycles freed memory seamlessly.<br>
+    Guarantees strict \(\Theta(1)\) enqueue and dequeue forever.
+  </div>
+</div>
+</div>
+        <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px 16px; margin-top: 12px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #1d4ed8; margin-bottom: 4px;">WHY THIS ALGORITHM WINS:</div>
+          <div style="font-size: 0.9rem; color: #1e3a8a;">A Circular Queue wraps rear and front indices using modulo arithmetic (idx + 1) % N, recycling freed slots endlessly in O(1) enqueue and dequeue time.</div>
+        </div>
+      </section>
+
+      <!-- 04. Mathematical Formulation & Recurrence Derivation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>04. MATHEMATICAL PROOFS & RECURRENCES</span>
+          <span style="font-size: 0.6rem; color: #2563eb;">KATEX FORMULATION</span>
+        </h2>
+        <div class="math-callout">
+<p><strong>Circular Queue Ring Modulo Arithmetic:</strong></p>
+\[ \text{Next Rear Index: } \text{rear} = (\text{rear} + 1) \pmod N \]
+\[ \text{Next Front Index: } \text{front} = (\text{front} + 1) \pmod N \]
+<p><strong>Full and Empty State Invariants:</strong></p>
+\[ \text{Queue Empty: } \text{count} = 0 \quad (\text{or } \text{front} == -1) \]
+\[ \text{Queue Full: } \text{count} == N \quad (\text{or } (\text{rear} + 1) \pmod N == \text{front}) \]
+<p><strong>Current Queue Size:</strong></p>
+\[ \text{Size} = (\text{rear} - \text{front} + N) \pmod N \]
+</div>
+      </section>
+
+      <!-- Speech Bubble Callout 2 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #dcfce7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/hulk.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="Hulk">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #16a34a; margin-bottom: 4px;">
+          [✊] TACTICAL ADVICE // Hulk
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "In BFS graph exploration, Queue holds wavefront frontier! First vertex discovered is first vertex expanded. Keep order clean and smash villains!"
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 05. Concrete Worked Numerical Example -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>05. STEP-BY-STEP WORKED CALCULATION EXAMPLE</span>
+          <span style="font-size: 0.6rem; color: #16a34a;">NUMERICAL TRACE</span>
+        </h2>
+        <div class="card-desc-text">
+<p><strong>Worked Example:</strong> Step-by-step trace of a Circular Queue of capacity \(N = 4\).</p>
+<ol style="margin-left:20px; line-height:1.8;">
+  <li><strong>Initial State:</strong> <code>front = 0, rear = 0, count = 0</code>, Array = <code>[_, _, _, _]</code>.</li>
+  <li><strong>Enqueue(10):</strong> Store at <code>arr[0] = 10</code>. <code>rear = (0+1)%4 = 1</code>. <code>count = 1</code>. Array: <code>[10, _, _, _]</code>.</li>
+  <li><strong>Enqueue(20):</strong> Store at <code>arr[1] = 20</code>. <code>rear = (1+1)%4 = 2</code>. <code>count = 2</code>. Array: <code>[10, 20, _, _]</code>.</li>
+  <li><strong>Enqueue(30):</strong> Store at <code>arr[2] = 30</code>. <code>rear = (2+1)%4 = 3</code>. <code>count = 3</code>. Array: <code>[10, 20, 30, _]</code>.</li>
+  <li><strong>Dequeue():</strong> Retrieve <code>arr[0] = 10</code>. <code>front = (0+1)%4 = 1</code>. <code>count = 2</code>. Array: <code>[_, 20, 30, _]</code>.</li>
+  <li><strong>Enqueue(40):</strong> Store at <code>arr[3] = 40</code>. <code>rear = (3+1)%4 = 0</code>. <code>count = 3</code>. Array: <code>[_, 20, 30, 40]</code>.</li>
+  <li><strong>Enqueue(50):</strong> Wrap around! Store at <code>arr[0] = 50</code>. <code>rear = (0+1)%4 = 1</code>. <code>count = 4 (FULL)</code>. Array: <code>[50, 20, 30, 40]</code>.</li>
+</ol>
+<p><em>Observation:</em> Slot 0 was recycled cleanly without shifting any elements!</p>
+</div>
+      </section>
+
+      <!-- 06. Interactive Physical Tactical Simulation Arena -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>06. RETRO PHYSICAL GAME SIMULATION & YOUR CUSTOM INPUTS</span>
+          <span style="font-size: 0.6rem; color: var(--color-cyan);">LIVE SIMULATION CONSOLE</span>
+        </h2>
+        <div class="viz-container">
+          <div class="sim-tactical-header" style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 16px; padding: 12px 18px; background: #0f172a; border: 3px solid var(--border-dark); color: #f8fafc; box-shadow: 0 4px 0 var(--border-dark);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 52px; height: 56px; background: #dcfce7; border: 2px solid #ffffff; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
+                <img src="assets/hulk.png" style="max-width: 46px; max-height: 50px; width: auto; height: auto; object-fit: contain; image-rendering: pixelated;" alt="HULK">
+              </div>
+              <div>
+                <div style="font-family: var(--font-pixel); font-size: 0.7rem; color: #facc15;">OPERATOR: [✊] HULK</div>
+                <div style="font-family: var(--font-pixel-sub); font-size: 0.8rem; color: #94a3b8;">TACTICAL DAA PHYSICAL SIMULATION ENGINE</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-pixel); font-size: 0.6rem; background: #1e293b; color: #22c55e; padding: 6px 12px; border: 1px solid #475569;">
+              STATUS: READY
+            </div>
+          </div>
+          
+<div class="sim-game-wrapper" style="width: 100%; text-align: left;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #334155; padding-bottom: 8px;">
+    <div>
+      <span style="font-family: var(--font-pixel); font-size: 0.75rem; color: #16a34a;">MISSION: GAMMA CONVOY FIFO EVACUATION</span>
+      <p style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">First chariot in is first chariot out! Hulk guides transports to the REAR and out the FRONT.</p>
+    </div>
+    <div style="font-family: var(--font-pixel); font-size: 0.65rem; background: #1e293b; color: #f8fafc; padding: 6px 10px; border: 1px solid #475569;">
+      QUEUE SIZE: <span id="hulk-size" style="color: #22c55e;">3</span> / 5 | FRONT: <span id="hulk-front-idx" style="color: #38bdf8;">0</span>
+    </div>
+  </div>
+
+  <div style="background: #f1f5f9; border: 2px solid #0f172a; padding: 10px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <label style="font-family: var(--font-pixel); font-size: 0.62rem; color: #0f172a;">ENQUEUE VAL:</label>
+      <input type="number" id="hulk-input-val" value="40" min="1" max="99" style="width: 60px; padding: 4px; font-family: var(--font-code); font-weight: bold; border: 2px solid #0f172a; text-align: center;">
+    </div>
+    <div style="font-family: var(--font-code); font-size: 0.8rem; font-weight: bold; color: #16a34a;">
+      OPERATIONS: <span id="hulk-op-counter">0</span> | TIME: O(1)
+    </div>
+  </div>
+
+  <div style="background: #090d16; border: 3px solid #0f172a; padding: 18px; border-radius: 6px; box-shadow: inset 0 0 16px rgba(0,0,0,0.9); margin-bottom: 14px; position: relative; min-height: 250px;">
+    <!-- Hulk Physical Actor -->
+    <div id="hulk-actor" style="position: absolute; top: 15px; left: 60px; transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s ease; z-index: 20; display: flex; flex-direction: column; align-items: center;">
+      <div id="hulk-carried-block" style="display: none; background: #22c55e; color: #0f172a; font-family: var(--font-pixel); font-size: 0.65rem; padding: 4px 8px; border: 2px solid #000; margin-bottom: 2px;">
+        [40]
+      </div>
+      <div style="font-family: var(--font-pixel); font-size: 0.5rem; background: #16a34a; color: #fff; padding: 1px 4px; border-radius: 2px; margin-bottom: 2px;">✊ HULK</div>
+      <img src="assets/hulk.png" style="width: 48px; height: 54px; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 4px 8px rgba(22,163,74,0.6));">
+    </div>
+
+    <!-- Arena Layout: FRONT (Left Exit) <--- Pipeline ---> REAR (Right Entrance) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 80px; padding: 0 10px;">
+      <!-- FRONT EXIT -->
+      <div style="text-align: center;">
+        <span style="font-family: var(--font-pixel); font-size: 0.55rem; color: #ef4444;">[FRONT EXIT] ⬅</span>
+        <div id="hulk-front-indicator" style="background: #1e293b; border: 2px solid #ef4444; padding: 6px; font-family: var(--font-pixel); font-size: 0.6rem; color: #f87171; border-radius: 4px; margin-top: 4px;">
+          DEQUEUE HERE
+        </div>
+      </div>
+
+      <!-- Pipeline Conveyor Grid -->
+      <div id="hulk-queue-pipe" style="display: flex; gap: 8px; background: #1e293b; border: 3px solid #475569; padding: 12px; border-radius: 4px; min-width: 280px; justify-content: center;">
+        <div class="hulk-q-item" style="background: #16a34a; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000;">[ 10 ]<br><small style="color:#facc15;">FRONT</small></div>
+        <div class="hulk-q-item" style="background: #15803d; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000;">[ 20 ]</div>
+        <div class="hulk-q-item" style="background: #166534; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000;">[ 30 ]<br><small style="color:#38bdf8;">REAR</small></div>
+      </div>
+
+      <!-- REAR ENTRANCE -->
+      <div style="text-align: center;">
+        <span style="font-family: var(--font-pixel); font-size: 0.55rem; color: #38bdf8;">➡ [REAR IN]</span>
+        <div id="hulk-rear-indicator" style="background: #1e293b; border: 2px solid #38bdf8; padding: 6px; font-family: var(--font-pixel); font-size: 0.6rem; color: #38bdf8; border-radius: 4px; margin-top: 4px;">
+          ENQUEUE HERE
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Operation Feedback Card -->
+  <div style="background: #ffffff; border: 2px solid #0f172a; padding: 12px 16px; margin-bottom: 14px; min-height: 52px; display: flex; align-items: center;" id="hulk-dialogue">
+    💬 <strong>Hulk:</strong> "Queue pipeline active! First in is first out. Hulk moves chariots!"
+  </div>
+
+  <div class="viz-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <button class="pixel-btn pixel-btn-primary" id="hulk-btn-enqueue">➡ ENQUEUE REAR</button>
+    <button class="pixel-btn pixel-btn-secondary" id="hulk-btn-dequeue">⬅ DEQUEUE FRONT</button>
+    <button class="pixel-btn pixel-btn-secondary" id="hulk-btn-peek">◉ PEEK FRONT</button>
+    <button class="pixel-btn pixel-btn-secondary" id="hulk-btn-reset">↺ RESET QUEUE</button>
+  </div>
+</div>
+
+        </div>
+      </section>
+
+      <!-- 07. Asymptotic Derivation & Complexity Matrix -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>07. ASYMPTOTIC COMPLEXITY DERIVATION MATRIX</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">DAA BIG-O BOUNDS</span>
+        </h2>
+        <table class="algo-table">
+          <thead>
+            <tr>
+              <th>OPERATION / CASE</th>
+              <th>ASYMPTOTIC BOUND</th>
+              <th>SPACE / FOOTPRINT</th>
+              <th>MATHEMATICAL INVARIANT</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Enqueue (Circular)</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #16a34a; font-weight: 600;">O(1) Auxiliary</td>
+          <td style="color: #475569;">Direct assignment at rear, followed by modular index bump</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Dequeue (Circular)</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #16a34a; font-weight: 600;">O(1) Auxiliary</td>
+          <td style="color: #475569;">Direct read at front, followed by modular index bump</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Peek / Front</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #16a34a; font-weight: 600;">O(1) Auxiliary</td>
+          <td style="color: #475569;">Single memory read access at arr[front]</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Linear Queue (Naive Dequeue)</td>
+          <td><span class="complexity-badge">O(n)</span></td>
+          <td style="font-family: var(--font-code); color: #16a34a; font-weight: 600;">O(1) Auxiliary</td>
+          <td style="color: #475569;">Requires shifting all remaining elements left</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Search Queue</td>
+          <td><span class="complexity-badge">O(n)</span></td>
+          <td style="font-family: var(--font-code); color: #16a34a; font-weight: 600;">O(n) Auxiliary</td>
+          <td style="color: #475569;">Requires scanning elements sequentially</td>
+        </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 08. Interactive Asymptotic Growth Comparison Slider -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>08. ASYMPTOTIC GROWTH COMPARISON</span>
+          <span style="font-size: 0.6rem; color: var(--color-gold);">LIVE CALCULATOR</span>
+        </h2>
+        <div style="margin-bottom: 16px;">
+          <p class="card-desc-text">Drag the input size slider \(n\) to observe step counts diverge across complexity classes in real-time:</p>
+          <div style="background: #f1f5f9; border: 2px solid #0f172a; padding: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <label style="font-family: var(--font-pixel); font-size: 0.68rem; color: #0f172a;">INPUT SIZE (N):</label>
+              <input type="range" id="growth-slider" min="1" max="10" value="4" style="width: 160px; accent-color: #16a34a;">
+              <span id="growth-n-val" style="font-family: var(--font-code); font-weight: bold; background: #0f172a; color: #facc15; padding: 4px 10px; border-radius: 4px;">n = 16</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #475569;">
+              Compare: \(O(1), O(\log n), O(n), O(n \log n), O(n^2), O(2^n)\)
+            </div>
+          </div>
+          
+          <div id="growth-bars-container" style="display: flex; flex-direction: column; gap: 10px; background: #ffffff; border: 2px solid #0f172a; padding: 16px;">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 09. Practical Systems Design & Code Implementation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>09. PRACTICAL SYSTEMS DESIGN & REFERENCE IMPLEMENTATION</span>
+          <span style="font-size: 0.6rem; color: #8b5cf6;">PRODUCTION ARCHITECTURE</span>
+        </h2>
+        <div class="card-desc-text">
+<p><strong>1. Double-Ended Queues (Deque):</strong> A Deque allows insertion and deletion at both ends in \(O(1)\) time. Python's <code>collections.deque</code> is implemented as a doubly-linked list of blocks, optimizing both queue and stack workflows.</p>
+<p><strong>2. Priority Queues:</strong> In scenarios like Dijkstra's algorithm and Prim's MST, FIFO order is replaced by key-based priority extraction, requiring Min-Heaps with \(O(\log n)\) insertion and extraction.</p>
+<p><strong>3. Lock-Free Ring Buffers:</strong> In high-throughput operating systems and audio DSP pipelines, circular queues implemented as atomic single-producer single-consumer (SPSC) ring buffers provide lock-free concurrency with zero mutex locking overhead.</p>
+</div>
+        
+        <div class="code-box" style="margin-top: 18px;">
+          <div class="code-header">
+            <span>ALGORITHM SPECIFICATION // PYTHON 3</span>
+            <span>UTF-8 // VERIFIED OPTIMAL</span>
+          </div>
+          <pre><code>class GammaCircularQueue:
+    """
+    Circular Queue buffer preventing False Overflow with O(1) FIFO speed.
+    """
+    def __init__(self, capacity: int = 5):
+        self.capacity = capacity
+        self.storage = [None] * capacity
+        self.front = 0
+        self.rear = 0
+        self.count = 0
+        
+    def enqueue(self, item: str) -> bool:
+        if self.count == self.capacity:
+            raise OverflowError("QUEUE OVERFLOW: Hulk buffer completely full!")
+        self.storage[self.rear] = item
+        self.rear = (self.rear + 1) % self.capacity  # Modulo wrap-around
+        self.count += 1
+        return True
+        
+    def dequeue(self) -> str:
+        if self.count == 0:
+            raise IndexError("QUEUE UNDERFLOW: No items in Gamma queue!")
+        item = self.storage[self.front]
+        self.storage[self.front] = None  # Clear slot
+        self.front = (self.front + 1) % self.capacity  # Modulo wrap-around
+        self.count -= 1
+        return item</code></pre>
+        </div>
+      </section>
+
+      <!-- Speech Bubble Callout 3 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #dcfce7; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/hulk.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="HULK">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #16a34a; margin-bottom: 4px;">
+          [✊] S.H.I.E.L.D. FIELD DIRECTIVE // HULK
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "Hulk smash queue bottlenecks! First chariot into Gamma arena is first chariot to strike target!" Remember: asymptotic guarantees hold when n grows large, but cache coherence, memory layout, and branch prediction dominate for small inputs in production hardware.
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 10. Interactive Mini Quiz (4 Questions) -->
+      <section class="content-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h2 class="card-heading" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">
+            <span>10. MISSION ASSESSMENT // TEST YOUR MASTERY</span>
+          </h2>
+          <div style="font-family: var(--font-pixel); font-size: 0.68rem; background: #0f172a; color: #22c55e; padding: 6px 12px; border: 2px solid var(--border-dark);" id="quiz-score-badge">
+            SCORE: 0 / 4 (0%)
+          </div>
+        </div>
+        <p class="card-desc-text">Test your mastery of QUEUES with these university exam questions:</p>
+        <div>
+          
+        <div class="quiz-card" id="quiz-card-0" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #16a34a;">QUESTION 1 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-0" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            What problem does a Circular Queue solve compared to a basic linear array queue?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[A]</span> Stack Overflow errors
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[B]</span> False Overflow where front slots are freed but unusable
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[C]</span> Priority inversion in thread schedulers
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[D]</span> Infinite recursion loops
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-0" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-1" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #16a34a;">QUESTION 2 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-1" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            If a circular queue has capacity N=6, front=3, and count=4, what is the rear index for the next insertion?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[A]</span> 0
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[B]</span> 1
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[C]</span> 2
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[D]</span> 5
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-1" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-2" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #16a34a;">QUESTION 3 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-2" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            Which graph traversal algorithm fundamentally relies on a FIFO Queue?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[A]</span> Depth-First Search (DFS)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[B]</span> Breadth-First Search (BFS)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[C]</span> Tarjan's Strongly Connected Components
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[D]</span> Kosaraju's Algorithm
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-2" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-3" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #16a34a;">QUESTION 4 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-3" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            What is the time complexity of dequeue in an optimal Circular Queue?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[A]</span> O(1)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[B]</span> O(log n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[C]</span> O(n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #16a34a;">[D]</span> O(n^2)
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-3" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        </div>
+      </section>
+
+      <!-- 11. Key Exam Takeaways -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>11. S.H.I.E.L.D. DEBRIEF & KEY EXAM TAKEAWAYS</span>
+          <span style="font-size: 0.6rem; color: var(--border-dark);">REVISION CHECKLIST</span>
+        </h2>
+        <p class="card-desc-text">Queues uphold FIFO order, making them indispensable for BFS tree/graph exploration, thread job scheduling, and hardware buffer pipelines. Circular queues prevent false overflow via modulo arithmetic.</p>
+      </section>
+
+      <!-- Navigation & Return -->
+      <section class="bottom-section">
+        <div class="pixel-divider"></div>
+        <div style="display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
+          <a href="mission-02.html" class="pixel-btn pixel-btn-primary">← BACK TO MISSION 02</a>
+          <a href="missions.html" class="pixel-btn pixel-btn-secondary">ALL MISSIONS</a>
+          <a href="index.html" class="pixel-btn pixel-btn-accent">RETURN TO HQ</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer style="background: #0f172a; color: #f8fafc; border-top: 3px solid #000; padding: 24px 0; text-align: center; font-family: var(--font-pixel); font-size: 0.62rem; margin-top: 40px;">
+    <div class="container">
+      ALGO-VENGERS // DESIGN & ANALYSIS OF ALGORITHMS // S.H.I.E.L.D. DATABASE
+    </div>
+  </footer>
+
+  <script>
+    /* Retro Web Audio Engine */
+    class RetroAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.init();
+      }
+      init() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) this.ctx = new AudioContext();
+      }
+      ensure() {
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playTone(freq, type, duration, vol=0.1) {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      playClick() { this.playTone(600, 'square', 0.05, 0.08); }
+      playHover() { this.playTone(400, 'sine', 0.03, 0.04); }
+      playSuccess() {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.15);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.15);
+          });
+        } catch(e) {}
+      }
+      playError() {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          [220, 164.81].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.15);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.15);
+          });
+        } catch(e) {}
+      }
+    }
+    const retroAudio = new RetroAudioEngine();
+
+    const interactiveQuery = 'a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, .hero-speech-bubble, [role="button"], [data-hero-cursor], .quiz-opt-btn';
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveQuery)) {
+        retroAudio.playHover();
+      }
+    });
+
+    /* Persistent Top Reading Progress Bar */
+    const topFillBar = document.getElementById('global-progress-fill');
+    const topMarker = document.getElementById('global-progress-marker');
+    const topPct = document.getElementById('global-progress-pct');
+    const topTrack = document.getElementById('global-progress-track');
+
+    function updateTopReadingProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+      
+      if (topFillBar) topFillBar.style.width = pct + '%';
+      if (topPct) topPct.textContent = pct + '%';
+      if (topMarker) {
+        topMarker.style.left = pct + '%';
+      }
+    }
+
+    window.addEventListener('scroll', updateTopReadingProgress, { passive: true });
+    updateTopReadingProgress();
+
+    topTrack?.addEventListener('click', (e) => {
+      const rect = topTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: ratio * docHeight, behavior: 'smooth' });
+      retroAudio.playClick();
+    });
+
+    /* Asymptotic Growth Comparison Slider */
+    const growthSlider = document.getElementById('growth-slider');
+    const growthNVal = document.getElementById('growth-n-val');
+    const growthBarsContainer = document.getElementById('growth-bars-container');
+    const nPowers = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
+
+    function renderGrowthBars() {
+      const idx = parseInt(growthSlider.value) - 1;
+      const n = nPowers[idx];
+      growthNVal.textContent = `n = ${n}`;
+      
+      const c_const = 1;
+      const c_log = Math.round(Math.log2(n) * 10) / 10;
+      const c_lin = n;
+      const c_nlogn = Math.round(n * Math.log2(n));
+      const c_quad = n * n;
+      const c_exp = n <= 32 ? Math.pow(2, n) : '1.79e+308+';
+
+      const classes = [
+        { name: 'O(1) Constant', ops: c_const, color: '#22c55e', pct: 2 },
+        { name: 'O(log n) Logarithmic', ops: c_log, color: '#38bdf8', pct: Math.min(100, (c_log / 10) * 12) },
+        { name: 'O(n) Linear', ops: c_lin, color: '#facc15', pct: Math.min(100, (c_lin / 1024) * 45) },
+        { name: 'O(n log n) Linearithmic', ops: c_nlogn, color: '#f97316', pct: Math.min(100, (c_nlogn / 10240) * 70) },
+        { name: 'O(n^2) Quadratic', ops: c_quad, color: '#ef4444', pct: Math.min(100, Math.max(10, (c_quad / 1000000) * 100)) },
+        { name: 'O(2^n) Exponential', ops: c_exp, color: '#881337', pct: 100 }
+      ];
+
+      growthBarsContainer.innerHTML = classes.map(c => `
+        <div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-pixel); font-size: 0.62rem; margin-bottom: 4px;">
+            <span style="color: ${c.color};">${c.name}</span>
+            <span style="font-family: var(--font-code); font-weight: bold; color: #0f172a;">${typeof c.ops === 'number' ? c.ops.toLocaleString() : c.ops} operations</span>
+          </div>
+          <div style="width: 100%; height: 14px; background: #f1f5f9; border: 1.5px solid #0f172a; border-radius: 2px; overflow: hidden;">
+            <div style="width: ${c.pct}%; height: 100%; background: ${c.color}; transition: width 0.3s ease;"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    growthSlider?.addEventListener('input', () => {
+      renderGrowthBars();
+      retroAudio.playHover();
+    });
+    renderGrowthBars();
+
+    /* Interactive Mini-Quiz Logic */
+    const quizData = [{'answer': 1, 'explanation': 'A basic linear queue allows rear to reach capacity while front has moved forward, leaving dead space. Circular queues wrap indices around using modulo arithmetic to reuse freed slots.'}, {'answer': 1, 'explanation': 'rear = (front + count) % N = (3 + 4) % 6 = 7 % 6 = 1.'}, {'answer': 1, 'explanation': 'Breadth-First Search (BFS) explores vertices level-by-level using a FIFO Queue to maintain the frontier.'}, {'answer': 0, 'explanation': 'Circular queue dequeue directly accesses the element at arr[front] and advances front by (front + 1) % N in O(1) constant time.'}];
+    let quizScore = 0;
+    const answeredQuestions = new Set();
+
+    document.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = parseInt(btn.dataset.qid);
+        const oid = parseInt(btn.dataset.oid);
+        if (answeredQuestions.has(qid)) return;
+        answeredQuestions.add(qid);
+
+        const q = quizData[qid];
+        const card = document.getElementById(`quiz-card-${qid}`);
+        const statusTag = document.getElementById(`quiz-status-${qid}`);
+        const feedbackBox = document.getElementById(`quiz-feedback-${qid}`);
+        const allOpts = card.querySelectorAll('.quiz-opt-btn');
+
+        allOpts.forEach((b, idx) => {
+          if (idx === q.answer) {
+            b.style.background = '#dcfce7';
+            b.style.borderColor = '#16a34a';
+            b.style.color = '#15803d';
+          } else if (idx === oid && oid !== q.answer) {
+            b.style.background = '#fee2e2';
+            b.style.borderColor = '#ef4444';
+            b.style.color = '#b91c1c';
+          }
+          b.disabled = true;
+        });
+
+        feedbackBox.style.display = 'block';
+        if (oid === q.answer) {
+          quizScore++;
+          retroAudio.playSuccess();
+          statusTag.textContent = 'CORRECT';
+          statusTag.style.background = '#dcfce7';
+          statusTag.style.color = '#16a34a';
+          feedbackBox.style.background = '#f0fdf4';
+          feedbackBox.style.borderColor = '#16a34a';
+          feedbackBox.innerHTML = `<strong>✨ EXCELLENT WORK!</strong><br>${q.explanation}`;
+        } else {
+          retroAudio.playError();
+          statusTag.textContent = 'INCORRECT';
+          statusTag.style.background = '#fee2e2';
+          statusTag.style.color = '#ef4444';
+          feedbackBox.style.background = '#fef2f2';
+          feedbackBox.style.borderColor = '#ef4444';
+          feedbackBox.innerHTML = `<strong>⚠️ TACTICAL REVIEW:</strong><br>${q.explanation}`;
+        }
+
+        const pct = Math.round((quizScore / quizData.length) * 100);
+        const scoreBadge = document.getElementById('quiz-score-badge');
+        if (scoreBadge) scoreBadge.textContent = `SCORE: ${quizScore} / ${quizData.length} (${pct}%)`;
+      });
+    });
+
+    // KaTeX Auto-Render Math
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "\\[", right: "\\]", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    });
+
+    // Visualizer Specific Game Loop Logic
+    
+const hulkActor = document.getElementById('hulk-actor');
+const hulkCarried = document.getElementById('hulk-carried-block');
+const hulkPipe = document.getElementById('hulk-queue-pipe');
+const hulkSize = document.getElementById('hulk-size');
+const hulkFrontIdx = document.getElementById('hulk-front-idx');
+const hulkDialogue = document.getElementById('hulk-dialogue');
+const hulkInputVal = document.getElementById('hulk-input-val');
+const hulkOpCounter = document.getElementById('hulk-op-counter');
+
+let hulkItems = [10, 20, 30];
+let hulkOps = 0;
+let hulkIsBusy = false;
+
+function updateHulkLabels() {
+  hulkSize.textContent = hulkItems.length;
+  hulkFrontIdx.textContent = hulkItems.length > 0 ? '0' : 'NONE';
+  hulkOpCounter.textContent = hulkOps;
+}
+
+// ENQUEUE: Hulk walks to incoming, grabs it, carries to REAR (right end), pushes into pipeline
+document.getElementById('hulk-btn-enqueue')?.addEventListener('click', () => {
+  if (hulkIsBusy) return;
+  if (hulkItems.length >= 5) {
+    retroAudio.playError();
+    hulkDialogue.innerHTML = `⚠️ <strong>Hulk:</strong> "QUEUE OVERFLOW! Tunnel full! Dequeue front chariots first!"`;
+    return;
+  }
+  
+  hulkIsBusy = true;
+  retroAudio.playClick();
+  const val = parseInt(hulkInputVal.value) || (hulkItems.length + 1) * 10;
+  hulkOps++;
+  updateHulkLabels();
+  
+  // Walk to entrance
+  hulkActor.style.left = '450px';
+  hulkDialogue.innerHTML = `✊ <strong>Hulk:</strong> "Grabbing transport [${val}] to push into REAR..."`;
+  
+  setTimeout(() => {
+    retroAudio.playHover();
+    hulkCarried.textContent = `[${val}]`;
+    hulkCarried.style.display = 'block';
+    
+    // Carry and place into pipeline
+    setTimeout(() => {
+      retroAudio.playSuccess();
+      hulkCarried.style.display = 'none';
+      hulkItems.push(val);
+      
+      const el = document.createElement('div');
+      el.className = 'hulk-q-item';
+      el.style.cssText = 'background: #166534; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000; animation: popIn 0.25s;';
+      el.innerHTML = `[ ${val} ]<br><small style="color:#38bdf8;">REAR</small>`;
+      
+      // Remove REAR tag from previous last element
+      if (hulkPipe.children.length > 0) {
+        const prev = hulkPipe.children[hulkPipe.children.length - 1];
+        prev.innerHTML = prev.innerHTML.replace('<br><small style="color:#38bdf8;">REAR</small>', '');
+      }
+      hulkPipe.appendChild(el);
+      updateHulkLabels();
+      
+      hulkDialogue.innerHTML = `
+        <div style="border-left: 4px solid #16a34a; padding-left: 8px;">
+          <strong style="color: #16a34a;">✊ ENQUEUE(${val}) SUCCESSFUL</strong><br>
+          <span>Appended to REAR of queue. | Time Complexity: <strong>O(1)</strong></span>
+        </div>
+      `;
+      
+      setTimeout(() => {
+        hulkActor.style.left = '60px';
+        hulkIsBusy = false;
+      }, 300);
+    }, 400);
+  }, 400);
+});
+
+// DEQUEUE: Hulk walks to FRONT (left end), removes front element, carries away
+document.getElementById('hulk-btn-dequeue')?.addEventListener('click', () => {
+  if (hulkIsBusy) return;
+  if (hulkItems.length === 0) {
+    retroAudio.playError();
+    hulkDialogue.innerHTML = `⚠️ <strong>Hulk:</strong> "QUEUE UNDERFLOW! No transports waiting in tunnel."`;
+    return;
+  }
+  
+  hulkIsBusy = true;
+  retroAudio.playClick();
+  hulkOps++;
+  updateHulkLabels();
+  
+  // Walk to FRONT (left: 120px)
+  hulkActor.style.left = '120px';
+  hulkDialogue.innerHTML = `✊ <strong>Hulk:</strong> "Moving to FRONT to evacuate oldest transport..."`;
+  
+  setTimeout(() => {
+    retroAudio.playHover();
+    const dequeuedVal = hulkItems.shift();
+    const firstEl = hulkPipe.children[0];
+    if (firstEl) hulkPipe.removeChild(firstEl);
+    
+    // Update new FRONT label
+    if (hulkPipe.children.length > 0) {
+      const newFront = hulkPipe.children[0];
+      if (!newFront.innerHTML.includes('FRONT')) {
+        newFront.innerHTML += '<br><small style="color:#facc15;">FRONT</small>';
+      }
+    }
+    
+    hulkCarried.textContent = `[${dequeuedVal}]`;
+    hulkCarried.style.display = 'block';
+    
+    setTimeout(() => {
+      // Carry out exit
+      hulkActor.style.left = '10px';
+      setTimeout(() => {
+        retroAudio.playSuccess();
+        hulkCarried.style.display = 'none';
+        updateHulkLabels();
+        
+        hulkDialogue.innerHTML = `
+          <div style="background: #f0fdf4; border: 2px solid #16a34a; padding: 8px 12px; width: 100%;">
+            <div style="font-family: var(--font-pixel); font-size: 0.65rem; color: #16a34a;">✊ HULK // EVACUATION COMPLETE</div>
+            <div style="font-size: 0.9rem; margin-top: 3px;">DEQUEUE() removed: <strong>${dequeuedVal}</strong> from FRONT | Time: <strong>O(1)</strong></div>
+          </div>
+        `;
+        
+        setTimeout(() => {
+          hulkActor.style.left = '60px';
+          hulkIsBusy = false;
+        }, 300);
+      }, 400);
+    }, 400);
+  }, 400);
+});
+
+// PEEK / FRONT: Hulk points to front element
+document.getElementById('hulk-btn-peek')?.addEventListener('click', () => {
+  if (hulkIsBusy) return;
+  if (hulkItems.length === 0) {
+    hulkDialogue.innerHTML = `⚠️ <strong>Hulk:</strong> "Queue is empty!"`;
+    return;
+  }
+  hulkIsBusy = true;
+  retroAudio.playClick();
+  hulkOps++;
+  updateHulkLabels();
+  
+  const frontVal = hulkItems[0];
+  hulkActor.style.left = '120px';
+  const firstEl = hulkPipe.children[0];
+  if (firstEl) firstEl.style.boxShadow = '0 0 14px #22c55e';
+  
+  setTimeout(() => {
+    retroAudio.playSuccess();
+    hulkDialogue.innerHTML = `
+      <div style="border-left: 4px solid #16a34a; padding-left: 8px;">
+        <strong style="color: #16a34a;">◉ FRONT INSPECTION = ${frontVal}</strong><br>
+        <span>Inspected front transport without modifying FIFO queue order. | O(1)</span>
+      </div>
+    `;
+    setTimeout(() => {
+      if (firstEl) firstEl.style.boxShadow = 'none';
+      hulkActor.style.left = '60px';
+      hulkIsBusy = false;
+    }, 800);
+  }, 400);
+});
+
+// RESET
+document.getElementById('hulk-btn-reset')?.addEventListener('click', () => {
+  retroAudio.playClick();
+  hulkItems = [10, 20, 30];
+  hulkOps = 0;
+  hulkPipe.innerHTML = `
+    <div class="hulk-q-item" style="background: #16a34a; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000;">[ 10 ]<br><small style="color:#facc15;">FRONT</small></div>
+    <div class="hulk-q-item" style="background: #15803d; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000;">[ 20 ]</div>
+    <div class="hulk-q-item" style="background: #166534; color: #fff; font-family: var(--font-pixel); font-size: 0.65rem; padding: 10px 14px; border: 2px solid #000;">[ 30 ]<br><small style="color:#38bdf8;">REAR</small></div>
+  `;
+  updateHulkLabels();
+  hulkActor.style.left = '60px';
+  hulkCarried.style.display = 'none';
+  hulkDialogue.innerHTML = `💬 <strong>Hulk:</strong> "Queue reset to 3 transports. Ready for FIFO evacuation."`;
+  hulkIsBusy = false;
+});
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+/* ==========================================================================
+   ALGO-VENGERS — DESIGN TOKENS & SYSTEM VARIABLES
+   Design and Analysis of Algorithms (DAA) Learning Platform
+   ========================================================================== */
+
+:root {
+  /* Brand & Theme Colors */
+  --bg-dark-primary: #080a14;
+  --bg-dark-secondary: #0e1224;
+  --bg-dark-tertiary: #141b33;
+  --bg-dark-elevated: #1a223f;
+  --bg-card: rgba(16, 22, 45, 0.88);
+  --bg-card-hover: rgba(26, 36, 72, 0.95);
+
+  /* Terminal & Accent Colors */
+  --color-gold: #f5b722;
+  --color-gold-glow: rgba(245, 183, 34, 0.45);
+  --color-cyan: #00f0ff;
+  --color-cyan-glow: rgba(0, 240, 255, 0.45);
+  --color-red: #ff3344;
+  --color-red-glow: rgba(255, 51, 68, 0.45);
+  --color-green: #2ecc71;
+  --color-green-glow: rgba(46, 204, 113, 0.45);
+  --color-purple: #9b59b6;
+  --color-purple-glow: rgba(155, 89, 182, 0.45);
+  --color-blue: #3498db;
+  --color-blue-glow: rgba(52, 152, 219, 0.45);
+
+  /* Avenger Specific Accents */
+  --avenger-ironman: #ff3838;
+  --avenger-ironman-accent: #f5b722;
+  --avenger-captain: #1e90ff;
+  --avenger-captain-accent: #ffffff;
+  --avenger-thor: #00d2d3;
+  --avenger-thor-accent: #ffd32a;
+  --avenger-hulk: #10ac84;
+  --avenger-hulk-accent: #5f27cd;
+  --avenger-widow: #ff5252;
+  --avenger-widow-accent: #222f3e;
+  --avenger-hawkeye: #8854d0;
+  --avenger-hawkeye-accent: #ff9f43;
+  --avenger-spiderman: #eb4d4b;
+  --avenger-spiderman-accent: #3867d6;
+
+  /* Typography */
+  --font-pixel: 'Press Start 2P', 'Silkscreen', monospace;
+  --font-pixel-sub: 'Silkscreen', 'Chakra Petch', monospace;
+  --font-hud: 'Chakra Petch', 'Orbitron', monospace;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* Text Colors */
+  --text-main: #f0f4fc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --text-highlight: #ffffff;
+
+  /* Pixel Border Sizing & Stepping */
+  --pixel-border-width: 4px;
+  --pixel-shadow-sm: 0 4px 0 #000000;
+  --pixel-shadow-md: 0 6px 0 #000000;
+  --pixel-shadow-lg: 0 8px 0 #000000;
+  
+  /* Transitions */
+  --trans-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --trans-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --trans-bounce: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Layout */
+  --nav-height: 72px;
+  --container-max: 1240px;
+  --section-pad: 100px 24px;
+}

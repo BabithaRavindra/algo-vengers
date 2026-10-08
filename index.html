@@ -1,0 +1,2984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALGO-VENGERS — Earth's Mightiest Algorithms | DAA Learning Platform</title>
+  
+  <meta name="description" content="A pixelated Avengers-inspired interactive educational website for Design and Analysis of Algorithms (DAA). Light theme, custom pixel cursors, and 5 syllabus missions.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Google Fonts: Pixel + HUD + Clean Academic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- ========================================================================
+       EMBEDDED STYLESHEET (LIGHT THEME + PIXEL RETRO + SECTIONS + CURSORS)
+       ======================================================================== -->
+  <style>
+    /* --- CSS RESET & ROOT VARIABLES --- */
+    :root {
+      /* Light Command-Center Palette */
+      --bg-main: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f1f5f9;
+      --bg-subtle: #e2e8f0;
+      --bg-card: #ffffff;
+      --border-dark: #0f172a;
+      --border-dark-rgb: 15, 23, 42;
+
+      /* Typography Colors */
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+      --text-highlight: #020617;
+
+      /* Avengers Accent Colors */
+      --avenger-ironman: #dc2626;
+      --avenger-ironman-accent: #f59e0b;
+      --avenger-captain: #2563eb;
+      --avenger-captain-accent: #ef4444;
+      --avenger-thor: #0284c7;
+      --avenger-thor-accent: #eab308;
+      --avenger-hulk: #16a34a;
+      --avenger-hulk-accent: #7c3aed;
+      --avenger-widow: #e11d48;
+      --avenger-widow-accent: #1e293b;
+      --avenger-hawkeye: #9333ea;
+      --avenger-hawkeye-accent: #d97706;
+      --avenger-spiderman: #ef4444;
+      --avenger-spiderman-accent: #2563eb;
+
+      /* Generic Accents */
+      --color-gold: #d97706;
+      --color-cyan: #0284c7;
+      --color-green: #16a34a;
+      --color-red: #dc2626;
+
+      /* Fonts */
+      --font-pixel: 'Press Start 2P', 'Silkscreen', monospace;
+      --font-pixel-sub: 'Silkscreen', 'Chakra Petch', monospace;
+      --font-hud: 'Chakra Petch', 'Orbitron', monospace;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-code: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+      /* Layout */
+      --nav-height: 72px;
+      --container-max: 1240px;
+      --section-pad: 90px 24px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      line-height: 1.6;
+      background-color: var(--bg-main);
+    }
+
+    /* Subtle Technical Blueprint Grid on Light Background */
+    .cyber-grid-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ambient Canvas for Floating Digital Sparks */
+    #fx-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Light Theme CRT Scanline Overlay */
+    .crt-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9998;
+      background: linear-gradient(
+        rgba(15, 23, 42, 0) 50%, 
+        rgba(15, 23, 42, 0.04) 50%
+      );
+      background-size: 100% 4px;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    body.crt-disabled .crt-overlay {
+      display: none !important;
+    }
+
+    /* Pixelated Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background: #e2e8f0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border: 2px solid var(--border-dark);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-cyan);
+    }
+
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- TYPOGRAPHY HELPERS --- */
+    .pixel-heading {
+      font-family: var(--font-pixel);
+      letter-spacing: 1px;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .pixel-subheading {
+      font-family: var(--font-pixel-sub);
+      letter-spacing: 0.5px;
+      line-height: 1.5;
+    }
+
+    .hud-font {
+      font-family: var(--font-hud);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* --- PIXEL CARDS & BOXES (THICK BLACK OUTLINES) --- */
+    .pixel-box {
+      background: var(--bg-card);
+      border: 3px solid var(--border-dark);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 6px 0 0 var(--border-dark);
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .pixel-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 8px 0 0 var(--border-dark);
+    }
+
+    /* --- PIXEL BUTTONS (TACTILE 8-BIT PRESS) --- */
+    .pixel-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 22px;
+      font-family: var(--font-pixel);
+      font-size: 0.76rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 3px solid var(--border-dark);
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 5px 0 0 var(--border-dark);
+    }
+
+    .pixel-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 7px 0 0 var(--border-dark);
+    }
+
+    .pixel-btn:active {
+      transform: translateY(3px);
+      box-shadow: 
+        -3px 0 0 0 var(--border-dark),
+        3px 0 0 0 var(--border-dark),
+        0 -3px 0 0 var(--border-dark),
+        0 3px 0 0 var(--border-dark),
+        0 2px 0 0 var(--border-dark);
+    }
+
+    .pixel-btn-primary {
+      background: #facc15;
+      color: #0f172a;
+      font-weight: bold;
+    }
+    .pixel-btn-primary:hover {
+      background: #fde047;
+    }
+
+    .pixel-btn-secondary {
+      background: #ffffff;
+      color: var(--color-cyan);
+    }
+    .pixel-btn-secondary:hover {
+      background: #f0f9ff;
+    }
+
+    .pixel-btn-sm {
+      padding: 8px 14px;
+      font-size: 0.65rem;
+    }
+
+    /* --- SPEECH BUBBLES --- */
+    .pixel-speech-bubble {
+      position: relative;
+      background: #ffffff;
+      border: 3px solid var(--border-dark);
+      padding: 14px 18px;
+      color: var(--text-main);
+      font-family: var(--font-pixel-sub);
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 
+        -2px 0 0 0 var(--border-dark),
+        2px 0 0 0 var(--border-dark),
+        0 -2px 0 0 var(--border-dark),
+        0 2px 0 0 var(--border-dark),
+        0 5px 0 0 var(--border-dark);
+      max-width: 320px;
+      animation: floatBubble 4s ease-in-out infinite alternate;
+      margin-bottom: 14px;
+    }
+
+    .pixel-speech-bubble::before {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: #ffffff;
+      border-left: 3px solid var(--border-dark);
+      border-bottom: 3px solid var(--border-dark);
+      transform: rotate(-45deg);
+      bottom: -8px;
+      left: 28px;
+    }
+
+    @keyframes floatBubble {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-5px); }
+    }
+
+    /* --- HUD TAG & STATUS LED --- */
+    .hud-status-led {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      background-color: var(--color-green);
+      box-shadow: 0 0 6px var(--color-green);
+      animation: ledPulse 1.8s infinite;
+      vertical-align: middle;
+      border-radius: 50%;
+    }
+
+    @keyframes ledPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.9); }
+    }
+
+    .character-hud-tag {
+      margin-top: 12px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 5px 12px;
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      color: var(--text-main);
+      box-shadow: 0 3px 0 var(--border-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .character-hud-tag span {
+      color: var(--avenger-ironman);
+      font-weight: bold;
+    }
+
+    /* --- SECTION HEADERS --- */
+    .section-header {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      box-shadow: 0 3px 0 var(--border-dark);
+      font-family: var(--font-pixel);
+      font-size: 0.68rem;
+      color: var(--color-cyan);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      font-weight: bold;
+    }
+
+    .section-title {
+      font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+      color: var(--text-highlight);
+      margin-bottom: 14px;
+      text-shadow: 1px 1px 0 #cbd5e1;
+    }
+
+    .section-subtitle {
+      font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 660px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ========================================================================
+       STICKY PIXEL NAVIGATION BAR
+       ======================================================================== */
+    .pixel-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--border-dark);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      transition: all 0.25s ease;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: #facc15;
+      border: 2px solid var(--border-dark);
+      box-shadow: 0 3px 0 var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--border-dark);
+    }
+
+    .brand-text {
+      font-family: var(--font-pixel);
+      font-size: 1.05rem;
+      color: var(--border-dark);
+      letter-spacing: 1px;
+    }
+
+    .brand-text span {
+      color: var(--avenger-ironman);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--border-dark);
+      border-bottom-color: var(--border-dark);
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hq-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 4px 10px;
+      font-family: var(--font-pixel);
+      font-size: 0.6rem;
+      color: var(--color-green);
+      box-shadow: 0 2px 0 var(--border-dark);
+      font-weight: bold;
+    }
+
+    .nav-toggle-btn {
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      color: var(--text-main);
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      padding: 5px 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 0 var(--border-dark);
+      transition: all 0.15s ease;
+    }
+
+    .nav-toggle-btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+    }
+
+    .nav-toggle-btn.active {
+      background: #fef08a;
+      border-color: var(--border-dark);
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 6px 10px;
+      color: var(--border-dark);
+      font-family: var(--font-pixel);
+      font-size: 0.72rem;
+      cursor: pointer;
+      box-shadow: 0 2px 0 var(--border-dark);
+    }
+
+    /* ========================================================================
+       CHARACTER STAGES & PIXEL SPRITE CONTAINERS
+       ======================================================================== */
+    .character-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .character-stage.stage-right {
+      align-items: flex-end;
+    }
+
+    .character-stage.stage-left {
+      align-items: flex-start;
+    }
+
+    .pixel-sprite-container {
+      position: relative;
+      width: 250px;
+      height: 290px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .character-aura {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      filter: blur(24px);
+      opacity: 0.2;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .pixel-sprite {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 8px 12px rgba(15, 23, 42, 0.2));
+    }
+
+    .pixel-sprite img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .pixel-sprite svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Idle character animations */
+    .ironman-sprite {
+      animation: ironmanHover 3.5s ease-in-out infinite;
+    }
+    @keyframes ironmanHover {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .captain-sprite {
+      animation: captainIdle 3.8s ease-in-out infinite;
+    }
+    @keyframes captainIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .thor-sprite {
+      animation: thorIdle 3.6s ease-in-out infinite;
+    }
+    @keyframes thorIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .hulk-sprite {
+      animation: hulkBreathe 2.8s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    @keyframes hulkBreathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03, 1.02); }
+    }
+
+    .widow-sprite {
+      animation: widowIdle 3.4s ease-in-out infinite;
+    }
+    @keyframes widowIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .hawkeye-sprite {
+      animation: hawkeyeIdle 3.2s ease-in-out infinite;
+    }
+    @keyframes hawkeyeIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .spiderman-swing-wrapper {
+      transform-origin: top center;
+      animation: spideySwing 3.5s ease-in-out infinite alternate;
+    }
+    @keyframes spideySwing {
+      0% { transform: rotate(-8deg); }
+      100% { transform: rotate(8deg); }
+    }
+
+    /* Aura themes */
+    .ironman-stage .character-aura { background: #ef4444; }
+    .captain-stage .character-aura { background: #3b82f6; }
+    .thor-stage .character-aura { background: #0284c7; }
+    .hulk-stage .character-aura { background: #22c55e; }
+    .widow-stage .character-aura { background: #e11d48; }
+    .hawkeye-stage .character-aura { background: #a855f7; }
+    .spiderman-stage .character-aura { background: #ef4444; }
+
+    /* ========================================================================
+       7 HOMEPAGE SECTIONS
+       ======================================================================== */
+    .homepage-section {
+      padding: var(--section-pad);
+      position: relative;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    /* 01. HERO */
+    .section-hero {
+      min-height: calc(100vh - var(--nav-height));
+      margin-top: var(--nav-height);
+      display: flex;
+      align-items: center;
+      background: radial-gradient(circle at 80% 30%, rgba(220, 38, 38, 0.05) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .hero-hud-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .hero-hud-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 5px 12px;
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--text-main);
+      box-shadow: 0 2px 0 var(--border-dark);
+      font-weight: bold;
+    }
+
+    .hero-hud-chip.active {
+      background: #fef08a;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 5vw, 3.8rem);
+      line-height: 1.15;
+      color: var(--text-highlight);
+      margin-bottom: 12px;
+    }
+
+    .hero-title span {
+      color: var(--avenger-ironman);
+      display: block;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-pixel-sub);
+      font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+      color: var(--color-cyan);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 1.3vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 26px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* 02. WHAT IS DAA */
+    .section-what-is-daa {
+      background: radial-gradient(circle at 15% 50%, rgba(37, 99, 235, 0.05) 0%, transparent 60%);
+    }
+
+    .daa-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .daa-core-definition {
+      padding: 22px 24px;
+      margin-bottom: 26px;
+    }
+
+    .daa-def-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      border-left: 4px solid var(--color-gold);
+      padding-left: 14px;
+      margin-bottom: 10px;
+    }
+
+    .daa-questions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .daa-question-item {
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 3px 0 var(--border-dark);
+    }
+
+    .question-num {
+      font-family: var(--font-pixel);
+      font-size: 0.65rem;
+      color: #ffffff;
+      background: var(--avenger-captain);
+      padding: 3px 6px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .question-text {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Pipeline Steps */
+    .daa-flow-title {
+      font-family: var(--font-pixel);
+      font-size: 0.7rem;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .daa-flow-steps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .daa-flow-step {
+      flex: 1;
+      min-width: 120px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 10px 8px;
+      text-align: center;
+      box-shadow: 0 3px 0 var(--border-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .daa-flow-step:hover,
+    .daa-flow-step.active {
+      background: #dbeafe;
+      border-color: var(--avenger-captain);
+      transform: translateY(-2px);
+    }
+
+    .step-label {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .step-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .flow-arrow {
+      color: var(--color-gold);
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    /* 03. MISSIONS */
+    .section-missions {
+      background: radial-gradient(circle at 80% 40%, rgba(2, 132, 199, 0.05) 0%, transparent 60%);
+    }
+
+    .missions-layout {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .missions-cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .mission-card {
+      background: #ffffff;
+      border: 3px solid var(--border-dark);
+      padding: 20px 24px;
+      box-shadow: 0 4px 0 var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .mission-card:hover {
+      transform: translateX(6px);
+      box-shadow: 0 6px 0 var(--border-dark);
+      background: #f0f9ff;
+    }
+
+    .mission-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .mission-code {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--avenger-thor);
+      font-weight: bold;
+    }
+
+    .mission-topics-count {
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .mission-name {
+      font-size: 1.2rem;
+      color: var(--text-highlight);
+      margin-bottom: 8px;
+    }
+
+    .mission-topics-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mission-topic-chip {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 2px 8px;
+      font-weight: 500;
+    }
+
+    /* 04. ARSENAL */
+    .section-arsenal {
+      background: radial-gradient(circle at 20% 40%, rgba(22, 163, 74, 0.05) 0%, transparent 60%);
+    }
+
+    .arsenal-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .arsenal-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .arsenal-card {
+      background: #ffffff;
+      padding: 22px;
+      cursor: pointer;
+    }
+
+    .arsenal-card:hover {
+      background: #f0fdf4;
+      border-color: var(--avenger-hulk);
+    }
+
+    .arsenal-card-icon {
+      width: 40px;
+      height: 40px;
+      background: #dcfce7;
+      border: 2px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 0 var(--border-dark);
+    }
+
+    .arsenal-card-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--avenger-hulk);
+    }
+
+    .arsenal-card-title {
+      font-family: var(--font-pixel);
+      font-size: 0.8rem;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .arsenal-card-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .arsenal-tag {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    .arsenal-tag::before {
+      content: '▸';
+      color: var(--avenger-hulk);
+      font-weight: bold;
+    }
+
+    /* 05. HOW WE LEARN */
+    .section-how-we-learn {
+      background: radial-gradient(circle at 80% 50%, rgba(225, 29, 72, 0.05) 0%, transparent 60%);
+    }
+
+    .learning-layout {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .learning-steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .learning-step-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 16px 20px;
+      box-shadow: 0 4px 0 var(--border-dark);
+      transition: all 0.15s ease;
+    }
+
+    .learning-step-card:hover {
+      background: #fff1f2;
+      border-color: var(--avenger-widow);
+      transform: translateX(4px);
+    }
+
+    .step-num-badge {
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
+      color: #ffffff;
+      background: var(--avenger-widow);
+      border: 2px solid var(--border-dark);
+      padding: 6px 10px;
+      box-shadow: 0 2px 0 var(--border-dark);
+    }
+
+    .step-content-body h4 {
+      font-family: var(--font-pixel);
+      font-size: 0.75rem;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .step-content-body p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .learning-pipeline-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border: 2px solid var(--border-dark);
+      padding: 12px 18px;
+      margin-top: 8px;
+      box-shadow: 0 3px 0 var(--border-dark);
+    }
+
+    .pipeline-node {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--text-main);
+      font-weight: bold;
+    }
+
+    .pipeline-connector {
+      color: var(--avenger-widow);
+      font-weight: bold;
+    }
+
+    /* 06. CHOOSE YOUR HERO */
+    .section-choose-hero {
+      background: radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.05) 0%, transparent 60%);
+    }
+
+    .choose-hero-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .algorithm-match-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .algo-hero-card {
+      background: #ffffff;
+      padding: 20px;
+      cursor: pointer;
+    }
+
+    .algo-hero-card:hover {
+      background: #faf5ff;
+      border-color: var(--avenger-hawkeye);
+    }
+
+    .algo-hero-name {
+      font-family: var(--font-pixel);
+      font-size: 0.78rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .algo-complexity-badge {
+      font-family: var(--font-code);
+      font-size: 0.72rem;
+      color: var(--avenger-hawkeye);
+      background: #f3e8ff;
+      padding: 2px 6px;
+      border: 1px solid var(--border-dark);
+      font-weight: bold;
+    }
+
+    .algo-hero-slogan {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .algo-quote-box {
+      background: #f8fafc;
+      border-left: 3px solid var(--avenger-hawkeye);
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      font-style: italic;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* 07. FINAL CTA */
+    .section-final-cta {
+      background: radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.05) 0%, transparent 70%);
+      padding-bottom: 60px;
+    }
+
+    .cta-banner-card {
+      background: #ffffff;
+      padding: 50px 40px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .cta-banner-content h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      color: var(--text-highlight);
+      margin-bottom: 14px;
+    }
+
+    .cta-banner-content p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 26px;
+    }
+
+    .cta-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      background: #ffffff;
+      border-top: 3px solid var(--border-dark);
+      padding: 36px 24px 28px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .footer-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 20px;
+    }
+
+    .footer-brand {
+      font-family: var(--font-pixel);
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .footer-academic-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-badge {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: var(--text-main);
+      background: #f1f5f9;
+      border: 1px solid var(--border-dark);
+      padding: 4px 8px;
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ========================================================================
+       MODAL DIALOG (LIGHT THEME)
+       ======================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-dialog {
+      background: #ffffff;
+      border: 3px solid var(--border-dark);
+      box-shadow: 
+        -4px 0 0 0 var(--border-dark),
+        4px 0 0 0 var(--border-dark),
+        0 -4px 0 0 var(--border-dark),
+        0 4px 0 0 var(--border-dark),
+        0 12px 30px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 660px;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(15px);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-backdrop.active .modal-dialog {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      background: #f8fafc;
+      border-bottom: 2px solid var(--border-dark);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-badge {
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
+      color: #ffffff;
+      background: var(--border-dark);
+      padding: 3px 6px;
+    }
+
+    .modal-title {
+      font-family: var(--font-pixel);
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: 2px solid var(--avenger-ironman);
+      color: var(--avenger-ironman);
+      font-family: var(--font-pixel);
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--avenger-ironman);
+      color: #ffffff;
+    }
+
+    .modal-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .modal-topic-item {
+      background: #f8fafc;
+      border: 2px solid var(--border-dark);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .topic-item-title {
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 0.88rem;
+    }
+
+    .topic-item-meta {
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      color: var(--color-cyan);
+      background: #ffffff;
+      padding: 2px 6px;
+      border: 1px solid var(--border-dark);
+      font-weight: bold;
+    }
+
+    .modal-notice-box {
+      background: #fffbeb;
+      border-left: 3px solid var(--color-gold);
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      color: #78350f;
+    }
+
+    .modal-footer {
+      background: #f8fafc;
+      border-top: 2px solid var(--border-dark);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* ========================================================================
+       RESPONSIVE MEDIA QUERIES
+       ======================================================================== */
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .daa-grid,
+      .missions-layout,
+      .arsenal-layout,
+      .learning-layout,
+      .choose-hero-layout,
+      .cta-banner-card {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .character-stage {
+        order: -1;
+        align-items: center !important;
+      }
+      .missions-layout .character-stage,
+      .learning-layout .character-stage {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: block;
+      }
+      .nav-menu {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        border-bottom: 3px solid var(--border-dark);
+        flex-direction: column;
+        padding: 20px;
+        gap: 14px;
+        transform: translateY(-150%);
+        transition: transform 0.25s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+      .nav-menu.open {
+        transform: translateY(0);
+      }
+      .nav-controls .hq-status-pill {
+        display: none;
+      }
+      .arsenal-cards-grid,
+      .algorithm-match-grid {
+        grid-template-columns: 1fr;
+      }
+      .mission-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .daa-flow-steps {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .flow-arrow {
+        text-align: center;
+        transform: rotate(90deg);
+      }
+    }
+  
+    /* Pixelated retro mouse pointer */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%230f172a' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), auto !important;
+    }
+    
+    /* Suppress browser pointer on interactive items for custom hero cursor */
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .reading-progress-track, [role="button"], [data-hero-cursor] {
+      cursor: none !important;
+    }
+
+    /* Floating Reading Progress Pill */
+    .reading-progress-pill {
+      position: fixed; top: 82px; right: 24px; z-index: 999;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px);
+      border: 3px solid var(--border-dark, #0f172a); border-radius: 999px;
+      padding: 6px 14px 6px 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15), 0 3px 0 var(--border-dark, #0f172a);
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .reading-progress-info { display: flex; flex-direction: column; min-width: 75px; }
+    .reading-progress-label { font-family: var(--font-pixel, monospace); font-size: 0.48rem; color: #64748b; letter-spacing: 0.5px; }
+    .reading-progress-pct { font-family: var(--font-pixel, monospace); font-size: 0.68rem; color: #0f172a; font-weight: bold; }
+    .reading-progress-track {
+      width: 140px; height: 12px; background: #e2e8f0; border: 2px solid var(--border-dark, #0f172a);
+      border-radius: 999px; position: relative; overflow: visible; cursor: pointer;
+    }
+    .reading-progress-bar { height: 100%; width: 0%; border-radius: 999px; transition: width 0.08s ease-out; }
+    .reading-hero-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 24px; height: 24px; pointer-events: none;
+      transition: left 0.08s ease-out, transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .reading-hero-icon { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+
+    /* Direct Hero Cursor Icon */
+    
+
+  
+    /* Persistent Top Reading Progress Bar */
+    #global-top-progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: 32px;
+      background: #0f172a; border-bottom: 2px solid #000; z-index: 10002;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .top-progress-hero-badge { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .top-hero-symbol-box {
+      width: 22px; height: 22px; background: #fee2e2; color: #dc2626;
+      border: 1.5px solid #dc2626; font-family: 'Press Start 2P', monospace; font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 2px;
+    }
+    .top-hero-title { font-family: 'Press Start 2P', monospace; font-size: 0.58rem; color: #f8fafc; letter-spacing: 0.5px; }
+    .top-progress-track-wrapper {
+      flex: 1; max-width: 650px; margin: 0 20px; height: 10px; background: #1e293b;
+      border: 1.5px solid #475569; border-radius: 999px; position: relative; cursor: pointer;
+    }
+    .top-progress-fill-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #dc2626, #eab308, #2563eb); border-radius: 999px;
+      transition: width 0.08s ease-out;
+    }
+    .top-progress-slider-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; background: #0f172a; border: 2px solid #dc2626;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #dc2626;
+      box-shadow: 0 0 10px #dc2626; pointer-events: none; transition: left 0.08s ease-out;
+    }
+    .top-progress-percent-readout {
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #facc15; min-width: 50px; text-align: right; flex-shrink: 0;
+    }
+    .pixel-navbar { top: 32px !important; }
+    main { padding-top: calc(var(--nav-height, 72px) + 32px + 24px) !important; }
+    
+
+  
+    /* ========================================================================
+       NATIVE CSS HARDWARE-ACCELERATED HERO EMBLEM CURSORS (ZERO TRAILING)
+       ======================================================================== */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Cpath%20fill%3D%22%230f172a%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.5%22%20d%3D%22M2%202v18l5-5%204%208%203-1.5-4-8h6L2%202z%22/%3E%20%3C/svg%3E") 0 0, auto !important;
+    }
+
+    /* General interactive elements: S.H.I.E.L.D. Division Emblem */
+    a, button, .pixel-btn, .topic-card, .mission-card, .arsenal-card, .algo-hero-card, input, select, label, .reading-progress-track, .top-progress-track-wrapper, [role="button"] {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%230f172a%22%20stroke%3D%22%230284c7%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2023%2C14%2020%2C24%2016%2C22%2012%2C24%209%2C14%22%20fill%3D%22%230284c7%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221%22/%3E%20%3Cpolygon%20points%3D%2216%2C11%2020%2C15%2016%2C19%2012%2C15%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Homepage Mission Cards */
+    [data-access-mission="mission-01"], [data-access-mission="mission-01"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23dc2626%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2211%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%228%22%20fill%3D%22%23dc2626%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%232563eb%22/%3E%20%3Cpolygon%20points%3D%2216%2C12%2017.5%2C15.5%2021%2C15.5%2018%2C17.5%2019.5%2C21%2016%2C18.8%2012.5%2C21%2014%2C17.5%2011%2C15.5%2014.5%2C15.5%22%20fill%3D%22%23ffffff%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-access-mission="mission-02"], [data-access-mission="mission-02"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%2315803d%22%20stroke%3D%22%23581c87%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%2211%22%20width%3D%2214%22%20height%3D%2213%22%20rx%3D%222%22%20fill%3D%22%2322c55e%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%228%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2213.5%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2217%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2220%22%20y%3D%229%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%2221%22%20width%3D%2212%22%20height%3D%223%22%20fill%3D%22%23581c87%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-access-mission="mission-03"], [data-access-mission="mission-03"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23991b1b%22%20stroke%3D%22%23facc15%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%230f172a%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%2338bdf8%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2018%2C13%2014%2C13%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2216%2C24%2014%2C19%2018%2C19%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%228%2C16%2013%2C14%2013%2C18%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2224%2C16%2019%2C18%2019%2C14%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-access-mission="mission-04"], [data-access-mission="mission-04"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%231e293b%22%20stroke%3D%22%23ca8a04%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%228%22%20width%3D%2214%22%20height%3D%229%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2211%22%20y%3D%2210%22%20width%3D%2210%22%20height%3D%222%22%20fill%3D%22%23f8fafc%22/%3E%20%3Crect%20x%3D%2214%22%20y%3D%2217%22%20width%3D%224%22%20height%3D%229%22%20fill%3D%22%2378350f%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Cpath%20d%3D%22M16%209%20L14%2013%20L17%2013%20L15%2017%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-access-mission="mission-05"], [data-access-mission="mission-05"] * {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%230f172a%22%20stroke%3D%22%23e11d48%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2210%2C9%2022%2C9%2016%2C16%22%20fill%3D%22%23dc2626%22/%3E%20%3Cpolygon%20points%3D%2216%2C16%2022%2C23%2010%2C23%22%20fill%3D%22%23dc2626%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%221.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    /* Hero Themed Sections */
+    [data-hero-cursor="ironman"] a, [data-hero-cursor="ironman"] button, [data-hero-cursor="ironman"] .pixel-btn, [data-hero-cursor="ironman"] .arsenal-card, [data-hero-cursor="ironman"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23991b1b%22%20stroke%3D%22%23facc15%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%230f172a%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%2338bdf8%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2018%2C13%2014%2C13%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2216%2C24%2014%2C19%2018%2C19%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%228%2C16%2013%2C14%2013%2C18%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2224%2C16%2019%2C18%2019%2C14%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-hero-cursor="captain"] a, [data-hero-cursor="captain"] button, [data-hero-cursor="captain"] .pixel-btn, [data-hero-cursor="captain"] .mission-card, [data-hero-cursor="captain"] .arsenal-card, [data-hero-cursor="captain"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23dc2626%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2211%22%20fill%3D%22%23ffffff%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%228%22%20fill%3D%22%23dc2626%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%232563eb%22/%3E%20%3Cpolygon%20points%3D%2216%2C12%2017.5%2C15.5%2021%2C15.5%2018%2C17.5%2019.5%2C21%2016%2C18.8%2012.5%2C21%2014%2C17.5%2011%2C15.5%2014.5%2C15.5%22%20fill%3D%22%23ffffff%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-hero-cursor="thor"] a, [data-hero-cursor="thor"] button, [data-hero-cursor="thor"] .pixel-btn, [data-hero-cursor="thor"] .mission-card, [data-hero-cursor="thor"] .arsenal-card, [data-hero-cursor="thor"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%231e293b%22%20stroke%3D%22%23ca8a04%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%228%22%20width%3D%2214%22%20height%3D%229%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2211%22%20y%3D%2210%22%20width%3D%2210%22%20height%3D%222%22%20fill%3D%22%23f8fafc%22/%3E%20%3Crect%20x%3D%2214%22%20y%3D%2217%22%20width%3D%224%22%20height%3D%229%22%20fill%3D%22%2378350f%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Cpath%20d%3D%22M16%209%20L14%2013%20L17%2013%20L15%2017%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-hero-cursor="hulk"] a, [data-hero-cursor="hulk"] button, [data-hero-cursor="hulk"] .pixel-btn, [data-hero-cursor="hulk"] .mission-card, [data-hero-cursor="hulk"] .arsenal-card, [data-hero-cursor="hulk"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%2315803d%22%20stroke%3D%22%23581c87%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%229%22%20y%3D%2211%22%20width%3D%2214%22%20height%3D%2213%22%20rx%3D%222%22%20fill%3D%22%2322c55e%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%228%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2213.5%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2217%22%20y%3D%227%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2220%22%20y%3D%229%22%20width%3D%223%22%20height%3D%224%22%20fill%3D%22%2316a34a%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%2221%22%20width%3D%2212%22%20height%3D%223%22%20fill%3D%22%23581c87%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-hero-cursor="widow"] a, [data-hero-cursor="widow"] button, [data-hero-cursor="widow"] .pixel-btn, [data-hero-cursor="widow"] .mission-card, [data-hero-cursor="widow"] .arsenal-card, [data-hero-cursor="widow"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%230f172a%22%20stroke%3D%22%23e11d48%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2210%2C9%2022%2C9%2016%2C16%22%20fill%3D%22%23dc2626%22/%3E%20%3Cpolygon%20points%3D%2216%2C16%2022%2C23%2010%2C23%22%20fill%3D%22%23dc2626%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%221.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-hero-cursor="hawkeye"] a, [data-hero-cursor="hawkeye"] button, [data-hero-cursor="hawkeye"] .pixel-btn, [data-hero-cursor="hawkeye"] .mission-card, [data-hero-cursor="hawkeye"] .arsenal-card, [data-hero-cursor="hawkeye"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%237c3aed%22%20stroke%3D%22%23d97706%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%23ffffff%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%226%22%20fill%3D%22%237c3aed%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%223%22%20fill%3D%22%23facc15%22/%3E%20%3Cline%20x1%3D%226%22%20y1%3D%2226%22%20x2%3D%2226%22%20y2%3D%226%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2226%2C6%2021%2C8%2024%2C11%22%20fill%3D%22%230f172a%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+    [data-hero-cursor="spiderman"] a, [data-hero-cursor="spiderman"] button, [data-hero-cursor="spiderman"] .pixel-btn, [data-hero-cursor="spiderman"] .mission-card, [data-hero-cursor="spiderman"] .arsenal-card, [data-hero-cursor="spiderman"] .algo-hero-card {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23dc2626%22%20stroke%3D%22%232563eb%22%20stroke-width%3D%222%22/%3E%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%223%22%20ry%3D%225%22%20fill%3D%22%230f172a%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2212%22%20r%3D%222%22%20fill%3D%22%230f172a%22/%3E%20%3Cpath%20d%3D%22M16%2014%20Q10%2010%207%2014%20M16%2017%20Q9%2016%208%2020%20M16%2014%20Q22%2010%2025%2014%20M16%2017%20Q23%2016%2024%2020%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%20%3Cline%20x1%3D%2216%22%20y1%3D%222%22%20x2%3D%2216%22%20y2%3D%2210%22%20stroke%3D%22%23f8fafc%22%20stroke-width%3D%221%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Persistent Top Reading Progress Bar (User Directive 3 & 4) -->
+  <div id="global-top-progress">
+    <div class="top-progress-hero-badge">
+      <div class="top-hero-symbol-box">[★]</div>
+      <div class="top-hero-title">AVENGERS COMMAND CENTER</div>
+    </div>
+    <div class="top-progress-track-wrapper" id="global-progress-track" title="Click anywhere along the bar to jump">
+      <div class="top-progress-fill-bar" id="global-progress-fill"></div>
+      <div class="top-progress-slider-marker" id="global-progress-marker">★</div>
+    </div>
+    <div class="top-progress-percent-readout" id="global-progress-pct">0%</div>
+  </div>
+
+  
+
+
+  <!-- Background Cyber Grid & Floating Sparks -->
+  <div class="cyber-grid-bg" aria-hidden="true"></div>
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="crt-overlay" aria-hidden="true"></div>
+
+  <!-- Sticky Pixel Navigation -->
+  <header class="pixel-navbar" role="banner">
+    <div class="nav-container">
+      <a href="#hero" class="nav-brand" aria-label="Algo-Vengers Home">
+        <div class="brand-icon">
+          <!-- 8-bit Avengers Logo -->
+          <svg viewBox="0 0 24 24" shape-rendering="crispEdges">
+            <polygon points="12,2 8,20 11,20 12,14 16,14 17,20 20,20 15,2" fill="#0f172a"/>
+            <polygon points="12,6 10,12 14,12" fill="#facc15"/>
+          </svg>
+        </div>
+        <div class="brand-text">ALGO-<span>VENGERS</span></div>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu" role="navigation">
+        <a href="#hero" class="nav-link active">HOME</a>
+        <a href="#what-is-daa" class="nav-link">ABOUT DAA</a>
+        <a href="missions.html" class="nav-link">MISSIONS</a>
+        <a href="#arsenal" class="nav-link">ALGORITHM ARSENAL</a>
+        <a href="#how-we-learn" class="nav-link">LEARNING PATH</a>
+        <a href="#choose-hero" class="nav-link">TOPICS</a>
+      </nav>
+
+      <div class="nav-controls">
+        <div class="hq-status-pill">
+          <span class="hud-status-led"></span>
+          <span>HQ ONLINE</span>
+        </div>
+
+        <button type="button" class="nav-toggle-btn active" id="sfx-toggle-btn" title="Toggle Sound">
+          🔊 SFX: ON
+        </button>
+
+        <button type="button" class="nav-toggle-btn" id="crt-toggle-btn" title="Toggle Scanlines">
+          📺 CRT: ON
+        </button>
+
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle">
+          [☰] MENU
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Reading Progress Pill -->
+  
+
+
+  <main role="main">
+
+    <!-- ======================================================================
+         SECTION 01 — HERO (IRON MAN)
+         ====================================================================== -->
+    <section id="hero" class="homepage-section section-hero" data-hero-cursor="ironman">
+      <div class="container hero-grid">
+        
+        <div class="hero-content">
+          <div class="hero-hud-row">
+            <span class="hero-hud-chip active">
+              <span class="hud-status-led"></span> SYSTEM ONLINE
+            </span>
+            <span class="hero-hud-chip">ALGORITHM DATABASE: READY</span>
+            <span class="hero-hud-chip" id="hero-hud-time">STARDATE 10:05:59</span>
+          </div>
+
+          <h1 class="hero-title pixel-heading">
+            ALGO-VENGERS
+            <span>EARTH'S MIGHTIEST ALGORITHMS</span>
+          </h1>
+
+          <p class="hero-subtitle">
+            MISSION STATUS: ACTIVE // 20 TOPICS LOADED
+          </p>
+
+          <p class="hero-desc">
+            When problems become complex, ordinary solutions aren't enough. Assemble the algorithms.
+            Master algorithmic complexity, data structures, and computational paradigms through an interactive retro Avengers command center.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="missions.html" class="pixel-btn pixel-btn-primary">
+              ENTER THE HQ
+            </a>
+            <a href="missions.html" class="pixel-btn pixel-btn-secondary">
+              EXPLORE MISSIONS
+            </a>
+          </div>
+        </div>
+
+        <!-- IRON MAN CHIBI SPRITE (Matches Image 1 Reference) -->
+        <div class="character-stage stage-right ironman-stage">
+          <div class="pixel-speech-bubble">
+            "Jarvis, calculate worst-case asymptotic bounds for the entire team."
+          </div>
+
+          <div class="pixel-sprite-container">
+            <div class="character-aura"></div>
+            <div class="pixel-sprite ironman-sprite"><img src="assets/ironman.png" alt="Iron Man"></div></div>
+
+          <div class="character-hud-tag">
+            <span>IRON MAN</span> // CHIEF ARCHITECT
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 02 — WHAT IS DAA? (CAPTAIN AMERICA)
+         ====================================================================== -->
+    <section id="what-is-daa" class="homepage-section section-what-is-daa" data-hero-cursor="captain">
+      <div class="container section-header">
+        <div class="section-tag">MISSION BRIEFING 00</div>
+        <h2 class="section-title pixel-heading">SO... WHAT ARE ALGORITHMS?</h2>
+        <p class="section-subtitle">
+          Design and Analysis of Algorithms is the science of constructing efficient procedures and proving their theoretical limits.
+        </p>
+      </div>
+
+      <div class="container daa-grid">
+        
+        <!-- CAPTAIN AMERICA CHIBI SPRITE (Matches Image 4 Reference) -->
+        <div class="character-stage stage-left captain-stage">
+          <div class="pixel-speech-bubble">
+            "Every great solution starts with a plan."
+          </div>
+
+          <div class="pixel-sprite-container">
+            <div class="character-aura"></div>
+            <div class="pixel-sprite captain-sprite"><img src="assets/captainamerica.png" alt="Captain America"></div></div>
+
+          <div class="character-hud-tag">
+            <span>CAPTAIN AMERICA</span> // STRATEGIC COMMAND
+          </div>
+        </div>
+
+        <!-- ACADEMIC CORE CONTENT -->
+        <div class="daa-content-block">
+          <div class="daa-core-definition pixel-box">
+            <p class="daa-def-text">
+              "An algorithm is a step-by-step procedure designed to solve a problem efficiently."
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">
+              In Computer Science, we do not merely write programs to obtain answers. We evaluate their resource scalability, proving correctness across all possible input permutations.
+            </p>
+          </div>
+
+          <!-- THE 5 QUESTIONS DAA ANSWERS -->
+          <div class="daa-questions-grid">
+            <div class="daa-question-item">
+              <span class="question-num">Q1</span>
+              <span class="question-text">How does the algorithm work?</span>
+            </div>
+            <div class="daa-question-item">
+              <span class="question-num">Q2</span>
+              <span class="question-text">How efficient is it?</span>
+            </div>
+            <div class="daa-question-item">
+              <span class="question-num">Q3</span>
+              <span class="question-text">How much time does it require?</span>
+            </div>
+            <div class="daa-question-item">
+              <span class="question-num">Q4</span>
+              <span class="question-text">How much memory does it use?</span>
+            </div>
+            <div class="daa-question-item">
+              <span class="question-num">Q5</span>
+              <span class="question-text">Can we solve the same problem better?</span>
+            </div>
+          </div>
+
+          <!-- VISUAL DAA PROCESS FLOW -->
+          <div class="daa-flow-container">
+            <div class="daa-flow-title">
+              <span>ALGORITHMIC PIPELINE (CLICK A STAGE TO INSPECT)</span>
+            </div>
+            <div class="daa-flow-steps">
+              <div class="daa-flow-step active" data-step="problem">
+                <div class="step-label">PROBLEM</div>
+                <div class="step-sub">Input / Output</div>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="daa-flow-step" data-step="design">
+                <div class="step-label">DESIGN</div>
+                <div class="step-sub">Paradigm</div>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="daa-flow-step" data-step="algorithm">
+                <div class="step-label">ALGORITHM</div>
+                <div class="step-sub">Pseudocode</div>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="daa-flow-step" data-step="analyze">
+                <div class="step-label">ANALYZE</div>
+                <div class="step-sub">Time / Space</div>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="daa-flow-step" data-step="solution">
+                <div class="step-label">EFFICIENT</div>
+                <div class="step-sub">Optimal Result</div>
+              </div>
+            </div>
+
+            <!-- Dynamic flow explainer box -->
+            <div class="pixel-box" id="flow-explanation-box" style="margin-top: 14px; padding: 14px 18px; font-size: 0.88rem;">
+              <strong style="color: var(--color-cyan); font-family: var(--font-pixel); font-size: 0.72rem; display: block; margin-bottom: 6px;">
+                STAGE 1: PROBLEM SPECIFICATION
+              </strong>
+              <span>Precisely define computational inputs, required outputs, boundary preconditions, and invariant constraints before writing any code.</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <a href="#missions" class="pixel-btn pixel-btn-primary" data-access-mission="mission-01">
+              START WITH THE BASICS
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 03 — THE ALGORITHM INITIATIVE (THOR)
+         ====================================================================== -->
+    <section id="missions" class="homepage-section section-missions" data-hero-cursor="thor">
+      <div class="container section-header">
+        <div class="section-tag">MISSION HUB OVERVIEW</div>
+        <h2 class="section-title pixel-heading">THE ALGORITHM INITIATIVE</h2>
+        <p class="section-subtitle">
+          Five missions. Twenty topics. One objective: Understand how algorithms think.
+        </p>
+        <div style="margin-top: 14px;">
+          <a href="missions.html" class="pixel-btn pixel-btn-sm pixel-btn-primary">
+            OPEN S.H.I.E.L.D. MISSION DIRECTORY ➜
+          </a>
+        </div>
+      </div>
+
+      <div class="container missions-layout">
+
+        <!-- THOR CHIBI SPRITE (Matching grid style) -->
+        <div class="character-stage stage-left thor-stage">
+          <div class="pixel-speech-bubble">
+            "I've got a mission for you."
+          </div>
+
+          <div class="pixel-sprite-container">
+            <div class="character-aura"></div>
+            <div class="pixel-sprite thor-sprite"><img src="assets/thor.png" alt="Thor"></div></div>
+
+          <div class="character-hud-tag">
+            <span>THOR ODINSON</span> // THUNDER TACTICIAN
+          </div>
+        </div>
+
+        <!-- 5 MISSION CARDS -->
+        <div class="missions-cards-grid">
+
+          <article class="mission-card" data-access-mission="mission-01">
+            <div>
+              <div class="mission-badge-row">
+                <span class="mission-code">MISSION 01</span>
+                <span class="mission-topics-count">3 TOPICS</span>
+              </div>
+              <h3 class="mission-name pixel-subheading">FOUNDATIONS</h3>
+              <div class="mission-topics-list">
+                <span class="mission-topic-chip">Space Complexity</span>
+                <span class="mission-topic-chip">Time Complexity</span>
+                <span class="mission-topic-chip">Asymptotic Notations</span>
+              </div>
+            </div>
+            <button type="button" class="pixel-btn pixel-btn-primary pixel-btn-sm" data-access-mission="mission-01">
+              ACCESS MISSION
+            </button>
+          </article>
+
+          <article class="mission-card" data-access-mission="mission-02">
+            <div>
+              <div class="mission-badge-row">
+                <span class="mission-code">MISSION 02</span>
+                <span class="mission-topics-count">5 TOPICS</span>
+              </div>
+              <h3 class="mission-name pixel-subheading">DATA STRUCTURES</h3>
+              <div class="mission-topics-list">
+                <span class="mission-topic-chip">Stacks</span>
+                <span class="mission-topic-chip">Queues</span>
+                <span class="mission-topic-chip">Trees</span>
+                <span class="mission-topic-chip">Dictionaries</span>
+                <span class="mission-topic-chip">Sets & Disjoint Sets</span>
+              </div>
+            </div>
+            <button type="button" class="pixel-btn pixel-btn-primary pixel-btn-sm" data-access-mission="mission-02">
+              ACCESS MISSION
+            </button>
+          </article>
+
+          <article class="mission-card" data-access-mission="mission-03">
+            <div>
+              <div class="mission-badge-row">
+                <span class="mission-code">MISSION 03</span>
+                <span class="mission-topics-count">4 TOPICS</span>
+              </div>
+              <h3 class="mission-name pixel-subheading">SEARCH & SORT</h3>
+              <div class="mission-topics-list">
+                <span class="mission-topic-chip">Maximum & Minimum</span>
+                <span class="mission-topic-chip">Binary Search</span>
+                <span class="mission-topic-chip">Merge Sort</span>
+                <span class="mission-topic-chip">Quick Sort</span>
+              </div>
+            </div>
+            <button type="button" class="pixel-btn pixel-btn-primary pixel-btn-sm" data-access-mission="mission-03">
+              ACCESS MISSION
+            </button>
+          </article>
+
+          <article class="mission-card" data-access-mission="mission-04">
+            <div>
+              <div class="mission-badge-row">
+                <span class="mission-code">MISSION 04</span>
+                <span class="mission-topics-count">5 TOPICS</span>
+              </div>
+              <h3 class="mission-name pixel-subheading">ADVANCED ALGORITHMS</h3>
+              <div class="mission-topics-list">
+                <span class="mission-topic-chip">Strassen's Matrix Mult</span>
+                <span class="mission-topic-chip">Fractional Knapsack</span>
+                <span class="mission-topic-chip">Minimum Cost Spanning Trees</span>
+                <span class="mission-topic-chip">Kruskal's & Prim's</span>
+                <span class="mission-topic-chip">Dijkstra's Algorithm</span>
+              </div>
+            </div>
+            <button type="button" class="pixel-btn pixel-btn-primary pixel-btn-sm" data-access-mission="mission-04">
+              ACCESS MISSION
+            </button>
+          </article>
+
+          <article class="mission-card" data-access-mission="mission-05">
+            <div>
+              <div class="mission-badge-row">
+                <span class="mission-code">MISSION 05</span>
+                <span class="mission-topics-count">2 TOPICS</span>
+              </div>
+              <h3 class="mission-name pixel-subheading">OPTIMIZATION</h3>
+              <div class="mission-topics-list">
+                <span class="mission-topic-chip">Traveling Salesman Problem</span>
+                <span class="mission-topic-chip">0/1 Knapsack Problem</span>
+              </div>
+            </div>
+            <button type="button" class="pixel-btn pixel-btn-primary pixel-btn-sm" data-access-mission="mission-05">
+              ACCESS MISSION
+            </button>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 04 — THE ALGORITHM ARSENAL (HULK)
+         ====================================================================== -->
+    <section id="arsenal" class="homepage-section section-arsenal" data-hero-cursor="hulk">
+      <div class="container section-header">
+        <div class="section-tag">PARADIGM WEAPONS VAULT</div>
+        <h2 class="section-title pixel-heading">THE ALGORITHM ARSENAL</h2>
+        <p class="section-subtitle">
+          Different problems. Different strategies. Choose your weapon wisely.
+        </p>
+      </div>
+
+      <div class="container arsenal-layout">
+
+        <!-- 4 ARSENAL / PARADIGM CARDS -->
+        <div class="arsenal-cards-grid">
+
+          <div class="arsenal-card pixel-box" data-inspect-topic="Merge Sort">
+            <div class="arsenal-card-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z"/>
+              </svg>
+            </div>
+            <h3 class="arsenal-card-title">DIVIDE & CONQUER</h3>
+            <p class="arsenal-card-desc">
+              Smash monolithic complexity into independent subproblems, solve recursively, and combine into the global optimum.
+            </p>
+            <div>
+              <div class="arsenal-tag">Binary Search</div>
+              <div class="arsenal-tag">Merge Sort</div>
+              <div class="arsenal-tag">Quick Sort</div>
+              <div class="arsenal-tag">Strassen's Matrix Multiplication</div>
+            </div>
+          </div>
+
+          <div class="arsenal-card pixel-box" data-inspect-topic="Fractional Knapsack">
+            <div class="arsenal-card-icon">
+              <svg viewBox="0 0 24 24">
+                <polygon points="12,2 15,9 22,9 17,14 19,21 12,17 5,21 7,14 2,9 9,9"/>
+              </svg>
+            </div>
+            <h3 class="arsenal-card-title">GREEDY</h3>
+            <p class="arsenal-card-desc">
+              Make locally optimal choices at each decision boundary without ever backtracking, seeking maximum immediate yield.
+            </p>
+            <div>
+              <div class="arsenal-tag">Fractional Knapsack</div>
+              <div class="arsenal-tag">Kruskal's Algorithm</div>
+              <div class="arsenal-tag">Prim's Algorithm</div>
+              <div class="arsenal-tag">Dijkstra's Algorithm</div>
+            </div>
+          </div>
+
+          <div class="arsenal-card pixel-box" data-inspect-topic="0/1 Knapsack Problem">
+            <div class="arsenal-card-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+              </svg>
+            </div>
+            <h3 class="arsenal-card-title">DYNAMIC PROGRAMMING</h3>
+            <p class="arsenal-card-desc">
+              Remember subproblem solutions in memoization tables to avoid redundant computation of overlapping subproblems.
+            </p>
+            <div>
+              <div class="arsenal-tag">0/1 Knapsack</div>
+            </div>
+          </div>
+
+          <div class="arsenal-card pixel-box" data-inspect-topic="Single Source Shortest Paths — Dijkstra's Algorithm">
+            <div class="arsenal-card-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="6" cy="6" r="3"/>
+                <circle cx="18" cy="6" r="3"/>
+                <circle cx="12" cy="18" r="3"/>
+              </svg>
+            </div>
+            <h3 class="arsenal-card-title">GRAPH ALGORITHMS</h3>
+            <p class="arsenal-card-desc">
+              Navigate topological networks of interconnected vertices and weighted edges to uncover minimal cost pathways.
+            </p>
+            <div>
+              <div class="arsenal-tag">Minimum Cost Spanning Trees</div>
+              <div class="arsenal-tag">Dijkstra's Algorithm</div>
+              <div class="arsenal-tag">Traveling Salesman Problem</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- HULK CHIBI SPRITE (Matches Image 2 Reference) -->
+        <div class="character-stage stage-right hulk-stage">
+          <div class="pixel-speech-bubble">
+            "HULK... BREAK PROBLEM INTO SMALL PIECES."
+          </div>
+
+          <div class="pixel-sprite-container">
+            <div class="character-aura"></div>
+            <div class="pixel-sprite hulk-sprite"><img src="assets/hulk.png" alt="Hulk"></div></div>
+
+          <div class="character-hud-tag">
+            <span>THE HULK</span> // BRUTE FORCE TO OPTIMAL
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 05 — HOW WE LEARN (BLACK WIDOW)
+         ====================================================================== -->
+    <section id="how-we-learn" class="homepage-section section-how-we-learn" data-hero-cursor="widow">
+      <div class="container section-header">
+        <div class="section-tag">MISSION PEDAGOGY</div>
+        <h2 class="section-title pixel-heading">THINK. BREAK. SOLVE. ANALYZE.</h2>
+        <p class="section-subtitle">
+          Every topic follows the same mission strategy. A systematic 5-step operational protocol.
+        </p>
+      </div>
+
+      <div class="container learning-layout">
+
+        <!-- BLACK WIDOW CHIBI SPRITE (Matches Image 5 Reference) -->
+        <div class="character-stage stage-left widow-stage">
+          <div class="pixel-speech-bubble">
+            "Know the problem. Control the solution."
+          </div>
+
+          <div class="pixel-sprite-container">
+            <div class="character-aura"></div>
+            <div class="pixel-sprite widow-sprite"><img src="assets/blackwidow.png" alt="Black Widow"></div></div>
+
+          <div class="character-hud-tag">
+            <span>BLACK WIDOW</span> // TACTICAL INTELLIGENCE
+          </div>
+        </div>
+
+        <!-- 5-STEP PROGRESSION PIPELINE -->
+        <div class="learning-steps-container">
+          
+          <div class="learning-step-card">
+            <span class="step-num-badge">01</span>
+            <div class="step-content-body">
+              <h4>UNDERSTAND</h4>
+              <p>What problem are we solving? Formulate exact input invariants, constraints, and success conditions.</p>
+            </div>
+          </div>
+
+          <div class="learning-step-card">
+            <span class="step-num-badge">02</span>
+            <div class="step-content-body">
+              <h4>BREAK IT DOWN</h4>
+              <p>Understand the approach and logic. Deconstruct state transitions, subproblem divisions, or greedy properties.</p>
+            </div>
+          </div>
+
+          <div class="learning-step-card">
+            <span class="step-num-badge">03</span>
+            <div class="step-content-body">
+              <h4>WATCH IT WORK</h4>
+              <p>Follow diagrams, examples, and visualizations. Trace array pointers, recursion trees, and edge relaxations.</p>
+            </div>
+          </div>
+
+          <div class="learning-step-card">
+            <span class="step-num-badge">04</span>
+            <div class="step-content-body">
+              <h4>ANALYZE</h4>
+              <p>Understand time and space complexity. Derive recurrence relations, prove asymptotic upper and lower bounds.</p>
+            </div>
+          </div>
+
+          <div class="learning-step-card">
+            <span class="step-num-badge">05</span>
+            <div class="step-content-body">
+              <h4>MASTER IT</h4>
+              <p>Review the key ideas and test yourself. Identify edge cases, benchmark trade-offs, and implement verified code.</p>
+            </div>
+          </div>
+
+          <!-- CONNECTOR BAR -->
+          <div class="learning-pipeline-bar">
+            <span class="pipeline-node">PROBLEM</span>
+            <span class="pipeline-connector">→</span>
+            <span class="pipeline-node">APPROACH</span>
+            <span class="pipeline-connector">→</span>
+            <span class="pipeline-node">EXAMPLE</span>
+            <span class="pipeline-connector">→</span>
+            <span class="pipeline-node">ANALYSIS</span>
+            <span class="pipeline-connector">→</span>
+            <span class="pipeline-node">MASTERED</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 06 — CHOOSE YOUR HERO (HAWKEYE)
+         ====================================================================== -->
+    <section id="choose-hero" class="homepage-section section-choose-hero" data-hero-cursor="hawkeye">
+      <div class="container section-header">
+        <div class="section-tag">ARCHETYPE MATCHING</div>
+        <h2 class="section-title pixel-heading">WHICH ALGORITHM IS YOUR MATCH?</h2>
+        <p class="section-subtitle">
+          Every algorithm thinks differently. Find the ones that match your problem-solving style.
+        </p>
+      </div>
+
+      <div class="container choose-hero-layout">
+
+        <!-- 6 INTERACTIVE TOPIC CARDS -->
+        <div class="algorithm-match-grid">
+
+          <div class="algo-hero-card pixel-box" data-inspect-topic="Quick Sort">
+            <div>
+              <div class="algo-hero-name">
+                QUICK SORT
+                <span class="algo-complexity-badge">O(n log n)</span>
+              </div>
+              <p class="algo-hero-slogan">Fast. Flexible. Pivot-driven.</p>
+            </div>
+            <div class="algo-quote-box">
+              "With great pivots comes great responsibility."
+            </div>
+          </div>
+
+          <div class="algo-hero-card pixel-box" data-inspect-topic="Binary Search">
+            <div>
+              <div class="algo-hero-name">
+                BINARY SEARCH
+                <span class="algo-complexity-badge">O(log n)</span>
+              </div>
+              <p class="algo-hero-slogan">Cut the possibilities in half.</p>
+            </div>
+            <div class="algo-quote-box">
+              "Half the possibilities? Gone."
+            </div>
+          </div>
+
+          <div class="algo-hero-card pixel-box" data-inspect-topic="Merge Sort">
+            <div>
+              <div class="algo-hero-name">
+                MERGE SORT
+                <span class="algo-complexity-badge">O(n log n)</span>
+              </div>
+              <p class="algo-hero-slogan">Divide. Conquer. Combine.</p>
+            </div>
+            <div class="algo-quote-box">
+              "Splitting forces, conquering together."
+            </div>
+          </div>
+
+          <div class="algo-hero-card pixel-box" data-inspect-topic="Fractional Knapsack">
+            <div>
+              <div class="algo-hero-name">
+                KNAPSACK
+                <span class="algo-complexity-badge">O(n log n) / O(nW)</span>
+              </div>
+              <p class="algo-hero-slogan">Make the best choice under constraints.</p>
+            </div>
+            <div class="algo-quote-box">
+              "Pack smart when capacity is scarce."
+            </div>
+          </div>
+
+          <div class="algo-hero-card pixel-box" data-inspect-topic="Single Source Shortest Paths — Dijkstra's Algorithm">
+            <div>
+              <div class="algo-hero-name">
+                DIJKSTRA
+                <span class="algo-complexity-badge">O((V+E) log V)</span>
+              </div>
+              <p class="algo-hero-slogan">Find the shortest path.</p>
+            </div>
+            <div class="algo-quote-box">
+              "Let's find the shortest way home."
+            </div>
+          </div>
+
+          <div class="algo-hero-card pixel-box" data-inspect-topic="Trees">
+            <div>
+              <div class="algo-hero-name">
+                TREES
+                <span class="algo-complexity-badge">O(log n)</span>
+              </div>
+              <p class="algo-hero-slogan">Organize information hierarchically.</p>
+            </div>
+            <div class="algo-quote-box">
+              "Roots, branches, and logarithmic depth."
+            </div>
+          </div>
+
+        </div>
+
+        <!-- HAWKEYE CHIBI SPRITE (Matching grid style) -->
+        <div class="character-stage stage-right hawkeye-stage">
+          <div class="pixel-speech-bubble">
+            "I never miss a target. An optimal algorithm never misses a solution."
+          </div>
+
+          <div class="pixel-sprite-container">
+            <div class="character-aura"></div>
+            <div class="pixel-sprite hawkeye-sprite"><img src="assets/hawkeye.png" alt="Hawkeye"></div></div>
+
+          <div class="character-hud-tag">
+            <span>HAWKEYE</span> // PRECISION TARGETING
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SECTION 07 — FINAL CTA (SPIDER-MAN)
+         ====================================================================== -->
+    <section id="final-cta" class="homepage-section section-final-cta" data-hero-cursor="spiderman">
+      <div class="container">
+        
+        <div class="cta-banner-card pixel-box">
+          <div class="cta-banner-content">
+            <div class="section-tag">FINAL ASSEMBLE</div>
+            <h2 class="pixel-heading">READY TO JOIN THE AVENGERS?</h2>
+            <p>
+              Pick a mission. Learn the algorithm. Master the analysis.
+              Step inside the command center and unlock the full mathematical power of DAA.
+            </p>
+
+            <div class="cta-btn-row">
+              <a href="#hero" class="pixel-btn pixel-btn-primary" data-access-mission="mission-01">
+                ENTER THE ALGORITHM HQ
+              </a>
+              <a href="missions.html" class="pixel-btn pixel-btn-secondary">
+                VIEW ALL MISSIONS
+              </a>
+            </div>
+          </div>
+
+          <!-- SPIDER-MAN UPSIDE-DOWN SPRITE (Matches Image 3 Reference) -->
+          <div class="character-stage stage-right spiderman-stage">
+            <div class="pixel-speech-bubble">
+              "Every problem has a solution. You just have to find the right approach."
+            </div>
+
+            <div class="pixel-sprite-container">
+              <div class="character-aura"></div>
+              
+              <!-- Pendulum Hanging Spider-Man from Reference 3 -->
+              <div class="spiderman-swing-wrapper pixel-sprite">
+                <svg viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                  <!-- White Pixel Web String descending from ceiling (Ref 3) -->
+                  <rect x="12" y="0" width="2" height="10" fill="#0f172a" stroke="#ffffff" stroke-width="0.5" />
+
+                  <!-- Upside-down legs connected to web (Ref 3) -->
+                  <rect x="8" y="10" width="4" height="5" fill="#2563eb" />
+                  <rect x="14" y="10" width="4" height="5" fill="#2563eb" />
+                  <rect x="10" y="8" width="6" height="2" fill="#dc2626" /> <!-- Feet -->
+
+                  <!-- Torso hanging downwards (Ref 3) -->
+                  <rect x="8" y="15" width="10" height="6" fill="#dc2626" />
+                  <rect x="6" y="15" width="2" height="4" fill="#2563eb" />
+                  <rect x="18" y="15" width="2" height="4" fill="#2563eb" />
+                  <rect x="12" y="17" width="2" height="2" fill="#000" /> <!-- Spider logo -->
+
+                  <!-- Big Red Mask at bottom (Ref 3) -->
+                  <rect x="7" y="21" width="12" height="10" fill="#dc2626" />
+                  <!-- Outer mask border -->
+                  <rect x="6" y="22" width="1" height="8" fill="#000" />
+                  <rect x="19" y="22" width="1" height="8" fill="#000" />
+                  <rect x="8" y="31" width="10" height="1" fill="#000" />
+
+                  <!-- Expressive White Angular Lenses (Ref 3) -->
+                  <polygon points="8,24 12,24 11,27 8,26" fill="#ffffff" stroke="#000" stroke-width="0.6" />
+                  <polygon points="18,24 14,24 15,27 18,26" fill="#ffffff" stroke="#000" stroke-width="0.6" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="character-hud-tag">
+              <span>SPIDER-MAN</span> // ADAPTIVE HEURISTICS
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-top-row">
+        <div class="footer-brand">
+          ALGO-VENGERS // DAA COMMAND CENTER
+        </div>
+        <div class="footer-academic-meta">
+          <span class="footer-badge">DESIGN & ANALYSIS OF ALGORITHMS</span>
+          <span class="footer-badge">CIA PROJECT</span>
+          <span class="footer-badge">COMPUTER SCIENCE & ENGINEERING</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>
+          5 Missions • 20 Topics • Big-O Theoretical Complexity Repository
+        </div>
+        <div>
+          Light Theme Interactive Edition. Single-file self-contained HTML/CSS/JS architecture.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mission Dossier Modal -->
+  <div class="modal-backdrop" id="mission-dossier-modal" role="dialog" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <span class="modal-badge" id="modal-badge-val">MISSION 01</span>
+          <h3 class="modal-title" id="modal-title-val" style="margin-top: 4px;">MISSION DOSSIER</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="modal-close-trigger">[✕]</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 0.95rem; color: var(--text-muted);" id="modal-desc-val">
+          Mission description will appear here.
+        </p>
+
+        <div style="font-family: var(--font-pixel); font-size: 0.68rem; color: var(--color-cyan); margin-top: 4px;">
+          SYLLABUS TOPICS INCLUDED
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;" id="modal-topics-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="modal-notice-box">
+          <strong>UNIVERSITY CIA PROJECT NOTICE:</strong>
+          Phase 1 Homepage Complete. Detailed individual topic pages with visual algorithmic simulators and step-by-step code runners will unlock in Phase 2.
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="pixel-btn pixel-btn-primary pixel-btn-sm" id="modal-ack-trigger">
+          ACKNOWLEDGE BRIEFING
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       EMBEDDED JAVASCRIPT (MISSIONS DATA + AUDIO + PARTICLES + CURSOR + MAIN)
+       ======================================================================== -->
+  <script>
+    /* ======================================================================
+       1. MISSIONS & DAA SYLLABUS DATA (STRICT 5 MISSIONS & 20 TOPICS)
+       ====================================================================== */
+    const MISSIONS_DATA = [
+      {
+        id: "mission-01",
+        num: "01",
+        title: "FOUNDATIONS",
+        codename: "PROJECT ODIN",
+        desc: "Establish the mathematical bedrock of algorithmic efficiency, analyzing theoretical bounds, resource consumption, and asymptotic behavior.",
+        topics: [
+          { name: "Space Complexity", complexity: "S(n) = c + Sp(n)", summary: "Memory requirements of an algorithm relative to input scaling." },
+          { name: "Time Complexity", complexity: "T(n) steps", summary: "Quantifying execution steps across best, average, and worst cases." },
+          { name: "Asymptotic Notations", complexity: "O, Ω, Θ", summary: "Formal bounding of growth rates: Big-O, Big-Omega, Big-Theta." }
+        ]
+      },
+      {
+        id: "mission-02",
+        num: "02",
+        title: "DATA STRUCTURES",
+        codename: "VIBRANIUM ARCHIVES",
+        desc: "Master the structural organization of algorithmic data, memory representation, and optimal retrieval access patterns.",
+        topics: [
+          { name: "Stacks", complexity: "Push/Pop: O(1)", summary: "LIFO discipline foundational to recursion stacks and expression parsing." },
+          { name: "Queues", complexity: "Enqueue/Dequeue: O(1)", summary: "FIFO buffer structure critical for breadth-first search and task queues." },
+          { name: "Trees", complexity: "Search: O(log n)", summary: "Hierarchical topologies including BSTs and AVL balanced tree traversals." },
+          { name: "Dictionaries", complexity: "Lookup: O(1) avg", summary: "Key-value indexing with hash functions and collision resolution." },
+          { name: "Sets and Disjoint Sets", complexity: "Find/Union: O(α(n))", summary: "Disjoint-set forests utilizing path compression and union by rank." }
+        ]
+      },
+      {
+        id: "mission-03",
+        num: "03",
+        title: "SEARCH & SORT",
+        codename: "QUANTUM VELOCITY",
+        desc: "Deconstruct ordering and target discovery mechanics, comparing linear vs logarithmic searches and recursive partitioned sorts.",
+        topics: [
+          { name: "Maximum and Minimum", complexity: "⌈3n/2⌉ - 2 comparisons", summary: "Simultaneous extrema discovery via tournament divide-and-conquer." },
+          { name: "Binary Search", complexity: "O(log n)", summary: "Monotonic search eliminating half of remaining search space per step." },
+          { name: "Merge Sort", complexity: "O(n log n) stable", summary: "Stable divide-and-conquer sorting with linear merging guarantees." },
+          { name: "Quick Sort", complexity: "O(n log n) avg", summary: "Partitioning around a pivot element with dominant cache locality." }
+        ]
+      },
+      {
+        id: "mission-04",
+        num: "04",
+        title: "ADVANCED ALGORITHMS",
+        codename: "INFINITY ARSENAL",
+        desc: "Deploy sophisticated paradigms including sub-cubic matrix algebra, greedy selection strategies, and shortest-path tree generation.",
+        topics: [
+          { name: "Strassen's Matrix Multiplication", complexity: "O(n^2.807)", summary: "Sub-cubic multiplication reducing 8 sub-multiplications down to 7." },
+          { name: "Fractional Knapsack", complexity: "O(n log n)", summary: "Greedy fraction packing based on decreasing value-to-weight density." },
+          { name: "Minimum Cost Spanning Trees", complexity: "V-1 edges", summary: "Acyclic subgraph spanning all vertices with minimal total edge weight." },
+          { name: "Kruskal's and Prim's Algorithms", complexity: "O(E log V)", summary: "Two classic greedy methods: edge sorting vs vertex priority queues." },
+          { name: "Single Source Shortest Paths — Dijkstra's Algorithm", complexity: "O((V+E) log V)", summary: "Iterative relaxation of non-negative edge weights using a min-heap." }
+        ]
+      },
+      {
+        id: "mission-05",
+        num: "05",
+        title: "OPTIMIZATION",
+        codename: "ENDGAME STRATEGY",
+        desc: "Attack intractable combinatorial challenges using dynamic programming state tables and exact combinatorial optimization techniques.",
+        topics: [
+          { name: "Traveling Salesman Problem", complexity: "O(n² 2ⁿ) DP", summary: "Minimum-cost Hamiltonian cycle visiting every vertex exactly once." },
+          { name: "0/1 Knapsack Problem", complexity: "O(n · W) DP", summary: "Optimal substructure recurrence maximizing profit within weight capacity." }
+        ]
+      }
+    ];
+
+    /* ======================================================================
+       2. REFINED, PLEASANT WEB AUDIO SYNTHESIZER
+       ====================================================================== */
+    class RetroAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.ctx = new AudioContext();
+          }
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggle() {
+        this.enabled = !this.enabled;
+        if (this.enabled) {
+          this.init();
+          this.playToggle(true);
+        }
+        return this.enabled;
+      }
+
+      // Pleasant, gentle bubble chime for hover (No harsh buzz!)
+      playHover() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sine'; // Soft, pure tone
+          osc.frequency.setValueAtTime(587.33, this.ctx.currentTime); // D5
+          osc.frequency.exponentialRampToValueAtTime(659.25, this.ctx.currentTime + 0.04); // E5
+
+          gain.gain.setValueAtTime(0.035, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.04);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.04);
+        } catch (e) {}
+      }
+
+      // Crisp, tactile mechanical switch click for buttons
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.04);
+
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.04);
+        } catch (e) {}
+      }
+
+      // Uplifting, warm arpeggio fanfare for mission dossier open
+      playMissionOpen() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 (Major chord)
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = 'sine';
+            const startTime = this.ctx.currentTime + (idx * 0.06);
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.05, startTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.12);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + 0.12);
+          });
+        } catch (e) {}
+      }
+
+      playToggle(on = true) {
+        if (!this.enabled && on) return;
+        this.init();
+        if (!this.ctx) return;
+
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(on ? 440 : 330, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(on ? 660 : 220, this.ctx.currentTime + 0.05);
+
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.05);
+        } catch (e) {}
+      }
+    }
+
+    const retroAudio = new RetroAudioEngine();
+
+    /* ======================================================================
+       3. AMBIENT LIGHT-THEMED PARTICLES CANVAS
+       ====================================================================== */
+    class PixelParticleCanvas {
+      constructor(canvasId = 'fx-canvas') {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.count = 36;
+        // Soft Marvel palette for light mode: Gold, Red, Blue, Green, Purple
+        this.colors = ['#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#8b5cf6'];
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.init();
+      }
+
+      init() {
+        this.resize();
+        window.addEventListener('resize', () => this.resize(), { passive: true });
+        for (let i = 0; i < this.count; i++) {
+          this.particles.push(this.createParticle());
+        }
+        this.render();
+      }
+
+      createParticle(randomY = true) {
+        return {
+          x: Math.random() * this.width,
+          y: randomY ? Math.random() * this.height : this.height + 10,
+          size: Math.random() > 0.6 ? 3 : 2,
+          speedY: -(0.2 + Math.random() * 0.5),
+          speedX: (Math.random() - 0.5) * 0.3,
+          color: this.colors[Math.floor(Math.random() * this.colors.length)],
+          alpha: 0.15 + Math.random() * 0.35,
+          pulse: Math.random() * Math.PI
+        };
+      }
+
+      resize() {
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+      }
+
+      render() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        for (let i = 0; i < this.particles.length; i++) {
+          const p = this.particles[i];
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.pulse += 0.02;
+
+          if (p.y < -10 || p.x < -10 || p.x > this.width + 10) {
+            this.particles[i] = this.createParticle(false);
+          }
+
+          this.ctx.fillStyle = p.color;
+          this.ctx.globalAlpha = Math.max(0.1, p.alpha + Math.sin(p.pulse) * 0.15);
+          this.ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+        }
+        this.ctx.globalAlpha = 1.0;
+        requestAnimationFrame(() => this.render());
+      }
+    }
+
+    /* ======================================================================
+       5. MISSION DOSSIER MODAL CONTROLLER
+       ====================================================================== */
+    class MissionModalController {
+      constructor() {
+        this.modal = document.getElementById('mission-dossier-modal');
+        this.closeBtn = document.getElementById('modal-close-trigger');
+        this.ackBtn = document.getElementById('modal-ack-trigger');
+        this.badgeElem = document.getElementById('modal-badge-val');
+        this.titleElem = document.getElementById('modal-title-val');
+        this.descElem = document.getElementById('modal-desc-val');
+        this.topicsContainer = document.getElementById('modal-topics-container');
+        this.init();
+      }
+
+      init() {
+        if (!this.modal) return;
+        this.closeBtn?.addEventListener('click', () => this.close());
+        this.ackBtn?.addEventListener('click', () => this.close());
+
+        this.modal.addEventListener('click', (e) => {
+          if (e.target === this.modal) this.close();
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.modal.classList.contains('active')) this.close();
+        });
+
+        document.querySelectorAll('[data-access-mission]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const missionId = btn.getAttribute('data-access-mission');
+            this.openMission(missionId);
+          });
+        });
+
+        document.querySelectorAll('[data-inspect-topic]').forEach(card => {
+          card.addEventListener('click', () => {
+            const topicName = card.getAttribute('data-inspect-topic');
+            this.openTopic(topicName);
+          });
+        });
+      }
+
+      openMission(missionId) {
+        const mission = MISSIONS_DATA.find(m => m.id === missionId) || MISSIONS_DATA[0];
+        if (this.badgeElem) this.badgeElem.textContent = `MISSION ${mission.num} // ${mission.codename}`;
+        if (this.titleElem) this.titleElem.textContent = mission.title;
+        if (this.descElem) this.descElem.textContent = mission.desc;
+
+        if (this.topicsContainer) {
+          this.topicsContainer.innerHTML = mission.topics.map(t => `
+            <div class="modal-topic-item">
+              <div>
+                <div class="topic-item-title">${t.name}</div>
+                <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">${t.summary}</div>
+              </div>
+              <div class="topic-item-meta">${t.complexity}</div>
+            </div>
+          `).join('');
+        }
+
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        retroAudio.playMissionOpen();
+      }
+
+      openTopic(topicName) {
+        let foundTopic = null;
+        let parentMission = null;
+
+        for (const m of MISSIONS_DATA) {
+          const match = m.topics.find(t => t.name.toLowerCase() === topicName.toLowerCase());
+          if (match) {
+            foundTopic = match;
+            parentMission = m;
+            break;
+          }
+        }
+
+        if (!foundTopic) return;
+
+        if (this.badgeElem) this.badgeElem.textContent = `TOPIC // ${parentMission.title}`;
+        if (this.titleElem) this.titleElem.textContent = foundTopic.name;
+        if (this.descElem) this.descElem.textContent = foundTopic.summary;
+
+        if (this.topicsContainer) {
+          this.topicsContainer.innerHTML = `
+            <div class="modal-topic-item">
+              <div>
+                <div class="topic-item-title">Theoretical Bound</div>
+                <div style="font-size: 0.8rem; color: #64748b;">Asymptotic Complexity</div>
+              </div>
+              <div class="topic-item-meta">${foundTopic.complexity}</div>
+            </div>
+          `;
+        }
+
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        retroAudio.playMissionOpen();
+      }
+
+      close() {
+        this.modal.classList.remove('active');
+        document.body.style.overflow = '';
+        retroAudio.playClick();
+      }
+    }
+
+    /* ======================================================================
+       6. CORE APP INITIALIZATION & EVENT HANDLERS
+       ====================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      new PixelParticleCanvas();
+            new MissionModalController();
+
+      // Audio & CRT Toggles
+      const sfxBtn = document.getElementById('sfx-toggle-btn');
+      const crtBtn = document.getElementById('crt-toggle-btn');
+      const mobileToggle = document.getElementById('mobile-nav-toggle');
+      const navMenu = document.getElementById('nav-menu');
+
+      sfxBtn?.addEventListener('click', () => {
+        const enabled = retroAudio.toggle();
+        sfxBtn.textContent = enabled ? '🔊 SFX: ON' : '🔇 SFX: OFF';
+        sfxBtn.classList.toggle('active', enabled);
+      });
+
+      crtBtn?.addEventListener('click', () => {
+        document.body.classList.toggle('crt-disabled');
+        const disabled = document.body.classList.contains('crt-disabled');
+        crtBtn.textContent = disabled ? '📺 CRT: OFF' : '📺 CRT: ON';
+        crtBtn.classList.toggle('active', !disabled);
+        retroAudio.playToggle(!disabled);
+      });
+
+      mobileToggle?.addEventListener('click', () => {
+        navMenu?.classList.toggle('open');
+        const open = navMenu?.classList.contains('open');
+        mobileToggle.textContent = open ? '[✕] MENU' : '[☰] MENU';
+        retroAudio.playClick();
+      });
+
+      // Flow Steps Interactive Switcher
+      const flowSteps = document.querySelectorAll('.daa-flow-step');
+      const explainBox = document.getElementById('flow-explanation-box');
+      const stepDetails = {
+        problem: { title: "STAGE 1: PROBLEM SPECIFICATION", desc: "Precisely define computational inputs, required outputs, boundary preconditions, and invariant constraints before writing any code." },
+        design: { title: "STAGE 2: STRATEGIC DESIGN", desc: "Select the appropriate algorithmic paradigm (Divide & Conquer, Greedy, Dynamic Programming, Backtracking) suited to the problem structure." },
+        algorithm: { title: "STAGE 3: ALGORITHM FORMULATION", desc: "Develop unambiguous, finite, step-by-step instructions or pseudocode guaranteed to terminate on all valid inputs." },
+        analyze: { title: "STAGE 4: ASYMPTOTIC ANALYSIS", desc: "Rigorously quantify worst, average, and best-case execution bounds using Big-O, Big-Omega, and Big-Theta metrics, analyzing space vs time trade-offs." },
+        solution: { title: "STAGE 5: EFFICIENT SOLUTION", desc: "Produce verified, provably correct, scalable code optimized to run under real-world computational and hardware constraints." }
+      };
+
+      flowSteps.forEach(step => {
+        step.addEventListener('click', () => {
+          flowSteps.forEach(s => s.classList.remove('active'));
+          step.classList.add('active');
+          const stepKey = step.getAttribute('data-step');
+          if (stepDetails[stepKey] && explainBox) {
+            explainBox.innerHTML = `
+              <strong style="color: var(--color-cyan); font-family: var(--font-pixel); font-size: 0.72rem; display: block; margin-bottom: 6px;">
+                ${stepDetails[stepKey].title}
+              </strong>
+              <span>${stepDetails[stepKey].desc}</span>
+            `;
+          }
+          retroAudio.playClick();
+        });
+      });
+
+      // Navigation ScrollSpy
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+      window.addEventListener('scroll', () => {
+        const scrollPos = window.scrollY + 140;
+        sections.forEach(sec => {
+          const top = sec.offsetTop;
+          const height = sec.offsetHeight;
+          const id = sec.getAttribute('id');
+          if (scrollPos >= top && scrollPos < top + height) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${id}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      }, { passive: true });
+
+      // Live Time HUD
+      const timeElem = document.getElementById('hero-hud-time');
+      setInterval(() => {
+        if (!timeElem) return;
+        const now = new Date();
+        const hrs = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        timeElem.textContent = `STARDATE ${hrs}:${mins}:${secs}`;
+      }, 1000);
+    });
+  </script>
+
+  <!-- Hero Cursor Icon -->
+  
+
+
+  <script>
+    /* Audio Synthesizer */
+    class HubRetroAudio {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx && typeof (window.AudioContext || window.webkitAudioContext) !== 'undefined') {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playHover() {
+        this.init(); if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'sine'; osc.frequency.setValueAtTime(520, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(760, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(); osc.stop(this.ctx.currentTime + 0.04);
+        } catch(e) {}
+      }
+      playClick() {
+        this.init(); if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(); osc.stop(this.ctx.currentTime + 0.04);
+        } catch(e) {}
+      }
+    }
+    const hubAudio = new HubRetroAudio();
+
+    
+
+
+  <script>
+    // Top Reading Progress Tracking
+    const topFillBar = document.getElementById('global-progress-fill');
+    const topMarker = document.getElementById('global-progress-marker');
+    const topPct = document.getElementById('global-progress-pct');
+    const topTrack = document.getElementById('global-progress-track');
+
+    function updateTopProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+      if (topFillBar) topFillBar.style.width = pct + '%';
+      if (topPct) topPct.textContent = pct + '%';
+      if (topMarker) topMarker.style.left = pct + '%';
+    }
+    window.addEventListener('scroll', updateTopProgress, { passive: true });
+    updateTopProgress();
+
+    topTrack?.addEventListener('click', (e) => {
+      const rect = topTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: ratio * docHeight, behavior: 'smooth' });
+    });
+
+    
+  </script>
+
+</body>
+</html>

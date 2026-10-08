@@ -1,0 +1,376 @@
+/* ==========================================================================
+   ALGO-VENGERS — PIXEL BASE & RETRO COMPONENT STYLES
+   ========================================================================== */
+
+/* Universal Box Sizing & Font Smoothing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--bg-dark-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Custom Pixelated Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: var(--bg-dark-primary);
+}
+
+::-webkit-scrollbar-track {
+  background: #090c18;
+  border-left: 2px solid #1a223f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-cyan);
+  border: 2px solid #000;
+  box-shadow: inset -1px -1px 0px rgba(0,0,0,0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+/* Background Cyber Grid */
+.cyber-grid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* CRT Screen Scanline Overlay */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9998;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(255, 0, 0, 0.03),
+    rgba(0, 255, 0, 0.01),
+    rgba(0, 0, 255, 0.03)
+  );
+  background-size: 100% 4px, 6px 100%;
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+body.crt-disabled .crt-overlay {
+  display: none !important;
+}
+
+/* Interactive Canvas for Digital Particles */
+#fx-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Containers */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Typography Helpers */
+.pixel-heading {
+  font-family: var(--font-pixel);
+  letter-spacing: 1px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pixel-subheading {
+  font-family: var(--font-pixel-sub);
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+.hud-font {
+  font-family: var(--font-hud);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.code-font {
+  font-family: var(--font-code);
+}
+
+/* Section Header Shared Component */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--bg-dark-tertiary);
+  border: 2px solid var(--color-cyan);
+  box-shadow: 0 4px 0 #000;
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(1.4rem, 3.5vw, 2.3rem);
+  color: var(--text-highlight);
+  margin-bottom: 16px;
+  text-shadow: 0 4px 0 #000;
+}
+
+.section-subtitle {
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-muted);
+  max-width: 680px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Stepped Pixel Border Cards */
+.pixel-box {
+  background: var(--bg-card);
+  position: relative;
+  border: 3px solid #1e294d;
+  box-shadow: 
+    -4px 0 0 0 #0f152d,
+    4px 0 0 0 #0f152d,
+    0 -4px 0 0 #0f152d,
+    0 4px 0 0 #0f152d,
+    0 8px 0 0 #000000;
+  backdrop-filter: blur(8px);
+  transition: all var(--trans-normal);
+}
+
+.pixel-box:hover {
+  border-color: var(--color-cyan);
+  box-shadow: 
+    -4px 0 0 0 #00f0ff33,
+    4px 0 0 0 #00f0ff33,
+    0 -4px 0 0 #00f0ff33,
+    0 4px 0 0 #00f0ff33,
+    0 10px 0 0 #000000;
+}
+
+/* Pixel Buttons (Clickable 8-bit Buttons with Sound Integration) */
+.pixel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  font-family: var(--font-pixel);
+  font-size: 0.78rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 3px solid #000;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  transition: transform var(--trans-fast), box-shadow var(--trans-fast), background-color var(--trans-fast);
+  box-shadow: 
+    -3px 0 0 0 #000,
+    3px 0 0 0 #000,
+    0 -3px 0 0 #000,
+    0 3px 0 0 #000,
+    0 6px 0 0 #000;
+}
+
+.pixel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    -3px 0 0 0 #000,
+    3px 0 0 0 #000,
+    0 -3px 0 0 #000,
+    0 3px 0 0 #000,
+    0 8px 0 0 #000;
+}
+
+.pixel-btn:active {
+  transform: translateY(4px);
+  box-shadow: 
+    -3px 0 0 0 #000,
+    3px 0 0 0 #000,
+    0 -3px 0 0 #000,
+    0 3px 0 0 #000,
+    0 2px 0 0 #000;
+}
+
+/* Button Themes */
+.pixel-btn-primary {
+  background: var(--color-gold);
+  color: #0c0f1c;
+  font-weight: bold;
+}
+.pixel-btn-primary:hover {
+  background: #ffc933;
+}
+
+.pixel-btn-secondary {
+  background: var(--bg-dark-tertiary);
+  color: var(--color-cyan);
+  border-color: #00f0ff;
+}
+.pixel-btn-secondary:hover {
+  background: #1c274b;
+  color: #ffffff;
+}
+
+.pixel-btn-danger {
+  background: var(--color-red);
+  color: #ffffff;
+}
+.pixel-btn-danger:hover {
+  background: #ff5262;
+}
+
+.pixel-btn-thor {
+  background: #00d2d3;
+  color: #08111e;
+}
+.pixel-btn-thor:hover {
+  background: #39e3e4;
+}
+
+.pixel-btn-hulk {
+  background: #10ac84;
+  color: #ffffff;
+}
+.pixel-btn-hulk:hover {
+  background: #1dd1a1;
+}
+
+.pixel-btn-widow {
+  background: #ff3838;
+  color: #ffffff;
+}
+.pixel-btn-widow:hover {
+  background: #ff5e5e;
+}
+
+.pixel-btn-sm {
+  padding: 8px 14px;
+  font-size: 0.65rem;
+  box-shadow: 0 4px 0 #000;
+}
+
+/* Pixel Speech Bubbles */
+.pixel-speech-bubble {
+  position: relative;
+  background: #0d1326;
+  border: 3px solid var(--color-gold);
+  padding: 14px 18px;
+  color: var(--text-highlight);
+  font-family: var(--font-pixel-sub);
+  font-size: 0.85rem;
+  box-shadow: 0 6px 0 #000;
+  max-width: 320px;
+  border-radius: 2px;
+  animation: floatBubble 4s ease-in-out infinite alternate;
+}
+
+.pixel-speech-bubble::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #0d1326;
+  border-left: 3px solid var(--color-gold);
+  border-bottom: 3px solid var(--color-gold);
+  transform: rotate(45deg);
+}
+
+.bubble-left::before {
+  left: -9px;
+  top: 50%;
+  margin-top: -7px;
+}
+
+.bubble-right::before {
+  right: -9px;
+  top: 50%;
+  margin-top: -7px;
+}
+
+.bubble-bottom::before {
+  bottom: -9px;
+  left: 24px;
+  transform: rotate(-45deg);
+}
+
+@keyframes floatBubble {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+/* Small HUD Status Indicator & LED */
+.hud-status-led {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-green);
+  box-shadow: 0 0 8px var(--color-green);
+  animation: ledPulse 1.8s infinite;
+  vertical-align: middle;
+}
+
+@keyframes ledPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.9); }
+}
+
+/* Badge Component */
+.pixel-tag {
+  display: inline-block;
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  padding: 4px 8px;
+  background: #0a0e1c;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  text-transform: uppercase;
+}

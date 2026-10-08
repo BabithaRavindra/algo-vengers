@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 25" width="450" height="750" shape-rendering="crispEdges">
+
+  <!-- Black outline -->
+  <path fill="#000000" d="
+    M6 0h3v1H6z
+    M3 1h3v1H3z M9 1h3v1H9z
+    M2 2h1v1H2z M3 2h9v1H3z
+    M1 3h1v4H1z M2 3h1v4H2z
+    M12 3h1v4h-1z M13 3h1v4h-1z
+
+    M0 6h1v4H0z M1 6h1v4H1z
+    M13 6h1v4h-1z M14 6h1v4h-1z
+
+    M1 10h1v3H1z
+    M13 10h1v3h-1z
+
+    M2 12h1v2H2z
+    M12 12h1v2h-1z
+
+    M3 13h2v1H3z M10 13h2v1h-2z
+
+    M2 14h1v5H2z
+    M12 14h1v5h-1z
+
+    M1 16h1v3H1z
+    M13 16h1v3h-1z
+
+    M2 19h3v1H2z
+    M10 19h3v1h-3z
+
+    M3 20h2v4H3z
+    M10 20h2v4h-2z
+
+    M4 24h2v1H4z
+    M9 24h2v1H9z
+
+    M6 7h3v1H6z
+    M5 14h5v2H5z
+    M6 16h3v1H6z
+  "></path>
+
+  <!-- Red armor -->
+  <path fill="#D93636" d="
+    M6 1h3v1H6z
+    M3 2h9v1H3z
+    M2 3h1v3H2z M3 3h2v3H3z
+    M5 3h5v3H5z M10 3h2v3h-2z
+    M2 4h1v2H2z M12 4h1v2h-1z
+
+    M2 8h1v1H2z M12 8h1v1h-1z
+    M2 9h1v4H2z M12 9h1v4h-1z
+
+    M4 14h1v1H4z M5 14h5v1H5z M10 14h1v1h-1z
+    M3 15h1v4H3z M4 15h1v4H4z
+    M5 16h5v5H5z
+    M10 15h1v4h-1z M11 15h1v4h-1z
+
+    M1 17h2v2H1z M13 17h1v2h-1z
+    M2 18h2v1H2z M11 18h2v1h-2z
+
+    M4 20h7v1H4z
+    M4 21h7v1H4z
+    M3 22h2v2H3z
+    M10 22h2v2h-2z
+  "></path>
+
+  <!-- Gold armor -->
+  <path fill="#FFC20E" d="
+    M3 3h2v3H3z
+    M10 3h2v3h-2z
+
+    M3 4h1v2H3z M11 4h1v2h-1z
+    M3 5h2v2H3z M10 5h2v2h-2z
+
+    M2 6h11v1H2z
+
+    M2 8h1v1H2z M12 8h1v1h-1z
+    M2 9h11v1H2z
+    M2 10h11v2H2z
+    M3 12h2v1H3z M10 12h2v1h-2z
+
+    M3 13h1v1H3z M4 13h6v1H4z M11 13h1v1h-1z
+
+    M1 16h2v1H1z M12 16h2v1h-2z
+    M2 17h2v1H2z M11 17h2v1h-2z
+
+    M3 20h2v1H3z M10 20h2v1h-2z
+    M4 21h1v1H4z M10 21h1v1h-1z
+  "></path>
+
+  <!-- White eye / arc reactor highlights -->
+  <path fill="#FFFFFF" d="
+    M3 8h3v1H3z
+    M9 8h3v1H9z
+    M6 16h3v1H6z
+    M7 17h1v1H7z
+  "></path>
+
+</svg>

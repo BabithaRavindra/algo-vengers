@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DICTIONARIES & HASH TABLES // [◉] IRON MAN — ALGO-VENGERS</title>
+  
+  <meta name="description" content="Design & Analysis of Algorithms: DICTIONARIES & HASH TABLES. Mission 02: DATA STRUCTURES.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for beautiful math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --border-dark: #0f172a;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --color-gold: #d97706;
+      --color-cyan: #0284c7;
+      --hero-accent: #b91c1c;
+      --badge-bg: #fee2e2;
+
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-pixel-sub: 'Silkscreen', monospace;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+      --top-bar-height: 32px;
+      --nav-height: 72px;
+      --container-max: 1100px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Pixelated retro mouse pointer */
+    html, body {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Cpath%20fill%3D%22%230f172a%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.5%22%20d%3D%22M2%202v18l5-5%204%208%203-1.5-4-8h6L2%202z%22/%3E%20%3C/svg%3E") 0 0, auto !important;
+    }
+    
+    body {
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-main);
+    }
+
+    /* Native CSS Circular Hero Emblem Cursor on all interactive elements (ZERO TRAILING) */
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, .hero-speech-bubble, [role="button"], [data-hero-cursor], .quiz-opt-btn {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23991b1b%22%20stroke%3D%22%23facc15%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%230f172a%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%2338bdf8%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2018%2C13%2014%2C13%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2216%2C24%2014%2C19%2018%2C19%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%228%2C16%2013%2C14%2013%2C18%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2224%2C16%2019%2C18%2019%2C14%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    .cyber-grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none; z-index: 0;
+    }
+    .container { max-width: var(--container-max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .pixel-heading { font-family: var(--font-pixel); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Pixel Buttons */
+    .pixel-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; font-family: var(--font-pixel); font-size: 0.65rem;
+      text-decoration: none; text-transform: uppercase; border: 3px solid var(--border-dark);
+      position: relative; user-select: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 4px 0 0 var(--border-dark);
+    }
+    .pixel-btn:hover { transform: translateY(-2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 6px 0 0 var(--border-dark); }
+    .pixel-btn:active { transform: translateY(2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 2px 0 0 var(--border-dark); }
+    .pixel-btn-primary { background: #facc15; color: #0f172a; font-weight: bold; }
+    .pixel-btn-secondary { background: #ffffff; color: var(--color-cyan); }
+    .pixel-btn-accent { background: var(--hero-accent); color: #ffffff; }
+
+    /* Sticky Navbar */
+    .pixel-navbar {
+      position: fixed; top: var(--top-bar-height); left: 0; width: 100%; height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--border-dark); z-index: 1000; display: flex; align-items: center;
+    }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; background: #facc15; border: 2px solid var(--border-dark); display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 22px; height: 22px; fill: var(--border-dark); }
+    .brand-text { font-family: var(--font-pixel); font-size: 1.05rem; color: var(--border-dark); }
+    .brand-text span { color: #dc2626; }
+    .breadcrumbs { font-family: var(--font-pixel); font-size: 0.6rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .breadcrumbs a { color: var(--color-cyan); text-decoration: none; }
+
+    /* Persistent Top Reading Progress Bar */
+    #global-top-progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--top-bar-height);
+      background: #0f172a; border-bottom: 2px solid #000; z-index: 10002;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .top-progress-hero-badge {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .top-hero-symbol-box {
+      width: 22px; height: 22px; background: #fee2e2; color: #b91c1c;
+      border: 1.5px solid #b91c1c; font-family: var(--font-pixel); font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 2px;
+    }
+    .top-hero-title {
+      font-family: var(--font-pixel); font-size: 0.58rem; color: #f8fafc; letter-spacing: 0.5px;
+    }
+    .top-progress-track-wrapper {
+      flex: 1; max-width: 650px; margin: 0 20px; height: 10px; background: #1e293b;
+      border: 1.5px solid #475569; border-radius: 999px; position: relative; cursor: pointer;
+    }
+    .top-progress-fill-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #b91c1c, #dc2626, #eab308); border-radius: 999px;
+      transition: width 0.08s ease-out;
+    }
+    .top-progress-slider-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; background: #0f172a; border: 2px solid #b91c1c;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-pixel); font-size: 0.65rem; color: #b91c1c;
+      box-shadow: 0 0 10px #b91c1c; pointer-events: none; transition: left 0.08s ease-out;
+    }
+    .top-progress-percent-readout {
+      font-family: var(--font-pixel); font-size: 0.65rem; color: #facc15; min-width: 50px; text-align: right; flex-shrink: 0;
+    }
+
+    /* Main Container */
+    main { flex: 1; padding-top: calc(var(--nav-height) + var(--top-bar-height) + 24px); padding-bottom: 60px; }
+
+    /* Topic Hero Section */
+    .topic-hero {
+      background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: 0 6px 0 var(--border-dark); padding: 32px;
+      margin-bottom: 32px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+    }
+    .hero-sprite-frame {
+      width: 120px; height: 130px; background: var(--badge-bg);
+      border: 3px solid var(--border-dark); display: flex; align-items: center; justify-content: center;
+      position: relative; box-shadow: 0 4px 0 var(--border-dark); overflow: hidden;
+    }
+    .hero-avatar-img {
+      max-width: 100px; max-height: 112px; width: auto; height: auto;
+      object-fit: contain; image-rendering: pixelated;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .topic-hero:hover .hero-avatar-img { transform: scale(1.1) translateY(-3px); }
+
+    .hero-meta-tag {
+      display: inline-block; font-family: var(--font-pixel); font-size: 0.6rem;
+      background: #ffffff; border: 2px solid var(--border-dark); padding: 3px 10px;
+      margin-bottom: 10px; font-weight: bold; color: var(--hero-accent); box-shadow: 0 2px 0 var(--border-dark);
+    }
+    .hero-title { font-size: 1.6rem; margin-bottom: 12px; line-height: 1.3; color: var(--border-dark); }
+    .hero-tagline { font-family: var(--font-code); font-size: 0.95rem; color: var(--text-muted); margin-bottom: 14px; font-weight: 600; }
+    .hero-quote-box {
+      background: #f1f5f9; border-left: 4px solid var(--hero-accent);
+      padding: 10px 14px; font-style: italic; color: #1e293b; font-size: 0.88rem;
+    }
+
+    /* Content Cards */
+    .content-card {
+      background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: 0 5px 0 var(--border-dark); padding: 28px; margin-bottom: 28px;
+    }
+    .card-heading {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-pixel); font-size: 0.85rem; color: var(--border-dark);
+      margin-bottom: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;
+    }
+    .card-desc-text { font-size: 0.95rem; color: #1e293b; line-height: 1.7; margin-bottom: 16px; }
+    
+    .math-callout {
+      background: #f1f5f9; border: 2px solid var(--border-dark); padding: 16px 20px;
+      font-size: 0.95rem; margin-bottom: 16px; color: #0f172a;
+      box-shadow: 0 3px 0 var(--border-dark); overflow-x: auto;
+    }
+
+    /* Table */
+    .algo-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+    .algo-table th, .algo-table td { border: 2px solid var(--border-dark); padding: 12px 14px; text-align: left; }
+    .algo-table th { background: #f8fafc; font-family: var(--font-pixel); font-size: 0.65rem; color: var(--border-dark); }
+    .complexity-badge {
+      display: inline-block; font-family: var(--font-code); font-weight: bold;
+      background: var(--badge-bg); color: var(--hero-accent); border: 1px solid var(--hero-accent);
+      padding: 3px 8px; border-radius: 4px; font-size: 0.85rem;
+    }
+
+    /* Code Block */
+    .code-box {
+      background: #0f172a; color: #f8fafc; border: 3px solid var(--border-dark);
+      padding: 20px; font-family: var(--font-code); font-size: 0.85rem; line-height: 1.6;
+      overflow-x: auto; position: relative; box-shadow: 0 5px 0 var(--border-dark);
+    }
+    .code-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; font-family: var(--font-pixel); font-size: 0.65rem; color: #94a3b8;
+    }
+
+    /* Interactive Visualizer Canvas */
+    .viz-container {
+      background: #f8fafc; border: 2px dashed var(--border-dark); padding: 20px;
+      border-radius: 4px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+
+    /* Speech Bubble */
+    .hero-speech-bubble { transition: transform 0.15s ease; }
+    .hero-speech-bubble:hover { transform: translateY(-2px); }
+
+    /* Bottom Actions */
+    .bottom-section {
+      text-align: center; margin-top: 30px; display: flex; flex-direction: column;
+      align-items: center; gap: 16px;
+    }
+    .pixel-divider { width: 180px; height: 4px; background: repeating-linear-gradient(to right, var(--border-dark) 0px, var(--border-dark) 8px, transparent 8px, transparent 16px); }
+  </style>
+</head>
+<body>
+
+  <div class="cyber-grid-bg"></div>
+
+  <!-- Persistent Top Reading Progress Bar -->
+  <div id="global-top-progress">
+    <div class="top-progress-hero-badge">
+      <div class="top-hero-symbol-box">[◉]</div>
+      <div class="top-hero-title">IRON MAN // Arc Reactor Core</div>
+    </div>
+    <div class="top-progress-track-wrapper" id="global-progress-track" title="Click anywhere along the bar to jump in the dossier">
+      <div class="top-progress-fill-bar" id="global-progress-fill"></div>
+      <div class="top-progress-slider-marker" id="global-progress-marker">◉</div>
+    </div>
+    <div class="top-progress-percent-readout" id="global-progress-pct">0%</div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <header class="pixel-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 8,20 11,20 12,14 16,14 17,20 20,20 15,2"/><polygon points="12,6 10,12 14,12" fill="#facc15"/></svg></div>
+        <div class="brand-text">ALGO-<span>VENGERS</span></div>
+      </a>
+
+      <div class="breadcrumbs">
+        <a href="index.html">HQ</a> <span>▶</span>
+        <a href="missions.html">MISSIONS</a> <span>▶</span>
+        <a href="mission-02.html">MISSION 02</a> <span>▶</span>
+        <span style="color: var(--border-dark); font-weight: bold;">TOPIC 04</span>
+      </div>
+
+      <div>
+        <a href="mission-02.html" class="pixel-btn pixel-btn-secondary" style="padding: 6px 12px; font-size: 0.6rem;">← MISSION HUB</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Topic Hero Section -->
+      <section class="topic-hero">
+        <div class="hero-sprite-frame">
+          <img src="assets/ironman.png" alt="IRON MAN" class="hero-avatar-img">
+        </div>
+        <div>
+          <span class="hero-meta-tag">MISSION 02 // [◉] IRON MAN</span>
+          <h1 class="hero-title pixel-heading">DICTIONARIES & HASH TABLES</h1>
+          <div class="hero-tagline">ARC REACTOR CONSTANT-TIME ACCESS // Constant-Time Hash Tables & Direct Addressing</div>
+          <div class="hero-quote-box">"JARVIS, run a direct hash key probe. When the suit needs targeting coordinates, waiting O(n) is out of the question."</div>
+        </div>
+      </section>
+
+      <!-- 01. S.H.I.E.L.D. Mission Briefing & Marvel Story -->
+      <section class="content-card" style="border-left: 6px solid #b91c1c;">
+        <h2 class="card-heading">
+          <span>01. S.H.I.E.L.D. MISSION BRIEFING // OP-IRON-07</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">JARVIS ARC REACTOR TARGETING CACHE</span>
+        </h2>
+        <div class="card-desc-text" style="font-size: 1.02rem; font-weight: 500; color: #0f172a; margin-bottom: 12px;">
+          Ultron sentries are swarming the Stark Tower airspace. Tony Stark's targeting HUD needs instantaneous, sub-millisecond retrieval of enemy armor weakness coordinates. Scanning an array in O(n) time is far too slow during supersonic combat.
+        </div>
+        <div style="background: #f1f5f9; border: 2px dashed #475569; padding: 12px 16px; margin-bottom: 10px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #dc2626; margin-bottom: 4px;">CRITICAL CRISIS:</div>
+          <div style="font-size: 0.9rem; color: #334155;">Searching unsorted records requires O(n) scans; sorted arrays take O(log n) search and O(n) insertion. Tony cannot wait for arrays to shift while under heavy fire.</div>
+        </div>
+        <div style="background: #ecfdf5; border: 2px solid #10b981; padding: 12px 16px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #059669; margin-bottom: 4px;">TACTICAL OBJECTIVE:</div>
+          <div style="font-size: 0.9rem; color: #065f46;">Help Iron Man compute hash bucket indices, insert threat coordinates, and probe past collisions in O(1) time.</div>
+        </div>
+      </section>
+
+      <!-- 02. Formal Specification & Problem Invariants -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>02. FORMAL PROBLEM SPECIFICATION & INVARIANTS</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">ACADEMIC CURRICULUM</span>
+        </h2>
+        <div class="card-desc-text">
+<p>A <strong>Dictionary</strong> (or Associative Array / Map) is an abstract data type storing key-value pairs \((k, v)\), supporting three core operations: <code>Insert(k, v)</code>, <code>Delete(k)</code>, and <code>Search(k)</code>. A <strong>Hash Table</strong> is the definitive data structure implementing dictionaries with average \(\Theta(1)\) constant-time access.</p>
+<p><strong>Hash Function Architecture:</strong> A hash function \(h(k)\) maps arbitrary universe keys \(U\) into discrete integer bucket indices \(\{0, 1, \dots, m-1\}\). A desirable hash function satisfies:</p>
+<ul>
+  <li><strong>Deterministic:</strong> The same key must always produce the identical hash code.</li>
+  <li><strong>Uniform Distribution:</strong> Spreads keys uniformly across all \(m\) slots to minimize collisions (Simple Uniform Hashing Assumption).</li>
+  <li><strong>Fast Computation:</strong> Computable in \(O(1)\) arithmetic operations.</li>
+</ul>
+<p><strong>Collision Resolution Strategies:</strong> By the Pigeonhole Principle, since \(|U| > m\), collisions (\(h(k_1) = h(k_2)\)) are inevitable. Resolved via:</p>
+<ol>
+  <li><strong>Separate Chaining (Open Hashing):</strong> Each bucket stores a linked list of collided key-value pairs.</li>
+  <li><strong>Open Addressing (Closed Hashing):</strong> All items stored directly in the table array; collisions resolved via probe sequences: Linear Probing (\(h(k, i) = (h'(k) + i) mod m\)), Quadratic Probing (\((h'(k) + c_1 i + c_2 i^2) mod m\)), or Double Hashing (\((h_1(k) + i \cdot h_2(k)) mod m\)).</li>
+</ol>
+</div>
+      </section>
+
+      <!-- Speech Bubble Callout 1 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #fee2e2; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/ironman.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="Iron Man">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #b91c1c; margin-bottom: 4px;">
+          [◉] COMM-LINK // Iron Man
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "Rule number one of Stark Engineering: Never scan an array when a hash function can jump directly to the memory address in O(1) constant time!"
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 03. Naive Approach vs Optimal Formulation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>03. BRUTE FORCE VS ALGORITHMIC OPTIMALITY</span>
+          <span style="font-size: 0.6rem; color: var(--color-gold);">STRATEGIC COMPARISON</span>
+        </h2>
+        <div class="card-desc-text">
+<p>Storing \(1,000,000\) Stark Industries personnel records in an unsorted array requires scanning all \(10^6\) entries on every search (\(O(n)\)). Even a sorted array requires \(O(\log n)\) search and an agonizing \(O(n)\) insertion due to shifting. Iron Man's Hash Table achieves instantaneous \(O(1)\) average-time lookups and insertions by computing the exact memory bucket via modular arithmetic.</p>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:12px;">
+  <div style="background:#fee2e2; border:2px solid #ef4444; padding:12px; font-size:0.85rem;">
+    <strong style="color:#b91c1c;">UNSORTED ARRAY / LIST</strong><br>
+    Search: \(O(n)\)<br>
+    Insertion: \(O(1)\)<br>
+    Unusable for high-throughput database lookups.
+  </div>
+  <div style="background:#dcfce7; border:2px solid #16a34a; padding:12px; font-size:0.85rem;">
+    <strong style="color:#15803d;">HASH TABLE (JARVIS CACHE)</strong><br>
+    Search: \(\Theta(1)\) average<br>
+    Insertion: \(\Theta(1)\) average<br>
+    Direct memory addressing via hash keys; zero searching loops.
+  </div>
+</div>
+</div>
+        <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px 16px; margin-top: 12px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #1d4ed8; margin-bottom: 4px;">WHY THIS ALGORITHM WINS:</div>
+          <div style="font-size: 0.9rem; color: #1e3a8a;">A Hash Table uses an arithmetic hash function h(k) = k % size to map keys directly to memory bucket addresses in O(1) average time, resolving collisions via linear probing.</div>
+        </div>
+      </section>
+
+      <!-- 04. Mathematical Formulation & Recurrence Derivation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>04. MATHEMATICAL PROOFS & RECURRENCES</span>
+          <span style="font-size: 0.6rem; color: #2563eb;">KATEX FORMULATION</span>
+        </h2>
+        <div class="math-callout">
+<p><strong>Load Factor (\(\alpha\)):</strong></p>
+\[ \alpha = \frac{n}{m} = \frac{\text{Number of elements stored}}{\text{Total bucket slots in table}} \]
+<p><strong>Average Search Time under Simple Uniform Hashing:</strong></p>
+<ul>
+  <li><strong>Separate Chaining:</strong> Unsuccessful Search = \(\Theta(1 + \alpha)\), Successful Search = \(\Theta(1 + \alpha/2)\).</li>
+  <li><strong>Open Addressing (Uniform Hashing):</strong> Unsuccessful Search \(\le \frac{1}{1 - \alpha}\), Successful Search \(\le \frac{1}{\alpha} \ln \frac{1}{1 - \alpha}\).</li>
+</ul>
+<p><em>Example:</em> If \(\alpha = 0.5\) (table half full), expected probes for an unsuccessful search in open addressing \(\le \frac{1}{1 - 0.5} = 2\) probes!</p>
+</div>
+      </section>
+
+      <!-- Speech Bubble Callout 2 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #fee2e2; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/ironman.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="Iron Man">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #b91c1c; margin-bottom: 4px;">
+          [◉] TACTICAL ADVICE // Iron Man
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "Watch your load factor alpha! Once your table passes 70% capacity, primary clustering will drag your supersonic suit down to linear crawl. Double that table and rehash!"
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 05. Concrete Worked Numerical Example -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>05. STEP-BY-STEP WORKED CALCULATION EXAMPLE</span>
+          <span style="font-size: 0.6rem; color: #16a34a;">NUMERICAL TRACE</span>
+        </h2>
+        <div class="card-desc-text">
+<p><strong>Worked Example:</strong> Insert keys <code>[23, 43, 13, 27, 33]</code> into a hash table of size \(m = 10\) using hash function \(h(k) = k mod 10\) and Linear Probing for collision resolution.</p>
+<ol style="margin-left:20px; line-height:1.8;">
+  <li><strong>Key 23:</strong> \(h(23) = 23 mod 10 = 3\). Slot 3 empty \(	o\) Store 23 at <strong>index 3</strong>.</li>
+  <li><strong>Key 43:</strong> \(h(43) = 43 mod 10 = 3\). Slot 3 occupied! Probe \(i=1\): \((3 + 1) mod 10 = 4\). Slot 4 empty \(	o\) Store 43 at <strong>index 4</strong>.</li>
+  <li><strong>Key 13:</strong> \(h(13) = 13 mod 10 = 3\). Slots 3 and 4 occupied! Probe \(i=2\): \((3 + 2) mod 10 = 5\). Slot 5 empty \(	o\) Store 13 at <strong>index 5</strong>.</li>
+  <li><strong>Key 27:</strong> \(h(27) = 27 mod 10 = 7\). Slot 7 empty \(	o\) Store 27 at <strong>index 7</strong>.</li>
+  <li><strong>Key 33:</strong> \(h(33) = 33 mod 10 = 3\). Slots 3, 4, 5 occupied. Probe \(i=3\): \((3 + 3) mod 10 = 6\). Slot 6 empty \(	o\) Store 33 at <strong>index 6</strong>.</li>
+</ol>
+<p><strong>Final Table:</strong> <code>[_, _, _, 23, 43, 13, 33, 27, _, _]</code>. Clusters form around index 3-6 (demonstrating Primary Clustering in linear probing!).</p>
+</div>
+      </section>
+
+      <!-- 06. Interactive Physical Tactical Simulation Arena -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>06. RETRO PHYSICAL GAME SIMULATION & YOUR CUSTOM INPUTS</span>
+          <span style="font-size: 0.6rem; color: var(--color-cyan);">LIVE SIMULATION CONSOLE</span>
+        </h2>
+        <div class="viz-container">
+          <div class="sim-tactical-header" style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 16px; padding: 12px 18px; background: #0f172a; border: 3px solid var(--border-dark); color: #f8fafc; box-shadow: 0 4px 0 var(--border-dark);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 52px; height: 56px; background: #fee2e2; border: 2px solid #ffffff; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
+                <img src="assets/ironman.png" style="max-width: 46px; max-height: 50px; width: auto; height: auto; object-fit: contain; image-rendering: pixelated;" alt="IRON MAN">
+              </div>
+              <div>
+                <div style="font-family: var(--font-pixel); font-size: 0.7rem; color: #facc15;">OPERATOR: [◉] IRON MAN</div>
+                <div style="font-family: var(--font-pixel-sub); font-size: 0.8rem; color: #94a3b8;">TACTICAL DAA PHYSICAL SIMULATION ENGINE</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-pixel); font-size: 0.6rem; background: #1e293b; color: #22c55e; padding: 6px 12px; border: 1px solid #475569;">
+              STATUS: READY
+            </div>
+          </div>
+          
+<div class="sim-game-wrapper" style="width: 100%; text-align: left;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #334155; padding-bottom: 8px;">
+    <div>
+      <span style="font-family: var(--font-pixel); font-size: 0.75rem; color: #b91c1c;">MISSION: JARVIS TARGETING HASH TABLE</span>
+      <p style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Direct address jump: h(k) = k % 8. Watch Tony Stark fly straight to memory buckets in O(1) time.</p>
+    </div>
+    <div style="font-family: var(--font-pixel); font-size: 0.65rem; background: #1e293b; color: #facc15; padding: 6px 10px; border: 1px solid #475569;">
+      LOAD FACTOR: <span id="stark-load" style="color: #38bdf8;">0.38</span> | BUCKETS: 8
+    </div>
+  </div>
+
+  <div style="background: #f1f5f9; border: 2px solid #0f172a; padding: 10px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <label style="font-family: var(--font-pixel); font-size: 0.62rem; color: #0f172a;">KEY (INT):</label>
+      <input type="number" id="stark-input-key" value="42" min="1" max="99" style="width: 60px; padding: 4px; font-family: var(--font-code); font-weight: bold; border: 2px solid #0f172a; text-align: center;">
+      <label style="font-family: var(--font-pixel); font-size: 0.62rem; color: #0f172a;">VAL:</label>
+      <input type="text" id="stark-input-val" value="Mark 42" style="width: 90px; padding: 4px; font-family: var(--font-code); font-weight: bold; border: 2px solid #0f172a; text-align: center;">
+    </div>
+    <div style="font-family: var(--font-code); font-size: 0.8rem; font-weight: bold; color: #b91c1c;">
+      HASH FORMULA: h(k) = k % 8 | AVG: O(1)
+    </div>
+  </div>
+
+  <div style="background: #090d16; border: 3px solid #0f172a; padding: 18px; border-radius: 6px; box-shadow: inset 0 0 16px rgba(0,0,0,0.9); margin-bottom: 14px; position: relative; min-height: 220px;">
+    <div id="stark-actor" style="position: absolute; top: 15px; left: 30px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 20; display: flex; flex-direction: column; align-items: center;">
+      <div style="font-family: var(--font-pixel); font-size: 0.5rem; background: #b91c1c; color: #fff; padding: 1px 4px; border-radius: 2px; margin-bottom: 2px;">◉ STARK</div>
+      <img src="assets/ironman.png" style="width: 46px; height: 52px; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 4px 8px rgba(185,28,28,0.7));">
+    </div>
+
+    <!-- 8 Hash Buckets Grid -->
+    <div id="stark-buckets-grid" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-top: 85px;">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+
+  <div style="background: #ffffff; border: 2px solid #0f172a; padding: 12px 16px; margin-bottom: 14px; min-height: 52px; display: flex; align-items: center;" id="stark-dialogue">
+    💬 <strong>Tony Stark:</strong> "Enter a key to watch JARVIS compute the hash index and jump directly to memory."
+  </div>
+
+  <div class="viz-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <button class="pixel-btn pixel-btn-primary" id="stark-btn-insert">◉ INSERT KEY</button>
+    <button class="pixel-btn pixel-btn-secondary" id="stark-btn-search">🔍 SEARCH KEY</button>
+    <button class="pixel-btn pixel-btn-secondary" id="stark-btn-reset">↺ RESET TABLE</button>
+  </div>
+</div>
+
+        </div>
+      </section>
+
+      <!-- 07. Asymptotic Derivation & Complexity Matrix -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>07. ASYMPTOTIC COMPLEXITY DERIVATION MATRIX</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">DAA BIG-O BOUNDS</span>
+        </h2>
+        <table class="algo-table">
+          <thead>
+            <tr>
+              <th>OPERATION / CASE</th>
+              <th>ASYMPTOTIC BOUND</th>
+              <th>SPACE / FOOTPRINT</th>
+              <th>MATHEMATICAL INVARIANT</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Average Search / Lookup</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #b91c1c; font-weight: 600;">Omega(1)</td>
+          <td style="color: #475569;">Direct hash indexing under uniform distribution</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Worst-Case Search (All Collide)</td>
+          <td><span class="complexity-badge">O(n)</span></td>
+          <td style="font-family: var(--font-code); color: #b91c1c; font-weight: 600;">Omega(n)</td>
+          <td style="color: #475569;">Occurs when all keys hash to the identical slot</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Average Insertion</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #b91c1c; font-weight: 600;">Omega(1)</td>
+          <td style="color: #475569;">Amortized O(1) including dynamic table doubling</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Average Deletion</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #b91c1c; font-weight: 600;">Omega(1)</td>
+          <td style="color: #475569;">Requires tombstone markers in open addressing</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Space Complexity</td>
+          <td><span class="complexity-badge">O(n + m)</span></td>
+          <td style="font-family: var(--font-code); color: #b91c1c; font-weight: 600;">O(n)</td>
+          <td style="color: #475569;">Total memory proportional to element count and bucket capacity</td>
+        </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 08. Interactive Asymptotic Growth Comparison Slider -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>08. ASYMPTOTIC GROWTH COMPARISON</span>
+          <span style="font-size: 0.6rem; color: var(--color-gold);">LIVE CALCULATOR</span>
+        </h2>
+        <div style="margin-bottom: 16px;">
+          <p class="card-desc-text">Drag the input size slider \(n\) to observe step counts diverge across complexity classes in real-time:</p>
+          <div style="background: #f1f5f9; border: 2px solid #0f172a; padding: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <label style="font-family: var(--font-pixel); font-size: 0.68rem; color: #0f172a;">INPUT SIZE (N):</label>
+              <input type="range" id="growth-slider" min="1" max="10" value="4" style="width: 160px; accent-color: #b91c1c;">
+              <span id="growth-n-val" style="font-family: var(--font-code); font-weight: bold; background: #0f172a; color: #facc15; padding: 4px 10px; border-radius: 4px;">n = 16</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #475569;">
+              Compare: \(O(1), O(\log n), O(n), O(n \log n), O(n^2), O(2^n)\)
+            </div>
+          </div>
+          
+          <div id="growth-bars-container" style="display: flex; flex-direction: column; gap: 10px; background: #ffffff; border: 2px solid #0f172a; padding: 16px;">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 09. Practical Systems Design & Code Implementation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>09. PRACTICAL SYSTEMS DESIGN & REFERENCE IMPLEMENTATION</span>
+          <span style="font-size: 0.6rem; color: #8b5cf6;">PRODUCTION ARCHITECTURE</span>
+        </h2>
+        <div class="card-desc-text">
+<p><strong>1. Dynamic Resizing & Rehashing:</strong> When the load factor exceeds a defined threshold (typically \(lpha \ge 0.7\) or \(0.75\)), open addressing performance deteriorates exponentially. The table doubles its capacity (\(m 	o 2m\)) and re-hashes all existing keys. This resizing takes \(O(n)\) but occurs infrequently, yielding \(O(1)\) amortized cost.</p>
+<p><strong>2. Primary Clustering in Linear Probing:</strong> Linear probing suffers from clusters: long contiguous runs of occupied slots that grow longer as more collisions occur. Double Hashing eliminates primary and secondary clustering by computing a secondary step size \(h_2(k)\).</p>
+<p><strong>3. Cryptographic Hash Functions:</strong> Standard hash functions (like modulo or polynomial rolling) are vulnerable to Denial-of-Service (HashDoS) collision attacks where an adversary injects millions of colliding keys. Security-sensitive engines use randomized hashing (SipHash) to preserve \(O(1)\) defense.</p>
+</div>
+        
+        <div class="code-box" style="margin-top: 18px;">
+          <div class="code-header">
+            <span>ALGORITHM SPECIFICATION // PYTHON 3</span>
+            <span>UTF-8 // VERIFIED OPTIMAL</span>
+          </div>
+          <pre><code>class JarvisHashTable:
+    """
+    Open Addressing Hash Table with Linear Probing and O(1) average lookup.
+    """
+    def __init__(self, size: int = 10):
+        self.size = size
+        self.table = [None] * size
+        self.count = 0
+        
+    def _hash(self, key: int) -> int:
+        return key % self.size
+        
+    def insert(self, key: int, value: str) -> bool:
+        if self.count >= self.size:
+            raise OverflowError("HASH TABLE FULL: Dynamic rehash required!")
+            
+        idx = self._hash(key)
+        for i in range(self.size):
+            probe_idx = (idx + i) % self.size
+            if self.table[probe_idx] is None or self.table[probe_idx][0] == key:
+                self.table[probe_idx] = (key, value)
+                self.count += 1
+                return True
+        return False
+        
+    def get(self, key: int) -> str | None:
+        idx = self._hash(key)
+        for i in range(self.size):
+            probe_idx = (idx + i) % self.size
+            entry = self.table[probe_idx]
+            if entry is None:
+                return None  # Key not found
+            if entry[0] == key:
+                return entry[1]
+        return None</code></pre>
+        </div>
+      </section>
+
+      <!-- Speech Bubble Callout 3 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #fee2e2; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/ironman.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="IRON MAN">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #b91c1c; margin-bottom: 4px;">
+          [◉] S.H.I.E.L.D. FIELD DIRECTIVE // IRON MAN
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "JARVIS, run a direct hash key probe. When the suit needs targeting coordinates, waiting O(n) is out of the question." Remember: asymptotic guarantees hold when n grows large, but cache coherence, memory layout, and branch prediction dominate for small inputs in production hardware.
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 10. Interactive Mini Quiz (4 Questions) -->
+      <section class="content-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h2 class="card-heading" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">
+            <span>10. MISSION ASSESSMENT // TEST YOUR MASTERY</span>
+          </h2>
+          <div style="font-family: var(--font-pixel); font-size: 0.68rem; background: #0f172a; color: #22c55e; padding: 6px 12px; border: 2px solid var(--border-dark);" id="quiz-score-badge">
+            SCORE: 0 / 4 (0%)
+          </div>
+        </div>
+        <p class="card-desc-text">Test your mastery of DICTIONARIES & HASH TABLES with these university exam questions:</p>
+        <div>
+          
+        <div class="quiz-card" id="quiz-card-0" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #b91c1c;">QUESTION 1 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-0" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            What is the average time complexity of searching for a key in a Hash Table under simple uniform hashing?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[A]</span> O(1)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[B]</span> O(log n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[C]</span> O(n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[D]</span> O(n log n)
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-0" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-1" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #b91c1c;">QUESTION 2 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-1" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            What is the Load Factor (alpha) of a hash table containing 60 elements across 100 buckets?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[A]</span> 1.67
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[B]</span> 0.60
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[C]</span> 6.0
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[D]</span> 0.06
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-1" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-2" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #b91c1c;">QUESTION 3 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-2" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            In Open Addressing with Linear Probing, what phenomenon causes long contiguous runs of occupied slots?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[A]</span> Secondary Clustering
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[B]</span> Primary Clustering
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[C]</span> Hash Inversion
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[D]</span> Modular Drift
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-2" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-3" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #b91c1c;">QUESTION 4 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-3" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            What is the worst-case search time in a Hash Table if all n keys collide into the identical bucket?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[A]</span> O(1)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[B]</span> O(log n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[C]</span> O(n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #b91c1c;">[D]</span> O(2^n)
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-3" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        </div>
+      </section>
+
+      <!-- 11. Key Exam Takeaways -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>11. S.H.I.E.L.D. DEBRIEF & KEY EXAM TAKEAWAYS</span>
+          <span style="font-size: 0.6rem; color: var(--border-dark);">REVISION CHECKLIST</span>
+        </h2>
+        <p class="card-desc-text">Hash Tables are the workhorses of software engineering, providing O(1) average lookup, insert, and delete. Maintaining a low load factor via dynamic rehashing prevents performance degradation.</p>
+      </section>
+
+      <!-- Navigation & Return -->
+      <section class="bottom-section">
+        <div class="pixel-divider"></div>
+        <div style="display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
+          <a href="mission-02.html" class="pixel-btn pixel-btn-primary">← BACK TO MISSION 02</a>
+          <a href="missions.html" class="pixel-btn pixel-btn-secondary">ALL MISSIONS</a>
+          <a href="index.html" class="pixel-btn pixel-btn-accent">RETURN TO HQ</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer style="background: #0f172a; color: #f8fafc; border-top: 3px solid #000; padding: 24px 0; text-align: center; font-family: var(--font-pixel); font-size: 0.62rem; margin-top: 40px;">
+    <div class="container">
+      ALGO-VENGERS // DESIGN & ANALYSIS OF ALGORITHMS // S.H.I.E.L.D. DATABASE
+    </div>
+  </footer>
+
+  <script>
+    /* Retro Web Audio Engine */
+    class RetroAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.init();
+      }
+      init() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) this.ctx = new AudioContext();
+      }
+      ensure() {
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playTone(freq, type, duration, vol=0.1) {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      playClick() { this.playTone(600, 'square', 0.05, 0.08); }
+      playHover() { this.playTone(400, 'sine', 0.03, 0.04); }
+      playSuccess() {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.15);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.15);
+          });
+        } catch(e) {}
+      }
+      playError() {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          [220, 164.81].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.15);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.15);
+          });
+        } catch(e) {}
+      }
+    }
+    const retroAudio = new RetroAudioEngine();
+
+    const interactiveQuery = 'a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, .hero-speech-bubble, [role="button"], [data-hero-cursor], .quiz-opt-btn';
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveQuery)) {
+        retroAudio.playHover();
+      }
+    });
+
+    /* Persistent Top Reading Progress Bar */
+    const topFillBar = document.getElementById('global-progress-fill');
+    const topMarker = document.getElementById('global-progress-marker');
+    const topPct = document.getElementById('global-progress-pct');
+    const topTrack = document.getElementById('global-progress-track');
+
+    function updateTopReadingProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+      
+      if (topFillBar) topFillBar.style.width = pct + '%';
+      if (topPct) topPct.textContent = pct + '%';
+      if (topMarker) {
+        topMarker.style.left = pct + '%';
+      }
+    }
+
+    window.addEventListener('scroll', updateTopReadingProgress, { passive: true });
+    updateTopReadingProgress();
+
+    topTrack?.addEventListener('click', (e) => {
+      const rect = topTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: ratio * docHeight, behavior: 'smooth' });
+      retroAudio.playClick();
+    });
+
+    /* Asymptotic Growth Comparison Slider */
+    const growthSlider = document.getElementById('growth-slider');
+    const growthNVal = document.getElementById('growth-n-val');
+    const growthBarsContainer = document.getElementById('growth-bars-container');
+    const nPowers = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
+
+    function renderGrowthBars() {
+      const idx = parseInt(growthSlider.value) - 1;
+      const n = nPowers[idx];
+      growthNVal.textContent = `n = ${n}`;
+      
+      const c_const = 1;
+      const c_log = Math.round(Math.log2(n) * 10) / 10;
+      const c_lin = n;
+      const c_nlogn = Math.round(n * Math.log2(n));
+      const c_quad = n * n;
+      const c_exp = n <= 32 ? Math.pow(2, n) : '1.79e+308+';
+
+      const classes = [
+        { name: 'O(1) Constant', ops: c_const, color: '#22c55e', pct: 2 },
+        { name: 'O(log n) Logarithmic', ops: c_log, color: '#38bdf8', pct: Math.min(100, (c_log / 10) * 12) },
+        { name: 'O(n) Linear', ops: c_lin, color: '#facc15', pct: Math.min(100, (c_lin / 1024) * 45) },
+        { name: 'O(n log n) Linearithmic', ops: c_nlogn, color: '#f97316', pct: Math.min(100, (c_nlogn / 10240) * 70) },
+        { name: 'O(n^2) Quadratic', ops: c_quad, color: '#ef4444', pct: Math.min(100, Math.max(10, (c_quad / 1000000) * 100)) },
+        { name: 'O(2^n) Exponential', ops: c_exp, color: '#881337', pct: 100 }
+      ];
+
+      growthBarsContainer.innerHTML = classes.map(c => `
+        <div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-pixel); font-size: 0.62rem; margin-bottom: 4px;">
+            <span style="color: ${c.color};">${c.name}</span>
+            <span style="font-family: var(--font-code); font-weight: bold; color: #0f172a;">${typeof c.ops === 'number' ? c.ops.toLocaleString() : c.ops} operations</span>
+          </div>
+          <div style="width: 100%; height: 14px; background: #f1f5f9; border: 1.5px solid #0f172a; border-radius: 2px; overflow: hidden;">
+            <div style="width: ${c.pct}%; height: 100%; background: ${c.color}; transition: width 0.3s ease;"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    growthSlider?.addEventListener('input', () => {
+      renderGrowthBars();
+      retroAudio.playHover();
+    });
+    renderGrowthBars();
+
+    /* Interactive Mini-Quiz Logic */
+    const quizData = [{'answer': 0, 'explanation': 'Under simple uniform hashing and a bounded load factor, searching a Hash Table takes O(1) constant time on average.'}, {'answer': 1, 'explanation': 'Load factor alpha = n / m = 60 / 100 = 0.60.'}, {'answer': 1, 'explanation': 'Primary clustering is the tendency for linear probing to create long blocks of occupied cells, increasing average probe counts.'}, {'answer': 2, 'explanation': 'If every single key collides into the exact same bucket, the table degenerates into a linear linked list of length n, requiring O(n) search.'}];
+    let quizScore = 0;
+    const answeredQuestions = new Set();
+
+    document.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = parseInt(btn.dataset.qid);
+        const oid = parseInt(btn.dataset.oid);
+        if (answeredQuestions.has(qid)) return;
+        answeredQuestions.add(qid);
+
+        const q = quizData[qid];
+        const card = document.getElementById(`quiz-card-${qid}`);
+        const statusTag = document.getElementById(`quiz-status-${qid}`);
+        const feedbackBox = document.getElementById(`quiz-feedback-${qid}`);
+        const allOpts = card.querySelectorAll('.quiz-opt-btn');
+
+        allOpts.forEach((b, idx) => {
+          if (idx === q.answer) {
+            b.style.background = '#dcfce7';
+            b.style.borderColor = '#16a34a';
+            b.style.color = '#15803d';
+          } else if (idx === oid && oid !== q.answer) {
+            b.style.background = '#fee2e2';
+            b.style.borderColor = '#ef4444';
+            b.style.color = '#b91c1c';
+          }
+          b.disabled = true;
+        });
+
+        feedbackBox.style.display = 'block';
+        if (oid === q.answer) {
+          quizScore++;
+          retroAudio.playSuccess();
+          statusTag.textContent = 'CORRECT';
+          statusTag.style.background = '#dcfce7';
+          statusTag.style.color = '#16a34a';
+          feedbackBox.style.background = '#f0fdf4';
+          feedbackBox.style.borderColor = '#16a34a';
+          feedbackBox.innerHTML = `<strong>✨ EXCELLENT WORK!</strong><br>${q.explanation}`;
+        } else {
+          retroAudio.playError();
+          statusTag.textContent = 'INCORRECT';
+          statusTag.style.background = '#fee2e2';
+          statusTag.style.color = '#ef4444';
+          feedbackBox.style.background = '#fef2f2';
+          feedbackBox.style.borderColor = '#ef4444';
+          feedbackBox.innerHTML = `<strong>⚠️ TACTICAL REVIEW:</strong><br>${q.explanation}`;
+        }
+
+        const pct = Math.round((quizScore / quizData.length) * 100);
+        const scoreBadge = document.getElementById('quiz-score-badge');
+        if (scoreBadge) scoreBadge.textContent = `SCORE: ${quizScore} / ${quizData.length} (${pct}%)`;
+      });
+    });
+
+    // KaTeX Auto-Render Math
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "\\[", right: "\\]", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    });
+
+    // Visualizer Specific Game Loop Logic
+    
+const starkGrid = document.getElementById('stark-buckets-grid');
+const starkActor = document.getElementById('stark-actor');
+const starkDiag = document.getElementById('stark-dialogue');
+const starkKey = document.getElementById('stark-input-key');
+const starkVal = document.getElementById('stark-input-val');
+const starkLoad = document.getElementById('stark-load');
+
+let starkBuckets = Array(8).fill(null);
+starkBuckets[1] = { key: 9, val: 'Hulkbuster' };
+starkBuckets[3] = { key: 11, val: 'NanoSuit' };
+starkBuckets[7] = { key: 23, val: 'ArcReactor' };
+let starkIsBusy = false;
+
+function renderStarkBuckets() {
+  starkGrid.innerHTML = '';
+  let count = 0;
+  for (let i = 0; i < 8; i++) {
+    const b = document.createElement('div');
+    b.id = `stark-bucket-${i}`;
+    b.style.cssText = 'background: #1e293b; border: 2px solid #475569; padding: 8px 4px; text-align: center; border-radius: 4px; min-height: 70px; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s ease;';
+    const entry = starkBuckets[i];
+    if (entry) {
+      count++;
+      b.innerHTML = `
+        <span style="font-family: var(--font-pixel); font-size: 0.55rem; color: #facc15;">[${i}]</span>
+        <div style="background: #b91c1c; color: #fff; font-family: var(--font-code); font-size: 0.65rem; padding: 2px; border-radius: 2px; font-weight: bold;">k:${entry.key}</div>
+        <span style="font-size: 0.55rem; color: #94a3b8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${entry.val}</span>
+      `;
+    } else {
+      b.innerHTML = `
+        <span style="font-family: var(--font-pixel); font-size: 0.55rem; color: #64748b;">[${i}]</span>
+        <span style="font-family: var(--font-pixel); font-size: 0.5rem; color: #475569;">EMPTY</span>
+        <span></span>
+      `;
+    }
+    starkGrid.appendChild(b);
+  }
+  starkLoad.textContent = (count / 8).toFixed(2);
+}
+renderStarkBuckets();
+
+// INSERT: Tony computes hash k % 8, flies to bucket, probes on collision
+document.getElementById('stark-btn-insert')?.addEventListener('click', () => {
+  if (starkIsBusy) return;
+  starkIsBusy = true;
+  retroAudio.playClick();
+  const k = parseInt(starkKey.value) || 42;
+  const v = starkVal.value || 'Data';
+  const initialHash = k % 8;
+  
+  starkDiag.innerHTML = `◉ <strong>Tony Stark:</strong> "Computing hash: h(${k}) = ${k} % 8 = ${initialHash}. Flying to Bucket [${initialHash}]..."`;
+  
+  const bEl = document.getElementById(`stark-bucket-${initialHash}`);
+  if (bEl) {
+    const rect = bEl.getBoundingClientRect();
+    const parentRect = starkGrid.getBoundingClientRect();
+    starkActor.style.left = `${rect.left - parentRect.left + 15}px`;
+    bEl.style.borderColor = '#facc15';
+  }
+  
+  setTimeout(() => {
+    // Check collision
+    if (starkBuckets[initialHash] === null || starkBuckets[initialHash].key === k) {
+      retroAudio.playSuccess();
+      starkBuckets[initialHash] = { key: k, val: v };
+      renderStarkBuckets();
+      starkDiag.innerHTML = `
+        <div style="border-left: 4px solid #b91c1c; padding-left: 8px;">
+          <strong style="color: #b91c1c;">◉ DIRECT HIT: BUCKET [${initialHash}] STORED</strong><br>
+          <span>Key ${k} placed with zero collisions in strictly <strong>O(1)</strong> time!</span>
+        </div>
+      `;
+      setTimeout(() => { starkActor.style.left = '30px'; starkIsBusy = false; }, 800);
+    } else {
+      // Collision! Linear probe
+      retroAudio.playHover();
+      starkDiag.innerHTML = `⚠️ <strong>Collision!</strong> Bucket [${initialHash}] occupied by Key ${starkBuckets[initialHash].key}. Linear probing to next slot...`;
+      let nextSlot = (initialHash + 1) % 8;
+      
+      setTimeout(() => {
+        const nextB = document.getElementById(`stark-bucket-${nextSlot}`);
+        if (nextB) {
+          const rect = nextB.getBoundingClientRect();
+          const parentRect = starkGrid.getBoundingClientRect();
+          starkActor.style.left = `${rect.left - parentRect.left + 15}px`;
+        }
+        starkBuckets[nextSlot] = { key: k, val: v };
+        renderStarkBuckets();
+        retroAudio.playSuccess();
+        starkDiag.innerHTML = `
+          <div style="border-left: 4px solid #facc15; padding-left: 8px;">
+            <strong style="color: #b45309;">◉ COLLISION RESOLVED: BUCKET [${nextSlot}]</strong><br>
+            <span>Linear probe placed key ${k} in next open slot.</span>
+          </div>
+        `;
+        setTimeout(() => { starkActor.style.left = '30px'; starkIsBusy = false; }, 800);
+      }, 700);
+    }
+  }, 600);
+});
+
+// SEARCH: Tony jumps directly to hash bucket
+document.getElementById('stark-btn-search')?.addEventListener('click', () => {
+  if (starkIsBusy) return;
+  starkIsBusy = true;
+  retroAudio.playClick();
+  const k = parseInt(starkKey.value) || 42;
+  const hashIdx = k % 8;
+  
+  starkDiag.innerHTML = `🔍 <strong>Tony Stark:</strong> "JARVIS jumping directly to calculated address: h(${k}) = ${hashIdx}..."`;
+  const bEl = document.getElementById(`stark-bucket-${hashIdx}`);
+  if (bEl) {
+    const rect = bEl.getBoundingClientRect();
+    const parentRect = starkGrid.getBoundingClientRect();
+    starkActor.style.left = `${rect.left - parentRect.left + 15}px`;
+    bEl.style.boxShadow = '0 0 12px #38bdf8';
+  }
+  
+  setTimeout(() => {
+    const item = starkBuckets[hashIdx];
+    if (item && item.key === k) {
+      retroAudio.playSuccess();
+      starkDiag.innerHTML = `🎉 <strong>Target Acquired!</strong> Key ${k} found at Bucket [${hashIdx}] -> "${item.val}" in <strong>O(1)</strong>!`;
+    } else {
+      starkDiag.innerHTML = `⚠️ <strong>Key ${k} not at primary hash address.</strong> Probing sequence evaluated.`;
+    }
+    setTimeout(() => {
+      if (bEl) bEl.style.boxShadow = 'none';
+      starkActor.style.left = '30px';
+      starkIsBusy = false;
+    }, 800);
+  }, 600);
+});
+
+document.getElementById('stark-btn-reset')?.addEventListener('click', () => {
+  retroAudio.playClick();
+  starkBuckets = Array(8).fill(null);
+  starkBuckets[1] = { key: 9, val: 'Hulkbuster' };
+  starkBuckets[3] = { key: 11, val: 'NanoSuit' };
+  renderStarkBuckets();
+  starkActor.style.left = '30px';
+  starkDiag.innerHTML = `💬 <strong>Tony Stark:</strong> "Hash table reset to baseline cache."`;
+  starkIsBusy = false;
+});
+
+  </script>
+</body>
+</html>

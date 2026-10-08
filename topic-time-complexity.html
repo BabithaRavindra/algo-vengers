@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIME COMPLEXITY // [✦] DOCTOR STRANGE — ALGO-VENGERS</title>
+  
+  <meta name="description" content="Design & Analysis of Algorithms: TIME COMPLEXITY. Mission 01: FOUNDATIONS.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- KaTeX for beautiful math formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --border-dark: #0f172a;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --color-gold: #d97706;
+      --color-cyan: #0284c7;
+      --hero-accent: #7e22ce;
+      --badge-bg: #f3e8ff;
+
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-pixel-sub: 'Silkscreen', monospace;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+      --top-bar-height: 32px;
+      --nav-height: 72px;
+      --container-max: 1100px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Pixelated retro mouse pointer */
+    html, body {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Cpath%20fill%3D%22%230f172a%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.5%22%20d%3D%22M2%202v18l5-5%204%208%203-1.5-4-8h6L2%202z%22/%3E%20%3C/svg%3E") 0 0, auto !important;
+    }
+    
+    body {
+      overflow-x: hidden;
+      min-height: 100vh;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-main);
+    }
+
+    /* Native CSS Circular Hero Emblem Cursor on all interactive elements (ZERO TRAILING) */
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, .hero-speech-bubble, [role="button"], [data-hero-cursor], .quiz-opt-btn {
+      cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%237e22ce%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%230f172a%22%20stroke%3D%22%23f59e0b%22%20stroke-width%3D%221.5%22/%3E%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%226%22%20ry%3D%223.5%22%20fill%3D%22%23f59e0b%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222%22%20fill%3D%22%2322c55e%22/%3E%20%3C/svg%3E") 16 16, pointer !important;
+    }
+
+    .cyber-grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none; z-index: 0;
+    }
+    .container { max-width: var(--container-max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .pixel-heading { font-family: var(--font-pixel); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Pixel Buttons */
+    .pixel-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; font-family: var(--font-pixel); font-size: 0.65rem;
+      text-decoration: none; text-transform: uppercase; border: 3px solid var(--border-dark);
+      position: relative; user-select: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 4px 0 0 var(--border-dark);
+    }
+    .pixel-btn:hover { transform: translateY(-2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 6px 0 0 var(--border-dark); }
+    .pixel-btn:active { transform: translateY(2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 2px 0 0 var(--border-dark); }
+    .pixel-btn-primary { background: #facc15; color: #0f172a; font-weight: bold; }
+    .pixel-btn-secondary { background: #ffffff; color: var(--color-cyan); }
+    .pixel-btn-accent { background: var(--hero-accent); color: #ffffff; }
+
+    /* Sticky Navbar */
+    .pixel-navbar {
+      position: fixed; top: var(--top-bar-height); left: 0; width: 100%; height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--border-dark); z-index: 1000; display: flex; align-items: center;
+    }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; background: #facc15; border: 2px solid var(--border-dark); display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 22px; height: 22px; fill: var(--border-dark); }
+    .brand-text { font-family: var(--font-pixel); font-size: 1.05rem; color: var(--border-dark); }
+    .brand-text span { color: #dc2626; }
+    .breadcrumbs { font-family: var(--font-pixel); font-size: 0.6rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .breadcrumbs a { color: var(--color-cyan); text-decoration: none; }
+
+    /* Persistent Top Reading Progress Bar */
+    #global-top-progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--top-bar-height);
+      background: #0f172a; border-bottom: 2px solid #000; z-index: 10002;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .top-progress-hero-badge {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .top-hero-symbol-box {
+      width: 22px; height: 22px; background: #f3e8ff; color: #7e22ce;
+      border: 1.5px solid #7e22ce; font-family: var(--font-pixel); font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 2px;
+    }
+    .top-hero-title {
+      font-family: var(--font-pixel); font-size: 0.58rem; color: #f8fafc; letter-spacing: 0.5px;
+    }
+    .top-progress-track-wrapper {
+      flex: 1; max-width: 650px; margin: 0 20px; height: 10px; background: #1e293b;
+      border: 1.5px solid #475569; border-radius: 999px; position: relative; cursor: pointer;
+    }
+    .top-progress-fill-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #7e22ce, #a855f7, #f59e0b); border-radius: 999px;
+      transition: width 0.08s ease-out;
+    }
+    .top-progress-slider-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; background: #0f172a; border: 2px solid #7e22ce;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-pixel); font-size: 0.65rem; color: #7e22ce;
+      box-shadow: 0 0 10px #7e22ce; pointer-events: none; transition: left 0.08s ease-out;
+    }
+    .top-progress-percent-readout {
+      font-family: var(--font-pixel); font-size: 0.65rem; color: #facc15; min-width: 50px; text-align: right; flex-shrink: 0;
+    }
+
+    /* Main Container */
+    main { flex: 1; padding-top: calc(var(--nav-height) + var(--top-bar-height) + 24px); padding-bottom: 60px; }
+
+    /* Topic Hero Section */
+    .topic-hero {
+      background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: 0 6px 0 var(--border-dark); padding: 32px;
+      margin-bottom: 32px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center;
+    }
+    .hero-sprite-frame {
+      width: 120px; height: 130px; background: var(--badge-bg);
+      border: 3px solid var(--border-dark); display: flex; align-items: center; justify-content: center;
+      position: relative; box-shadow: 0 4px 0 var(--border-dark); overflow: hidden;
+    }
+    .hero-avatar-img {
+      max-width: 100px; max-height: 112px; width: auto; height: auto;
+      object-fit: contain; image-rendering: pixelated;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .topic-hero:hover .hero-avatar-img { transform: scale(1.1) translateY(-3px); }
+
+    .hero-meta-tag {
+      display: inline-block; font-family: var(--font-pixel); font-size: 0.6rem;
+      background: #ffffff; border: 2px solid var(--border-dark); padding: 3px 10px;
+      margin-bottom: 10px; font-weight: bold; color: var(--hero-accent); box-shadow: 0 2px 0 var(--border-dark);
+    }
+    .hero-title { font-size: 1.6rem; margin-bottom: 12px; line-height: 1.3; color: var(--border-dark); }
+    .hero-tagline { font-family: var(--font-code); font-size: 0.95rem; color: var(--text-muted); margin-bottom: 14px; font-weight: 600; }
+    .hero-quote-box {
+      background: #f1f5f9; border-left: 4px solid var(--hero-accent);
+      padding: 10px 14px; font-style: italic; color: #1e293b; font-size: 0.88rem;
+    }
+
+    /* Content Cards */
+    .content-card {
+      background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: 0 5px 0 var(--border-dark); padding: 28px; margin-bottom: 28px;
+    }
+    .card-heading {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-pixel); font-size: 0.85rem; color: var(--border-dark);
+      margin-bottom: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;
+    }
+    .card-desc-text { font-size: 0.95rem; color: #1e293b; line-height: 1.7; margin-bottom: 16px; }
+    
+    .math-callout {
+      background: #f1f5f9; border: 2px solid var(--border-dark); padding: 16px 20px;
+      font-size: 0.95rem; margin-bottom: 16px; color: #0f172a;
+      box-shadow: 0 3px 0 var(--border-dark); overflow-x: auto;
+    }
+
+    /* Table */
+    .algo-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+    .algo-table th, .algo-table td { border: 2px solid var(--border-dark); padding: 12px 14px; text-align: left; }
+    .algo-table th { background: #f8fafc; font-family: var(--font-pixel); font-size: 0.65rem; color: var(--border-dark); }
+    .complexity-badge {
+      display: inline-block; font-family: var(--font-code); font-weight: bold;
+      background: var(--badge-bg); color: var(--hero-accent); border: 1px solid var(--hero-accent);
+      padding: 3px 8px; border-radius: 4px; font-size: 0.85rem;
+    }
+
+    /* Code Block */
+    .code-box {
+      background: #0f172a; color: #f8fafc; border: 3px solid var(--border-dark);
+      padding: 20px; font-family: var(--font-code); font-size: 0.85rem; line-height: 1.6;
+      overflow-x: auto; position: relative; box-shadow: 0 5px 0 var(--border-dark);
+    }
+    .code-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; font-family: var(--font-pixel); font-size: 0.65rem; color: #94a3b8;
+    }
+
+    /* Interactive Visualizer Canvas */
+    .viz-container {
+      background: #f8fafc; border: 2px dashed var(--border-dark); padding: 20px;
+      border-radius: 4px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+
+    /* Speech Bubble */
+    .hero-speech-bubble { transition: transform 0.15s ease; }
+    .hero-speech-bubble:hover { transform: translateY(-2px); }
+
+    /* Bottom Actions */
+    .bottom-section {
+      text-align: center; margin-top: 30px; display: flex; flex-direction: column;
+      align-items: center; gap: 16px;
+    }
+    .pixel-divider { width: 180px; height: 4px; background: repeating-linear-gradient(to right, var(--border-dark) 0px, var(--border-dark) 8px, transparent 8px, transparent 16px); }
+  </style>
+</head>
+<body>
+
+  <div class="cyber-grid-bg"></div>
+
+  <!-- Persistent Top Reading Progress Bar -->
+  <div id="global-top-progress">
+    <div class="top-progress-hero-badge">
+      <div class="top-hero-symbol-box">[✦]</div>
+      <div class="top-hero-title">DOCTOR STRANGE // Eye of Agamotto / Mystic Spark</div>
+    </div>
+    <div class="top-progress-track-wrapper" id="global-progress-track" title="Click anywhere along the bar to jump in the dossier">
+      <div class="top-progress-fill-bar" id="global-progress-fill"></div>
+      <div class="top-progress-slider-marker" id="global-progress-marker">✦</div>
+    </div>
+    <div class="top-progress-percent-readout" id="global-progress-pct">0%</div>
+  </div>
+
+  <!-- Sticky Navbar -->
+  <header class="pixel-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 8,20 11,20 12,14 16,14 17,20 20,20 15,2"/><polygon points="12,6 10,12 14,12" fill="#facc15"/></svg></div>
+        <div class="brand-text">ALGO-<span>VENGERS</span></div>
+      </a>
+
+      <div class="breadcrumbs">
+        <a href="index.html">HQ</a> <span>▶</span>
+        <a href="missions.html">MISSIONS</a> <span>▶</span>
+        <a href="mission-01.html">MISSION 01</a> <span>▶</span>
+        <span style="color: var(--border-dark); font-weight: bold;">TOPIC 02</span>
+      </div>
+
+      <div>
+        <a href="mission-01.html" class="pixel-btn pixel-btn-secondary" style="padding: 6px 12px; font-size: 0.6rem;">← MISSION HUB</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Topic Hero Section -->
+      <section class="topic-hero">
+        <div class="hero-sprite-frame">
+          <img src="assets/doctorstrange.png" alt="DOCTOR STRANGE" class="hero-avatar-img">
+        </div>
+        <div>
+          <span class="hero-meta-tag">MISSION 01 // [✦] DOCTOR STRANGE</span>
+          <h1 class="hero-title pixel-heading">TIME COMPLEXITY</h1>
+          <div class="hero-tagline">TEMPORAL PATH EXPANSION // Temporal Step Analysis & Growth Bounds</div>
+          <div class="hero-quote-box">"I viewed 14,000,605 algorithmic timelines. In every reality, asymptotic step count dictates victory."</div>
+        </div>
+      </section>
+
+      <!-- 01. S.H.I.E.L.D. Mission Briefing & Marvel Story -->
+      <section class="content-card" style="border-left: 6px solid #7e22ce;">
+        <h2 class="card-heading">
+          <span>01. S.H.I.E.L.D. MISSION BRIEFING // OP-STRANGE-02</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">THE 14,000,605 TIMELINES CRUCIBLE</span>
+        </h2>
+        <div class="card-desc-text" style="font-size: 1.02rem; font-weight: 500; color: #0f172a; margin-bottom: 12px;">
+          Dormammu's Dark Dimension is expanding through temporal fractures. Dr. Stephen Strange has projected consciousness into the Eye of Agamotto, calculating defense barriers across thousands of reality timelines. In every timeline, the total operational step count decides survival.
+        </div>
+        <div style="background: #f1f5f9; border: 2px dashed #475569; padding: 12px 16px; margin-bottom: 10px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #dc2626; margin-bottom: 4px;">CRITICAL CRISIS:</div>
+          <div style="font-size: 0.9rem; color: #334155;">Measuring defense efficiency using clock milliseconds fluctuates wildly due to dimensional turbulence and CPU background interference. Strange needs hardware-independent mathematical step counting.</div>
+        </div>
+        <div style="background: #ecfdf5; border: 2px solid #10b981; padding: 12px 16px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #059669; margin-bottom: 4px;">TACTICAL OBJECTIVE:</div>
+          <div style="font-size: 0.9rem; color: #065f46;">Observe how elementary operations scale across different spell complexity classes as input size N grows.</div>
+        </div>
+      </section>
+
+      <!-- 02. Formal Specification & Problem Invariants -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>02. FORMAL PROBLEM SPECIFICATION & INVARIANTS</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">ACADEMIC CURRICULUM</span>
+        </h2>
+        <div class="card-desc-text">
+<p>Time Complexity quantifies the number of elementary operational steps executed by an algorithm as a function of the input size \(n\). Rather than measuring clock milliseconds (which vary widely based on hardware architecture, CPU clock speed, compiler optimizations, and background operating system processes), Design and Analysis of Algorithms counts primitive operations (comparisons, arithmetic operations, assignments, and pointer dereferences).</p>
+<p>DAA classifies execution complexity across three canonical scenarios:</p>
+<ul>
+  <li><strong>Worst-Case Time (\(T_{	ext{worst}}(n)\)):</strong> The maximum number of steps executed over any input of length \(n\). Provides a mathematical guarantee that the algorithm will never exceed this bound.</li>
+  <li><strong>Best-Case Time (\(T_{	ext{best}}(n)\)):</strong> The minimum number of steps executed on the most favorable input configuration.</li>
+  <li><strong>Average-Case Time (\(T_{	ext{avg}}(n)\)):</strong> The expected step count averaged over all valid inputs according to a defined probability distribution (commonly uniform).</li>
+</ul>
+</div>
+      </section>
+
+      <!-- Speech Bubble Callout 1 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #f3e8ff; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/doctorstrange.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="Doctor Strange">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #7e22ce; margin-bottom: 4px;">
+          [✦] COMM-LINK // Doctor Strange
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "By the Eye of Agamotto, counting clock milliseconds on an unstable CPU is foolish! True sorcerers measure asymptotic step counts across all timelines."
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 03. Naive Approach vs Optimal Formulation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>03. BRUTE FORCE VS ALGORITHMIC OPTIMALITY</span>
+          <span style="font-size: 0.6rem; color: var(--color-gold);">STRATEGIC COMPARISON</span>
+        </h2>
+        <div class="card-desc-text">
+<p>Consider locating a target element inside a sorted sequence of \(n = 1,000,000\) elements. A naive Linear Scan inspects each index one by one, requiring up to \(1,000,000\) steps in the worst case. Doctor Strange's Binary Search halves the temporal dimension on every comparison, finding any element in at most \(\lceil \log_2(1,000,000) ceil = 20\) steps.</p>
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:12px;">
+  <div style="background:#fef3c7; border:2px solid #f59e0b; padding:12px; font-size:0.85rem;">
+    <strong style="color:#b45309;">LINEAR SEARCH [O(n)]</strong><br>
+    \(n = 10^6 \implies 1,000,000 	ext{ steps}\)<br>
+    Unbearable latency on big data pipelines; redundant scans through sorted sequences.
+  </div>
+  <div style="background:#dcfce7; border:2px solid #16a34a; padding:12px; font-size:0.85rem;">
+    <strong style="color:#15803d;">BINARY SEARCH [O(log n)]</strong><br>
+    \(n = 10^6 \implies 20 	ext{ steps}\)<br>
+    Exponential speedup; instantaneous lookup even across billions of records.
+  </div>
+</div>
+</div>
+        <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px 16px; margin-top: 12px;">
+          <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: #1d4ed8; margin-bottom: 4px;">WHY THIS ALGORITHM WINS:</div>
+          <div style="font-size: 0.9rem; color: #1e3a8a;">Asymptotic Time Complexity counts primitive operational steps (comparisons, arithmetic steps) across best, average, and worst-case scenarios, bounding growth as N scales to infinity.</div>
+        </div>
+      </section>
+
+      <!-- 04. Mathematical Formulation & Recurrence Derivation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>04. MATHEMATICAL PROOFS & RECURRENCES</span>
+          <span style="font-size: 0.6rem; color: #2563eb;">KATEX FORMULATION</span>
+        </h2>
+        <div class="math-callout">
+\[ T(n) = \sum_{i=1}^{k} c_i \cdot \text{step}_i(n) \]
+<p>For nested loop structures where inner loops execute \(j\) times:</p>
+\[ T(n) = \sum_{i=1}^{n} \sum_{j=1}^{i} c = c \cdot \sum_{i=1}^{n} i = c \cdot \frac{n(n+1)}{2} = \frac{c}{2}n^2 + \frac{c}{2}n \implies \Theta(n^2) \]
+<p>Asymptotic Dominance Hierarchy (from fastest to slowest):</p>
+\[ O(1) < O(\log \log n) < O(\log n) < O(\sqrt{n}) < O(n) < O(n \log n) < O(n^2) < O(n^3) < O(2^n) < O(n!) \]
+</div>
+      </section>
+
+      <!-- Speech Bubble Callout 2 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #f3e8ff; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/doctorstrange.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="Doctor Strange">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #7e22ce; margin-bottom: 4px;">
+          [✦] TACTICAL ADVICE // Doctor Strange
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "Notice how O(n^2) explodes exponentially as N passes 10,000? Master the time stone by breaking problems into O(n log n) divide-and-conquer portals."
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 05. Concrete Worked Numerical Example -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>05. STEP-BY-STEP WORKED CALCULATION EXAMPLE</span>
+          <span style="font-size: 0.6rem; color: #16a34a;">NUMERICAL TRACE</span>
+        </h2>
+        <div class="card-desc-text">
+<p><strong>Scenario:</strong> Calculating exact operations for a 2-level nested loop matrix comparison routine with \(n = 500\).</p>
+<ol style="margin-left:20px; line-height:1.8;">
+  <li><strong>Outer Loop:</strong> Executes \(i\) from \(0\) to \(n-1\) (\(500\) iterations).</li>
+  <li><strong>Inner Loop:</strong> For each \(i\), executes \(j\) from \(i+1\) to \(n-1\).</li>
+  <li><strong>Total Step Sum:</strong>
+      \[ \sum_{i=0}^{n-1} (n - 1 - i) = (n-1) + (n-2) + \dots + 1 + 0 = rac{(n-1)n}{2} \]
+  </li>
+  <li><strong>Plugging in \(n = 500\):</strong>
+      \[ 	ext{Operations} = rac{499 	imes 500}{2} = 124,750 	ext{ comparisons}. \]
+  </li>
+  <li><strong>Asymptotic Term:</strong> Dropping lower-order components (\(-rac{n}{2}\)) and coefficients yields \(\Theta(n^2)\).</li>
+</ol>
+</div>
+      </section>
+
+      <!-- 06. Interactive Physical Tactical Simulation Arena -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>06. RETRO PHYSICAL GAME SIMULATION & YOUR CUSTOM INPUTS</span>
+          <span style="font-size: 0.6rem; color: var(--color-cyan);">LIVE SIMULATION CONSOLE</span>
+        </h2>
+        <div class="viz-container">
+          <div class="sim-tactical-header" style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 16px; padding: 12px 18px; background: #0f172a; border: 3px solid var(--border-dark); color: #f8fafc; box-shadow: 0 4px 0 var(--border-dark);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 52px; height: 56px; background: #f3e8ff; border: 2px solid #ffffff; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.4);">
+                <img src="assets/doctorstrange.png" style="max-width: 46px; max-height: 50px; width: auto; height: auto; object-fit: contain; image-rendering: pixelated;" alt="DOCTOR STRANGE">
+              </div>
+              <div>
+                <div style="font-family: var(--font-pixel); font-size: 0.7rem; color: #facc15;">OPERATOR: [✦] DOCTOR STRANGE</div>
+                <div style="font-family: var(--font-pixel-sub); font-size: 0.8rem; color: #94a3b8;">TACTICAL DAA PHYSICAL SIMULATION ENGINE</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-pixel); font-size: 0.6rem; background: #1e293b; color: #22c55e; padding: 6px 12px; border: 1px solid #475569;">
+              STATUS: READY
+            </div>
+          </div>
+          
+<div class="sim-game-wrapper" style="width: 100%; text-align: left;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #334155; padding-bottom: 8px;">
+    <div>
+      <span style="font-family: var(--font-pixel); font-size: 0.75rem; color: #7e22ce;">MISSION: TEMPORAL STEP PORTAL</span>
+      <p style="font-size: 0.82rem; color: #64748b; margin-top: 2px;">Step through the mystic portals to calculate step counts across logarithmic, linear, and quadratic timelines.</p>
+    </div>
+    <div style="font-family: var(--font-pixel); font-size: 0.65rem; background: #1e293b; color: #facc15; padding: 6px 10px; border: 1px solid #475569;">
+      OPERATIONS: <span id="strange-ops-count" style="color: #38bdf8;">0</span> STEPS
+    </div>
+  </div>
+
+  <div style="background: #f1f5f9; border: 2px solid #0f172a; padding: 10px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <label style="font-family: var(--font-pixel); font-size: 0.62rem; color: #0f172a;">TIMELINE SIZE (N):</label>
+      <input type="range" id="strange-slider-n" min="2" max="16" value="6" style="width: 120px; accent-color: #7e22ce;">
+      <span id="strange-n-display" style="font-family: var(--font-code); font-weight: bold; background: #0f172a; color: #facc15; padding: 2px 8px; border-radius: 4px;">N = 6</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="pixel-btn pixel-btn-secondary" id="strange-mode-lin" style="padding: 4px 8px; font-size: 0.58rem; background: #dcfce7;">O(N) LINEAR</button>
+      <button class="pixel-btn pixel-btn-secondary" id="strange-mode-quad" style="padding: 4px 8px; font-size: 0.58rem;">O(N²) QUADRATIC</button>
+      <button class="pixel-btn pixel-btn-secondary" id="strange-mode-log" style="padding: 4px 8px; font-size: 0.58rem;">O(LOG N)</button>
+    </div>
+  </div>
+
+  <div style="background: #090d16; border: 3px solid #0f172a; padding: 18px; border-radius: 6px; box-shadow: inset 0 0 16px rgba(0,0,0,0.9); margin-bottom: 14px; position: relative; min-height: 220px; display: flex; flex-direction: column; justify-content: center;">
+    <div id="strange-hero-actor" style="position: absolute; top: 20px; left: 40px; transition: all 0.3s ease; z-index: 10; display: flex; flex-direction: column; align-items: center;">
+      <div style="font-family: var(--font-pixel); font-size: 0.5rem; background: #7e22ce; color: #fff; padding: 1px 4px; border-radius: 2px; margin-bottom: 2px;">✦ STRANGE</div>
+      <img src="assets/doctorstrange.png" style="width: 44px; height: 50px; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 4px 8px rgba(126,34,206,0.6));">
+    </div>
+
+    <!-- Portal Path Steps -->
+    <div id="strange-portals-container" style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; padding-top: 50px;">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+
+  <div style="background: #ffffff; border: 2px solid #0f172a; padding: 10px 14px; margin-bottom: 14px; font-size: 0.88rem; min-height: 48px; display: flex; align-items: center;" id="strange-dialogue">
+    💬 <strong>Doctor Strange:</strong> "Select a complexity mode to watch how step counts scale across timelines."
+  </div>
+
+  <div class="viz-controls" style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <button class="pixel-btn pixel-btn-primary" id="strange-btn-run">▶ EXECUTE TIMELINE</button>
+    <button class="pixel-btn pixel-btn-secondary" id="strange-btn-step">⏭ STEP PORTAL</button>
+    <button class="pixel-btn pixel-btn-secondary" id="strange-btn-reset">↺ RESET REALITY</button>
+  </div>
+</div>
+
+        </div>
+      </section>
+
+      <!-- 07. Asymptotic Derivation & Complexity Matrix -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>07. ASYMPTOTIC COMPLEXITY DERIVATION MATRIX</span>
+          <span style="font-size: 0.6rem; color: var(--hero-accent);">DAA BIG-O BOUNDS</span>
+        </h2>
+        <table class="algo-table">
+          <thead>
+            <tr>
+              <th>OPERATION / CASE</th>
+              <th>ASYMPTOTIC BOUND</th>
+              <th>SPACE / FOOTPRINT</th>
+              <th>MATHEMATICAL INVARIANT</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Array Index Access / Push</td>
+          <td><span class="complexity-badge">O(1)</span></td>
+          <td style="font-family: var(--font-code); color: #7e22ce; font-weight: 600;">Omega(1)</td>
+          <td style="color: #475569;">Single offset memory calculation</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Binary Search</td>
+          <td><span class="complexity-badge">O(log n)</span></td>
+          <td style="font-family: var(--font-code); color: #7e22ce; font-weight: 600;">Omega(1)</td>
+          <td style="color: #475569;">Halves problem size at each step; best case target at mid</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Linear Scan</td>
+          <td><span class="complexity-badge">O(n)</span></td>
+          <td style="font-family: var(--font-code); color: #7e22ce; font-weight: 600;">Omega(1)</td>
+          <td style="color: #475569;">Inspects up to n elements sequentially</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Merge Sort / Heap Sort</td>
+          <td><span class="complexity-badge">O(n log n)</span></td>
+          <td style="font-family: var(--font-code); color: #7e22ce; font-weight: 600;">Omega(n log n)</td>
+          <td style="color: #475569;">Optimal comparison-based sorting lower bound</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Bubble Sort / Selection Sort</td>
+          <td><span class="complexity-badge">O(n^2)</span></td>
+          <td style="font-family: var(--font-code); color: #7e22ce; font-weight: 600;">Omega(n) / Omega(n^2)</td>
+          <td style="color: #475569;">Pairwise element comparisons across nested loops</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #0f172a;">Subset Sum (Brute Force)</td>
+          <td><span class="complexity-badge">O(2^n)</span></td>
+          <td style="font-family: var(--font-code); color: #7e22ce; font-weight: 600;">Omega(2^n)</td>
+          <td style="color: #475569;">Examines power set of all 2^n combinations</td>
+        </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 08. Interactive Asymptotic Growth Comparison Slider -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>08. ASYMPTOTIC GROWTH COMPARISON</span>
+          <span style="font-size: 0.6rem; color: var(--color-gold);">LIVE CALCULATOR</span>
+        </h2>
+        <div style="margin-bottom: 16px;">
+          <p class="card-desc-text">Drag the input size slider \(n\) to observe step counts diverge across complexity classes in real-time:</p>
+          <div style="background: #f1f5f9; border: 2px solid #0f172a; padding: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <label style="font-family: var(--font-pixel); font-size: 0.68rem; color: #0f172a;">INPUT SIZE (N):</label>
+              <input type="range" id="growth-slider" min="1" max="10" value="4" style="width: 160px; accent-color: #7e22ce;">
+              <span id="growth-n-val" style="font-family: var(--font-code); font-weight: bold; background: #0f172a; color: #facc15; padding: 4px 10px; border-radius: 4px;">n = 16</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #475569;">
+              Compare: \(O(1), O(\log n), O(n), O(n \log n), O(n^2), O(2^n)\)
+            </div>
+          </div>
+          
+          <div id="growth-bars-container" style="display: flex; flex-direction: column; gap: 10px; background: #ffffff; border: 2px solid #0f172a; padding: 16px;">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 09. Practical Systems Design & Code Implementation -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>09. PRACTICAL SYSTEMS DESIGN & REFERENCE IMPLEMENTATION</span>
+          <span style="font-size: 0.6rem; color: #8b5cf6;">PRODUCTION ARCHITECTURE</span>
+        </h2>
+        <div class="card-desc-text">
+<p><strong>1. Constants Matter in Real Life:</strong> Asymptotic Big-O notation suppresses constant factors (\(c\)). An \(O(n)\) algorithm with \(c = 10,000\) may run slower than an \(O(n^2)\) algorithm with \(c = 1\) for \(n < 10,000\). The crossover point dictates algorithm selection in high-performance engines.</p>
+<p><strong>2. Worst-Case Guarantees in Mission-Critical Systems:</strong> In real-time aviation, pacemaker controls, and Marvel defense grids, average-case time is insufficient. One must guarantee worst-case polynomial bounds (\(T_{	ext{worst}}\)) to prevent deadlocks.</p>
+<p><strong>3. Amortized Time Analysis:</strong> Operations like dynamic array resizing (<code>vector.push_back</code>) take \(O(n)\) occasionally to reallocate memory, but \(O(1)\) across \(n\) sequential calls, yielding an amortized time of \(O(1)\).</p>
+</div>
+        
+        <div class="code-box" style="margin-top: 18px;">
+          <div class="code-header">
+            <span>ALGORITHM SPECIFICATION // PYTHON 3</span>
+            <span>UTF-8 // VERIFIED OPTIMAL</span>
+          </div>
+          <pre><code>def find_pair_with_sum(arr: list[int], target: int) -> tuple[int, int] | None:
+    """
+    Demonstrating O(n) Two-Pointer Time vs O(n^2) Nested Loop Time.
+    Assumes sorted input array.
+    """
+    # OPTIMAL O(n) TWO-POINTER APPROACH:
+    low = 0
+    high = len(arr) - 1
+    
+    while low < high:
+        current_sum = arr[low] + arr[high]
+        if current_sum == target:
+            return arr[low], arr[high]  # O(1) best case
+        elif current_sum < target:
+            low += 1                    # Move lower boundary up
+        else:
+            high -= 1                   # Move upper boundary down
+            
+    return None  # Worst case O(n) steps</code></pre>
+        </div>
+      </section>
+
+      <!-- Speech Bubble Callout 3 -->
+      
+    <div class="hero-speech-bubble" style="display: flex; align-items: flex-start; gap: 16px; background: #ffffff; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; padding: 16px; margin: 24px 0;">
+      <div style="width: 58px; height: 62px; background: #f3e8ff; border: 2px solid #0f172a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+        <img src="assets/doctorstrange.png" style="max-width: 50px; max-height: 54px; object-fit: contain; image-rendering: pixelated;" alt="DOCTOR STRANGE">
+      </div>
+      <div style="position: relative; flex: 1;">
+        <div style="font-family: var(--font-pixel); font-size: 0.62rem; color: #7e22ce; margin-bottom: 4px;">
+          [✦] S.H.I.E.L.D. FIELD DIRECTIVE // DOCTOR STRANGE
+        </div>
+        <div style="font-size: 0.92rem; color: #1e293b; line-height: 1.6;">
+          "I viewed 14,000,605 algorithmic timelines. In every reality, asymptotic step count dictates victory." Remember: asymptotic guarantees hold when n grows large, but cache coherence, memory layout, and branch prediction dominate for small inputs in production hardware.
+        </div>
+      </div>
+    </div>
+    
+
+      <!-- 10. Interactive Mini Quiz (4 Questions) -->
+      <section class="content-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <h2 class="card-heading" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">
+            <span>10. MISSION ASSESSMENT // TEST YOUR MASTERY</span>
+          </h2>
+          <div style="font-family: var(--font-pixel); font-size: 0.68rem; background: #0f172a; color: #22c55e; padding: 6px 12px; border: 2px solid var(--border-dark);" id="quiz-score-badge">
+            SCORE: 0 / 4 (0%)
+          </div>
+        </div>
+        <p class="card-desc-text">Test your mastery of TIME COMPLEXITY with these university exam questions:</p>
+        <div>
+          
+        <div class="quiz-card" id="quiz-card-0" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #7e22ce;">QUESTION 1 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-0" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            Why does DAA count elementary operations rather than recording wall-clock milliseconds?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[A]</span> Millisecond timers are deprecated in modern programming languages
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[B]</span> Clock time varies with CPU hardware, background OS load, and compiler optimizations
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[C]</span> Elementary operations are always powers of two
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="0" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[D]</span> Counting clock time requires quantum computing hardware
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-0" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-1" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #7e22ce;">QUESTION 2 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-1" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            Which time complexity class represents the slowest rate of growth (fastest execution) for large n?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[A]</span> O(n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[B]</span> O(n log n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[C]</span> O(log n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="1" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[D]</span> O(sqrt(n))
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-1" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-2" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #7e22ce;">QUESTION 3 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-2" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            What is the worst-case time complexity of finding an element in an unsorted array of size n?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[A]</span> O(1)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[B]</span> O(log n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[C]</span> O(n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="2" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[D]</span> O(n^2)
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-2" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        <div class="quiz-card" id="quiz-card-3" style="background: #ffffff; border: 2px solid #0f172a; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 0 #0f172a;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-family: var(--font-pixel); font-size: 0.68rem; color: #7e22ce;">QUESTION 4 OF 4</span>
+            <span class="quiz-status-tag" id="quiz-status-3" style="font-family: var(--font-pixel); font-size: 0.58rem; background: #e2e8f0; color: #475569; padding: 4px 8px;">UNANSWERED</span>
+          </div>
+          <div style="font-size: 0.95rem; font-weight: 600; color: #0f172a; margin-bottom: 14px; line-height: 1.5;">
+            If an algorithm executes 3n^2 + 50n + 1000 operations, what is its asymptotic tight bound?
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="0" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[A]</span> Theta(n)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="1" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[B]</span> Theta(n^2)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="2" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[C]</span> Theta(n^3)
+            </button>
+            
+            <button class="quiz-opt-btn" data-qid="3" data-oid="3" style="text-align: left; padding: 10px 14px; background: #f8fafc; border: 2px solid #0f172a; font-size: 0.88rem; font-family: var(--font-body); font-weight: 600; color: #0f172a; transition: all 0.15s ease; box-shadow: 0 2px 0 #0f172a;">
+              <span style="font-family: var(--font-pixel); font-size: 0.62rem; margin-right: 8px; color: #7e22ce;">[D]</span> Theta(1000)
+            </button>
+            
+          </div>
+          <div class="quiz-feedback-box" id="quiz-feedback-3" style="display: none; padding: 12px 14px; border: 2px solid #0f172a; font-size: 0.85rem; line-height: 1.6; margin-top: 10px;">
+          </div>
+        </div>
+        
+        </div>
+      </section>
+
+      <!-- 11. Key Exam Takeaways -->
+      <section class="content-card">
+        <h2 class="card-heading">
+          <span>11. S.H.I.E.L.D. DEBRIEF & KEY EXAM TAKEAWAYS</span>
+          <span style="font-size: 0.6rem; color: var(--border-dark);">REVISION CHECKLIST</span>
+        </h2>
+        <p class="card-desc-text">Mastering time complexity allows you to predict whether an algorithm will complete in microseconds or require centuries. In technical interviews and exams, always define the dominant term and ignore lower-order coefficients.</p>
+      </section>
+
+      <!-- Navigation & Return -->
+      <section class="bottom-section">
+        <div class="pixel-divider"></div>
+        <div style="display: flex; gap: 14px; margin-top: 8px; flex-wrap: wrap; justify-content: center;">
+          <a href="mission-01.html" class="pixel-btn pixel-btn-primary">← BACK TO MISSION 01</a>
+          <a href="missions.html" class="pixel-btn pixel-btn-secondary">ALL MISSIONS</a>
+          <a href="index.html" class="pixel-btn pixel-btn-accent">RETURN TO HQ</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer style="background: #0f172a; color: #f8fafc; border-top: 3px solid #000; padding: 24px 0; text-align: center; font-family: var(--font-pixel); font-size: 0.62rem; margin-top: 40px;">
+    <div class="container">
+      ALGO-VENGERS // DESIGN & ANALYSIS OF ALGORITHMS // S.H.I.E.L.D. DATABASE
+    </div>
+  </footer>
+
+  <script>
+    /* Retro Web Audio Engine */
+    class RetroAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.init();
+      }
+      init() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) this.ctx = new AudioContext();
+      }
+      ensure() {
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playTone(freq, type, duration, vol=0.1) {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      playClick() { this.playTone(600, 'square', 0.05, 0.08); }
+      playHover() { this.playTone(400, 'sine', 0.03, 0.04); }
+      playSuccess() {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.15);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.15);
+          });
+        } catch(e) {}
+      }
+      playError() {
+        try {
+          this.ensure();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          [220, 164.81].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0.08, now + idx * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.15);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + 0.15);
+          });
+        } catch(e) {}
+      }
+    }
+    const retroAudio = new RetroAudioEngine();
+
+    const interactiveQuery = 'a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, .hero-speech-bubble, [role="button"], [data-hero-cursor], .quiz-opt-btn';
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(interactiveQuery)) {
+        retroAudio.playHover();
+      }
+    });
+
+    /* Persistent Top Reading Progress Bar */
+    const topFillBar = document.getElementById('global-progress-fill');
+    const topMarker = document.getElementById('global-progress-marker');
+    const topPct = document.getElementById('global-progress-pct');
+    const topTrack = document.getElementById('global-progress-track');
+
+    function updateTopReadingProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+      
+      if (topFillBar) topFillBar.style.width = pct + '%';
+      if (topPct) topPct.textContent = pct + '%';
+      if (topMarker) {
+        topMarker.style.left = pct + '%';
+      }
+    }
+
+    window.addEventListener('scroll', updateTopReadingProgress, { passive: true });
+    updateTopReadingProgress();
+
+    topTrack?.addEventListener('click', (e) => {
+      const rect = topTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: ratio * docHeight, behavior: 'smooth' });
+      retroAudio.playClick();
+    });
+
+    /* Asymptotic Growth Comparison Slider */
+    const growthSlider = document.getElementById('growth-slider');
+    const growthNVal = document.getElementById('growth-n-val');
+    const growthBarsContainer = document.getElementById('growth-bars-container');
+    const nPowers = [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024];
+
+    function renderGrowthBars() {
+      const idx = parseInt(growthSlider.value) - 1;
+      const n = nPowers[idx];
+      growthNVal.textContent = `n = ${n}`;
+      
+      const c_const = 1;
+      const c_log = Math.round(Math.log2(n) * 10) / 10;
+      const c_lin = n;
+      const c_nlogn = Math.round(n * Math.log2(n));
+      const c_quad = n * n;
+      const c_exp = n <= 32 ? Math.pow(2, n) : '1.79e+308+';
+
+      const classes = [
+        { name: 'O(1) Constant', ops: c_const, color: '#22c55e', pct: 2 },
+        { name: 'O(log n) Logarithmic', ops: c_log, color: '#38bdf8', pct: Math.min(100, (c_log / 10) * 12) },
+        { name: 'O(n) Linear', ops: c_lin, color: '#facc15', pct: Math.min(100, (c_lin / 1024) * 45) },
+        { name: 'O(n log n) Linearithmic', ops: c_nlogn, color: '#f97316', pct: Math.min(100, (c_nlogn / 10240) * 70) },
+        { name: 'O(n^2) Quadratic', ops: c_quad, color: '#ef4444', pct: Math.min(100, Math.max(10, (c_quad / 1000000) * 100)) },
+        { name: 'O(2^n) Exponential', ops: c_exp, color: '#881337', pct: 100 }
+      ];
+
+      growthBarsContainer.innerHTML = classes.map(c => `
+        <div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-pixel); font-size: 0.62rem; margin-bottom: 4px;">
+            <span style="color: ${c.color};">${c.name}</span>
+            <span style="font-family: var(--font-code); font-weight: bold; color: #0f172a;">${typeof c.ops === 'number' ? c.ops.toLocaleString() : c.ops} operations</span>
+          </div>
+          <div style="width: 100%; height: 14px; background: #f1f5f9; border: 1.5px solid #0f172a; border-radius: 2px; overflow: hidden;">
+            <div style="width: ${c.pct}%; height: 100%; background: ${c.color}; transition: width 0.3s ease;"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    growthSlider?.addEventListener('input', () => {
+      renderGrowthBars();
+      retroAudio.playHover();
+    });
+    renderGrowthBars();
+
+    /* Interactive Mini-Quiz Logic */
+    const quizData = [{'answer': 1, 'explanation': 'Wall-clock measurements fluctuate across operating systems, processor loads, and CPU models. Elementary operation counting provides hardware-independent mathematical truth.'}, {'answer': 2, 'explanation': 'Logarithmic time O(log n) grows far slower than linear O(n) or square root O(sqrt(n)) as n scales towards infinity.'}, {'answer': 2, 'explanation': 'In an unsorted array, the target element may reside at the final index or not be present, requiring an inspection of all n elements (O(n)).'}, {'answer': 1, 'explanation': 'In asymptotic analysis, the highest order term (n^2) dominates as n grows large; constant coefficients and lower-order terms (50n + 1000) are dropped.'}];
+    let quizScore = 0;
+    const answeredQuestions = new Set();
+
+    document.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const qid = parseInt(btn.dataset.qid);
+        const oid = parseInt(btn.dataset.oid);
+        if (answeredQuestions.has(qid)) return;
+        answeredQuestions.add(qid);
+
+        const q = quizData[qid];
+        const card = document.getElementById(`quiz-card-${qid}`);
+        const statusTag = document.getElementById(`quiz-status-${qid}`);
+        const feedbackBox = document.getElementById(`quiz-feedback-${qid}`);
+        const allOpts = card.querySelectorAll('.quiz-opt-btn');
+
+        allOpts.forEach((b, idx) => {
+          if (idx === q.answer) {
+            b.style.background = '#dcfce7';
+            b.style.borderColor = '#16a34a';
+            b.style.color = '#15803d';
+          } else if (idx === oid && oid !== q.answer) {
+            b.style.background = '#fee2e2';
+            b.style.borderColor = '#ef4444';
+            b.style.color = '#b91c1c';
+          }
+          b.disabled = true;
+        });
+
+        feedbackBox.style.display = 'block';
+        if (oid === q.answer) {
+          quizScore++;
+          retroAudio.playSuccess();
+          statusTag.textContent = 'CORRECT';
+          statusTag.style.background = '#dcfce7';
+          statusTag.style.color = '#16a34a';
+          feedbackBox.style.background = '#f0fdf4';
+          feedbackBox.style.borderColor = '#16a34a';
+          feedbackBox.innerHTML = `<strong>✨ EXCELLENT WORK!</strong><br>${q.explanation}`;
+        } else {
+          retroAudio.playError();
+          statusTag.textContent = 'INCORRECT';
+          statusTag.style.background = '#fee2e2';
+          statusTag.style.color = '#ef4444';
+          feedbackBox.style.background = '#fef2f2';
+          feedbackBox.style.borderColor = '#ef4444';
+          feedbackBox.innerHTML = `<strong>⚠️ TACTICAL REVIEW:</strong><br>${q.explanation}`;
+        }
+
+        const pct = Math.round((quizScore / quizData.length) * 100);
+        const scoreBadge = document.getElementById('quiz-score-badge');
+        if (scoreBadge) scoreBadge.textContent = `SCORE: ${quizScore} / ${quizData.length} (${pct}%)`;
+      });
+    });
+
+    // KaTeX Auto-Render Math
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "\\[", right: "\\]", display: true},
+            {left: "$", right: "$", display: false},
+            {left: "\\(", right: "\\)", display: false}
+          ],
+          throwOnError: false
+        });
+      }
+    });
+
+    // Visualizer Specific Game Loop Logic
+    
+const strangePortals = document.getElementById('strange-portals-container');
+const strangeOps = document.getElementById('strange-ops-count');
+const strangeDiag = document.getElementById('strange-dialogue');
+const strangeHero = document.getElementById('strange-hero-actor');
+const strangeSlider = document.getElementById('strange-slider-n');
+const strangeNDisp = document.getElementById('strange-n-display');
+
+let strangeN = 6;
+let strangeMode = 'linear';
+let strangeStepIdx = 0;
+let strangeTimer = null;
+
+function renderStrangeArena() {
+  strangePortals.innerHTML = '';
+  strangeStepIdx = 0;
+  strangeOps.textContent = '0';
+  let totalSteps = strangeMode === 'linear' ? strangeN : (strangeMode === 'quad' ? strangeN * strangeN : Math.ceil(Math.log2(strangeN)));
+  
+  for (let i = 0; i < Math.min(totalSteps, 32); i++) {
+    const p = document.createElement('div');
+    p.id = `strange-portal-${i}`;
+    p.style.cssText = 'width: 38px; height: 38px; border-radius: 50%; border: 2px dashed #f59e0b; background: #1e1b4b; display: flex; align-items: center; justify-content: center; font-family: var(--font-pixel); font-size: 0.55rem; color: #facc15; transition: all 0.25s ease;';
+    p.textContent = `${i+1}`;
+    strangePortals.appendChild(p);
+  }
+  strangeDiag.innerHTML = `✦ <strong>Doctor Strange:</strong> "Timeline calibrated for N=${strangeN} in ${strangeMode.toUpperCase()} mode. Expected steps: ${totalSteps}."`;
+}
+renderStrangeArena();
+
+strangeSlider?.addEventListener('input', () => {
+  strangeN = parseInt(strangeSlider.value);
+  strangeNDisp.textContent = `N = ${strangeN}`;
+  renderStrangeArena();
+});
+
+document.getElementById('strange-mode-lin')?.addEventListener('click', () => {
+  strangeMode = 'linear';
+  renderStrangeArena();
+});
+document.getElementById('strange-mode-quad')?.addEventListener('click', () => {
+  strangeMode = 'quad';
+  renderStrangeArena();
+});
+document.getElementById('strange-mode-log')?.addEventListener('click', () => {
+  strangeMode = 'log';
+  renderStrangeArena();
+});
+
+document.getElementById('strange-btn-step')?.addEventListener('click', () => {
+  retroAudio.playClick();
+  stepStrange();
+});
+
+function stepStrange() {
+  const p = document.getElementById(`strange-portal-${strangeStepIdx}`);
+  if (p) {
+    p.style.background = '#7e22ce';
+    p.style.borderColor = '#38bdf8';
+    p.style.boxShadow = '0 0 12px #38bdf8';
+    strangeOps.textContent = strangeStepIdx + 1;
+    const rect = p.getBoundingClientRect();
+    const parentRect = strangePortals.getBoundingClientRect();
+    strangeHero.style.left = `${rect.left - parentRect.left + 20}px`;
+    strangeStepIdx++;
+    strangeDiag.innerHTML = `✦ <strong>Doctor Strange:</strong> "Traversed operational portal ${strangeStepIdx}. Step count accumulates."`;
+  } else {
+    strangeDiag.innerHTML = `✨ <strong>Doctor Strange:</strong> "All temporal steps concluded! Final step count verified."`;
+  }
+}
+
+document.getElementById('strange-btn-run')?.addEventListener('click', () => {
+  retroAudio.playClick();
+  if (strangeTimer) {
+    clearInterval(strangeTimer); strangeTimer = null;
+    document.getElementById('strange-btn-run').textContent = '▶ EXECUTE TIMELINE';
+  } else {
+    document.getElementById('strange-btn-run').textContent = '⏸ PAUSE';
+    strangeTimer = setInterval(() => {
+      const p = document.getElementById(`strange-portal-${strangeStepIdx}`);
+      if (p) stepStrange();
+      else {
+        clearInterval(strangeTimer); strangeTimer = null;
+        document.getElementById('strange-btn-run').textContent = '▶ EXECUTE TIMELINE';
+      }
+    }, 250);
+  }
+});
+
+document.getElementById('strange-btn-reset')?.addEventListener('click', () => {
+  retroAudio.playClick();
+  if (strangeTimer) { clearInterval(strangeTimer); strangeTimer = null; }
+  renderStrangeArena();
+});
+
+  </script>
+</body>
+</html>

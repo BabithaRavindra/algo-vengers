@@ -1,0 +1,169 @@
+/* ==========================================================================
+   ALGO-VENGERS — STICKY PIXEL NAVIGATION & COMMAND BAR
+   ========================================================================== */
+
+.pixel-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background: rgba(8, 10, 20, 0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 3px solid #1a223f;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  transition: all var(--trans-normal);
+}
+
+.pixel-navbar.scrolled {
+  background: rgba(6, 8, 16, 0.98);
+  border-bottom-color: var(--color-cyan);
+  box-shadow: 0 6px 20px rgba(0, 240, 255, 0.15);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Brand Logo */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  background: var(--bg-dark-tertiary);
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 3px 0 #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-gold);
+}
+
+.brand-text {
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  color: #ffffff;
+  letter-spacing: 1.5px;
+  text-shadow: 2px 2px 0 #000;
+}
+
+.brand-text span {
+  color: var(--color-cyan);
+}
+
+/* Navigation Links */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-link {
+  font-family: var(--font-pixel);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  border-bottom: 2px solid transparent;
+  transition: all var(--trans-fast);
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-cyan);
+  border-bottom-color: var(--color-cyan);
+  text-shadow: 0 0 8px var(--color-cyan-glow);
+}
+
+/* Right Status & Controls */
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* HQ Online Badge */
+.hq-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #09121a;
+  border: 2px solid #165b4c;
+  padding: 5px 12px;
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  color: #4ade80;
+  box-shadow: 0 2px 0 #000;
+  user-select: none;
+}
+
+.hq-status-pill .hud-status-led {
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+}
+
+/* Audio / CRT Retro Toggle Buttons */
+.nav-toggle-btn {
+  background: var(--bg-dark-tertiary);
+  border: 2px solid #233157;
+  color: var(--text-muted);
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 0 #000;
+  transition: all var(--trans-fast);
+}
+
+.nav-toggle-btn:hover {
+  border-color: var(--color-cyan);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.nav-toggle-btn.active {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  background: #191c10;
+}
+
+/* Mobile Hamburger Toggle */
+.mobile-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 2px solid var(--color-cyan);
+  padding: 8px 10px;
+  color: var(--color-cyan);
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #000;
+}

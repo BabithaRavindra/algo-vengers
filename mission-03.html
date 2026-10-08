@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MISSION 03: SEARCH & SORT // S.H.I.E.L.D. Algorithm Division</title>
+  
+  <meta name="description" content="Mission 03: Search & Sort - Maximum & Minimum, Binary Search, Merge Sort, Quick Sort.">
+  <meta name="theme-color" content="#f8fafc">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --border-dark: #0f172a;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --color-gold: #d97706;
+      --color-cyan: #0284c7;
+      --color-accent: #7c3aed;
+
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-pixel-sub: 'Silkscreen', monospace;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --nav-height: 72px;
+      --container-max: 1240px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; background-color: var(--bg-main); color: var(--text-main); font-family: var(--font-body); }
+    body { overflow-x: hidden; min-height: 100vh; line-height: 1.6; display: flex; flex-direction: column; background-color: var(--bg-main); }
+
+    .cyber-grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+      background-size: 32px 32px; pointer-events: none; z-index: 0;
+    }
+    .container { max-width: var(--container-max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
+    .pixel-heading { font-family: var(--font-pixel); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Pixel Buttons */
+    .pixel-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; font-family: var(--font-pixel); font-size: 0.7rem;
+      text-decoration: none; text-transform: uppercase; border: 3px solid var(--border-dark);
+      cursor: pointer; position: relative; user-select: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 5px 0 0 var(--border-dark);
+    }
+    .pixel-btn:hover { transform: translateY(-2px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 7px 0 0 var(--border-dark); }
+    .pixel-btn:active { transform: translateY(3px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 2px 0 0 var(--border-dark); }
+    .pixel-btn-primary { background: #facc15; color: #0f172a; font-weight: bold; }
+    .pixel-btn-secondary { background: #ffffff; color: var(--color-cyan); }
+
+    /* Navbar */
+    .pixel-navbar {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--border-dark); z-index: 1000; display: flex; align-items: center;
+    }
+    .nav-container { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 24px; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; background: #facc15; border: 2px solid var(--border-dark); display: flex; align-items: center; justify-content: center; }
+    .brand-icon svg { width: 22px; height: 22px; fill: var(--border-dark); }
+    .brand-text { font-family: var(--font-pixel); font-size: 1.05rem; color: var(--border-dark); }
+    .brand-text span { color: #dc2626; }
+    .breadcrumbs { font-family: var(--font-pixel); font-size: 0.62rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+    .breadcrumbs a { color: var(--color-cyan); text-decoration: none; }
+
+    main { flex: 1; padding-top: calc(var(--nav-height) + 36px); padding-bottom: 60px; }
+
+    /* Header */
+    .shield-header { text-align: center; margin-bottom: 46px; display: flex; flex-direction: column; align-items: center; }
+    .shield-emblem-wrap { width: 68px; height: 68px; margin-bottom: 14px; }
+    .shield-emblem-wrap svg { width: 100%; height: 100%; image-rendering: pixelated; }
+    .agency-tag {
+      font-family: var(--font-pixel); font-size: 0.62rem; color: var(--color-accent);
+      background: #ffffff; border: 2px solid var(--border-dark); padding: 4px 12px;
+      box-shadow: 0 3px 0 var(--border-dark); margin-bottom: 12px; font-weight: bold;
+    }
+    .main-title { font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--border-dark); margin-bottom: 6px; }
+    .subtitle { font-family: var(--font-pixel-sub); font-size: 1.1rem; color: var(--color-accent); margin-bottom: 8px; }
+    .supporting-text { font-size: 0.95rem; color: var(--text-muted); max-width: 600px; }
+
+    /* 2 + 2 Centered Topic Cards Layout */
+    .topics-directory { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 40px; }
+    .topics-row-top { display: flex; justify-content: center; gap: 32px; width: 100%; margin-bottom: 32px; flex-wrap: wrap; }
+    .topics-row-bottom { display: flex; justify-content: center; gap: 32px; width: 100%; flex-wrap: wrap; }
+
+    .topic-card {
+      width: 340px; min-height: 430px; background: #ffffff; border: 3px solid var(--border-dark);
+      box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 7px 0 0 var(--border-dark);
+      padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
+      text-decoration: none; color: inherit; position: relative; cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .topic-card:hover { transform: translateY(-6px); box-shadow: -3px 0 0 0 var(--border-dark), 3px 0 0 0 var(--border-dark), 0 -3px 0 0 var(--border-dark), 0 3px 0 0 var(--border-dark), 0 12px 0 0 var(--border-dark); }
+
+    .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .card-num { font-family: var(--font-pixel); font-size: 0.85rem; font-weight: bold; }
+    .card-hero-badge { font-family: var(--font-pixel); font-size: 0.58rem; background: #f1f5f9; border: 2px solid var(--border-dark); padding: 3px 8px; }
+
+    .character-display { width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; position: relative; }
+    .char-aura { position: absolute; width: 100px; height: 100px; border-radius: 50%; filter: blur(18px); opacity: 0.25; }
+    .char-sprite { width: 90px; height: 105px; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .char-sprite svg { width: 100%; height: 100%; }
+
+    .card-body { margin-top: 10px; margin-bottom: 18px; text-align: left; }
+    .card-title { font-family: var(--font-pixel); font-size: 1.05rem; line-height: 1.35; margin-bottom: 8px; color: var(--border-dark); }
+    .card-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.45; margin-bottom: 12px; }
+    .complexity-pill {
+      display: inline-block; font-family: var(--font-pixel); font-size: 0.6rem;
+      background: #f8fafc; border: 2px solid var(--border-dark); padding: 4px 10px;
+      font-weight: bold; color: var(--border-dark);
+    }
+
+    .card-btn { width: 100%; }
+
+    /* Character Specific Accents */
+    .topic-hawkeye .char-aura { background: #7c3aed; }
+    .topic-hawkeye:hover { background: #faf5ff; border-color: #7c3aed; }
+    .topic-hawkeye .card-btn { background: #7c3aed; color: #fff; }
+
+    .topic-spiderman .char-aura { background: #dc2626; }
+    .topic-spiderman:hover { background: #fef2f2; border-color: #dc2626; }
+    .topic-spiderman .card-btn { background: #dc2626; color: #fff; }
+
+    .topic-warmachine .char-aura { background: #475569; }
+    .topic-warmachine:hover { background: #f8fafc; border-color: #334155; }
+    .topic-warmachine .card-btn { background: #334155; color: #fff; }
+
+    .topic-quicksilver .char-aura { background: #0284c7; }
+    .topic-quicksilver:hover { background: #f0f9ff; border-color: #0284c7; }
+    .topic-quicksilver .card-btn { background: #0284c7; color: #fff; }
+
+    .bottom-section { text-align: center; margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .pixel-divider { width: 180px; height: 4px; background: repeating-linear-gradient(to right, var(--border-dark) 0px, var(--border-dark) 8px, transparent 8px, transparent 16px); }
+
+    
+  
+    .pixel-sprite-img {
+      max-width: 100px; max-height: 115px; width: auto; height: auto;
+      object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); transition: transform 0.2s ease;
+    }
+    .topic-card:hover .pixel-sprite-img { transform: scale(1.1) translateY(-4px); }
+  
+    /* Pixelated retro mouse pointer */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%230f172a' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), auto !important;
+    }
+    
+    /* Suppress browser pointer on interactive items for custom hero cursor */
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .reading-progress-track, [role="button"], [data-hero-cursor] {
+      cursor: none !important;
+    }
+
+    /* Floating Reading Progress Pill */
+    .reading-progress-pill {
+      position: fixed; top: 82px; right: 24px; z-index: 999;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px);
+      border: 3px solid var(--border-dark, #0f172a); border-radius: 999px;
+      padding: 6px 14px 6px 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15), 0 3px 0 var(--border-dark, #0f172a);
+      display: flex; align-items: center; gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .reading-progress-info { display: flex; flex-direction: column; min-width: 75px; }
+    .reading-progress-label { font-family: var(--font-pixel, monospace); font-size: 0.48rem; color: #64748b; letter-spacing: 0.5px; }
+    .reading-progress-pct { font-family: var(--font-pixel, monospace); font-size: 0.68rem; color: #0f172a; font-weight: bold; }
+    .reading-progress-track {
+      width: 140px; height: 12px; background: #e2e8f0; border: 2px solid var(--border-dark, #0f172a);
+      border-radius: 999px; position: relative; overflow: visible; cursor: pointer;
+    }
+    .reading-progress-bar { height: 100%; width: 0%; border-radius: 999px; transition: width 0.08s ease-out; }
+    .reading-hero-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 24px; height: 24px; pointer-events: none;
+      transition: left 0.08s ease-out, transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+    }
+    .reading-hero-icon { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+
+    /* Direct Hero Cursor Icon */
+    #hero-cursor-icon {
+      position: fixed; top: 0; left: 0; width: 38px; height: 38px; pointer-events: none; z-index: 99999;
+      transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.12s ease;
+      display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
+    }
+    #hero-cursor-icon.active { opacity: 1; }
+    #hero-cursor-icon img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+
+  
+    /* Persistent Top Reading Progress Bar & Retro Pixel Cursor */
+    html, body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%230f172a' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), auto !important;
+    }
+    a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, [role="button"], [data-hero-cursor] {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23dc2626' stroke='%23ffffff' stroke-width='1.5' shape-rendering='crispEdges' d='M2 2v18l5-5 4 8 3-1.5-4-8h6L2 2z'/%3E%3C/svg%3E"), pointer !important;
+    }
+    #global-top-progress {
+      position: fixed; top: 0; left: 0; width: 100%; height: 32px;
+      background: #0f172a; border-bottom: 2px solid #000; z-index: 10002;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .top-progress-hero-badge { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .top-hero-symbol-box {
+      width: 22px; height: 22px; background: #fee2e2; color: #dc2626;
+      border: 1.5px solid #dc2626; font-family: 'Press Start 2P', monospace; font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; border-radius: 2px;
+    }
+    .top-hero-title { font-family: 'Press Start 2P', monospace; font-size: 0.58rem; color: #f8fafc; letter-spacing: 0.5px; }
+    .top-progress-track-wrapper {
+      flex: 1; max-width: 650px; margin: 0 20px; height: 10px; background: #1e293b;
+      border: 1.5px solid #475569; border-radius: 999px; position: relative; cursor: pointer;
+    }
+    .top-progress-fill-bar {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #dc2626, #ef4444, #f59e0b); border-radius: 999px;
+      transition: width 0.08s ease-out;
+    }
+    .top-progress-slider-marker {
+      position: absolute; top: 50%; left: 0%; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; background: #0f172a; border: 2px solid #dc2626;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #dc2626;
+      box-shadow: 0 0 10px #dc2626; pointer-events: none; transition: left 0.08s ease-out;
+    }
+    .top-progress-percent-readout {
+      font-family: 'Press Start 2P', monospace; font-size: 0.65rem; color: #facc15; min-width: 50px; text-align: right; flex-shrink: 0;
+    }
+    .pixel-navbar { top: 32px !important; }
+    main { padding-top: calc(var(--nav-height, 72px) + 32px + 24px) !important; }
+    
+
+  
+    /* ========================================================================
+       NATIVE CSS HARDWARE-ACCELERATED HERO EMBLEM CURSORS (ZERO TRAILING)
+       ======================================================================== */
+    html, body { cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Cpath%20fill%3D%22%230f172a%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%221.5%22%20d%3D%22M2%202v18l5-5%204%208%203-1.5-4-8h6L2%202z%22/%3E%20%3C/svg%3E") 0 0, auto !important; }
+    a, button, .pixel-btn, input, select, label, .top-progress-track-wrapper, [role="button"] { cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23991b1b%22%20stroke%3D%22%23facc15%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%230f172a%22%20stroke%3D%22%2338bdf8%22%20stroke-width%3D%221.5%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%225%22%20fill%3D%22%2338bdf8%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%222.5%22%20fill%3D%22%23ffffff%22/%3E%20%3Cpolygon%20points%3D%2216%2C8%2018%2C13%2014%2C13%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2216%2C24%2014%2C19%2018%2C19%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%228%2C16%2013%2C14%2013%2C18%22%20fill%3D%22%23facc15%22/%3E%20%3Cpolygon%20points%3D%2224%2C16%2019%2C18%2019%2C14%22%20fill%3D%22%23facc15%22/%3E%20%3C/svg%3E") 16 16, pointer !important; }
+    [data-hero-cursor="hawkeye"], [data-hero-cursor="hawkeye"] *, .topic-hawkeye, .topic-hawkeye * { cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%237c3aed%22%20stroke%3D%22%23d97706%22%20stroke-width%3D%222%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%229%22%20fill%3D%22%23ffffff%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%226%22%20fill%3D%22%237c3aed%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%223%22%20fill%3D%22%23facc15%22/%3E%20%3Cline%20x1%3D%226%22%20y1%3D%2226%22%20x2%3D%2226%22%20y2%3D%226%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2226%2C6%2021%2C8%2024%2C11%22%20fill%3D%22%230f172a%22/%3E%20%3C/svg%3E") 16 16, pointer !important; }
+    [data-hero-cursor="spiderman"], [data-hero-cursor="spiderman"] *, .topic-spiderman, .topic-spiderman * { cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23dc2626%22%20stroke%3D%22%232563eb%22%20stroke-width%3D%222%22/%3E%20%3Cellipse%20cx%3D%2216%22%20cy%3D%2216%22%20rx%3D%223%22%20ry%3D%225%22%20fill%3D%22%230f172a%22/%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2212%22%20r%3D%222%22%20fill%3D%22%230f172a%22/%3E%20%3Cpath%20d%3D%22M16%2014%20Q10%2010%207%2014%20M16%2017%20Q9%2016%208%2020%20M16%2014%20Q22%2010%2025%2014%20M16%2017%20Q23%2016%2024%2020%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22/%3E%20%3Cline%20x1%3D%2216%22%20y1%3D%222%22%20x2%3D%2216%22%20y2%3D%2210%22%20stroke%3D%22%23f8fafc%22%20stroke-width%3D%221%22/%3E%20%3C/svg%3E") 16 16, pointer !important; }
+    [data-hero-cursor="warmachine"], [data-hero-cursor="warmachine"] *, .topic-warmachine, .topic-warmachine * { cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%23475569%22%20stroke%3D%22%230f172a%22%20stroke-width%3D%222%22/%3E%20%3Crect%20x%3D%2210%22%20y%3D%2211%22%20width%3D%2212%22%20height%3D%2211%22%20fill%3D%22%2394a3b8%22%20stroke%3D%22%23000%22%20stroke-width%3D%221.5%22/%3E%20%3Crect%20x%3D%2214%22%20y%3D%226%22%20width%3D%224%22%20height%3D%226%22%20fill%3D%22%230f172a%22/%3E%20%3Crect%20x%3D%2212%22%20y%3D%2214%22%20width%3D%223%22%20height%3D%222%22%20fill%3D%22%23dc2626%22/%3E%20%3Crect%20x%3D%2217%22%20y%3D%2214%22%20width%3D%223%22%20height%3D%222%22%20fill%3D%22%23dc2626%22/%3E%20%3C/svg%3E") 16 16, pointer !important; }
+    [data-hero-cursor="quicksilver"], [data-hero-cursor="quicksilver"] *, .topic-quicksilver, .topic-quicksilver * { cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%20%3Ccircle%20cx%3D%2216%22%20cy%3D%2216%22%20r%3D%2214%22%20fill%3D%22%230284c7%22%20stroke%3D%22%23ffffff%22%20stroke-width%3D%222%22/%3E%20%3Cpolygon%20points%3D%2217%2C6%209%2C17%2015%2C17%2013%2C26%2023%2C14%2017%2C14%22%20fill%3D%22%23facc15%22%20stroke%3D%22%23000%22%20stroke-width%3D%221%22/%3E%20%3C/svg%3E") 16 16, pointer !important; }
+  </style>
+</head>
+<body>
+
+  <!-- Persistent Top Reading Progress Bar (User Directive 3 & 4) -->
+  <div id="global-top-progress">
+    <div class="top-progress-hero-badge">
+      <div class="top-hero-symbol-box">[◉]</div>
+      <div class="top-hero-title">MISSION 03: DIVIDE & CONQUER</div>
+    </div>
+    <div class="top-progress-track-wrapper" id="global-progress-track" title="Click anywhere along the bar to jump">
+      <div class="top-progress-fill-bar" id="global-progress-fill"></div>
+      <div class="top-progress-slider-marker" id="global-progress-marker">◉</div>
+    </div>
+    <div class="top-progress-percent-readout" id="global-progress-pct">0%</div>
+  </div>
+
+  
+
+
+  <div class="cyber-grid-bg"></div>
+
+  <!-- Sticky Navbar -->
+  <header class="pixel-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 8,20 11,20 12,14 16,14 17,20 20,20 15,2"/><polygon points="12,6 10,12 14,12" fill="#facc15"/></svg></div>
+        <div class="brand-text">ALGO-<span>VENGERS</span></div>
+      </a>
+
+      <div class="breadcrumbs">
+        <a href="index.html">HQ</a> <span>▶</span>
+        <a href="missions.html">MISSIONS</a> <span>▶</span>
+        <span style="color: var(--border-dark); font-weight: bold;">MISSION 03</span>
+      </div>
+
+      <div>
+        <a href="missions.html" class="pixel-btn pixel-btn-secondary" style="padding: 6px 12px; font-size: 0.6rem;">← DIRECTORY</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Reading Progress Pill -->
+  
+
+
+  <main>
+    <div class="container">
+
+      <!-- Header -->
+      <header class="shield-header">
+        <div class="shield-emblem-wrap">
+          <svg viewBox="0 0 32 32" shape-rendering="crispEdges">
+            <circle cx="16" cy="16" r="14" fill="#f8fafc" stroke="#0f172a" stroke-width="2"/>
+            <circle cx="16" cy="16" r="8" fill="#7c3aed"/>
+            <polygon points="16,8 10,16 16,24 22,16" fill="#facc15"/>
+          </svg>
+        </div>
+        <div class="agency-tag">S.H.I.E.L.D. // SEARCH & SORT DIVISION</div>
+        <h1 class="main-title pixel-heading">MISSION 03: SEARCH & SORT</h1>
+        <div class="subtitle">SELECT TACTICAL ALGORITHM</div>
+        <p class="supporting-text">Divide, conquer, search, and order data through algorithmic precision.</p>
+      </header>
+
+      <!-- 4 Topic Cards (2 + 2 Centered) -->
+      <section class="topics-directory" aria-label="Mission 03 Topics">
+
+        <!-- ROW 1 (2 CARDS) -->
+        <div class="topics-row-top">
+
+          <!-- TOPIC 01: MAXIMUM AND MINIMUM (HAWKEYE) -->
+          <a href="topic-maximum-and-minimum.html" class="topic-card topic-hawkeye" data-hero-cursor="hawkeye">
+            <div class="card-top">
+              <span class="card-num">TOPIC 01</span>
+              <span class="card-hero-badge">HAWKEYE</span>
+            </div>
+            <div class="character-display">
+              <div class="char-aura"></div>
+              <div class="char-sprite"><img src="assets/hawkeye.png" class="pixel-sprite-img" alt="Hawkeye"></div></div>
+            <div class="card-body">
+              <h2 class="card-title">MAXIMUM & MINIMUM</h2>
+              <p class="card-desc">Find both extreme values simultaneously with minimum comparisons using Divide & Conquer.</p>
+              <div class="complexity-pill">Comparisons: 3n/2 - 2</div>
+            </div>
+            <span class="pixel-btn card-btn">ACCESS TOPIC</span>
+          </a>
+
+          <!-- TOPIC 02: BINARY SEARCH (SPIDER-MAN) -->
+          <a href="topic-binary-search.html" class="topic-card topic-spiderman" data-hero-cursor="spiderman">
+            <div class="card-top">
+              <span class="card-num">TOPIC 02</span>
+              <span class="card-hero-badge">SPIDER-MAN</span>
+            </div>
+            <div class="character-display">
+              <div class="char-aura"></div>
+              <div class="char-sprite"><img src="assets/spiderman.png" class="pixel-sprite-img" alt="Spider-Man"></div></div>
+            <div class="card-body">
+              <h2 class="card-title">BINARY SEARCH</h2>
+              <p class="card-desc">Logarithmic interval halving on ordered key arrays with surgical precision.</p>
+              <div class="complexity-pill">Time: O(log n)</div>
+            </div>
+            <span class="pixel-btn card-btn">ACCESS TOPIC</span>
+          </a>
+
+        </div>
+
+        <!-- ROW 2 (2 CARDS) -->
+        <div class="topics-row-bottom">
+
+          <!-- TOPIC 03: MERGE SORT (WAR MACHINE) -->
+          <a href="topic-merge-sort.html" class="topic-card topic-warmachine" data-hero-cursor="warmachine">
+            <div class="card-top">
+              <span class="card-num">TOPIC 03</span>
+              <span class="card-hero-badge">WAR MACHINE</span>
+            </div>
+            <div class="character-display">
+              <div class="char-aura"></div>
+              <div class="char-sprite"><img src="assets/warmachine.png" class="pixel-sprite-img" alt="War Machine"></div></div>
+            <div class="card-body">
+              <h2 class="card-title">MERGE SORT</h2>
+              <p class="card-desc">Guaranteed stable division and multi-way synchronized merging.</p>
+              <div class="complexity-pill">Time: O(n log n) Guaranteed</div>
+            </div>
+            <span class="pixel-btn card-btn">ACCESS TOPIC</span>
+          </a>
+
+          <!-- TOPIC 04: QUICK SORT (QUICKSILVER) -->
+          <a href="topic-quick-sort.html" class="topic-card topic-quicksilver" data-hero-cursor="quicksilver">
+            <div class="card-top">
+              <span class="card-num">TOPIC 04</span>
+              <span class="card-hero-badge">QUICKSILVER</span>
+            </div>
+            <div class="character-display">
+              <div class="char-aura"></div>
+              <div class="char-sprite"><img src="assets/quicksilver.png" class="pixel-sprite-img" alt="Quicksilver"></div></div>
+            <div class="card-body">
+              <h2 class="card-title">QUICK SORT</h2>
+              <p class="card-desc">Hyper-speed in-place partitioning around strategic pivot barriers.</p>
+              <div class="complexity-pill">Avg Time: O(n log n)</div>
+            </div>
+            <span class="pixel-btn card-btn">ACCESS TOPIC</span>
+          </a>
+
+        </div>
+
+      </section>
+
+      <!-- Bottom Navigation Area -->
+      <section class="bottom-section">
+        <div class="pixel-divider"></div>
+        <div style="font-family: var(--font-pixel); font-size: 0.8rem;">MISSION 03 TOPIC DATABASE</div>
+        <div style="font-family: var(--font-pixel); font-size: 0.6rem; color: var(--color-accent);">04 TOPICS READY // SYSTEM DEPLOYED</div>
+        <div style="display: flex; gap: 14px; margin-top: 8px;">
+          <a href="missions.html" class="pixel-btn pixel-btn-primary">← RETURN TO MISSIONS</a>
+          <a href="index.html" class="pixel-btn pixel-btn-secondary">RETURN TO HQ</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    /* Audio Synthesizer */
+    class HubRetroAudio {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx && typeof (window.AudioContext || window.webkitAudioContext) !== 'undefined') {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+      }
+      playHover() {
+        this.init(); if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'sine'; osc.frequency.setValueAtTime(520, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(760, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(); osc.stop(this.ctx.currentTime + 0.04);
+        } catch(e) {}
+      }
+      playClick() {
+        this.init(); if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+          osc.type = 'triangle'; osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.04);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.04);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(); osc.stop(this.ctx.currentTime + 0.04);
+        } catch(e) {}
+      }
+    }
+    const hubAudio = new HubRetroAudio();
+
+    // Top Reading Progress Tracking
+    const topFillBar = document.getElementById('global-progress-fill');
+    const topMarker = document.getElementById('global-progress-marker');
+    const topPct = document.getElementById('global-progress-pct');
+    const topTrack = document.getElementById('global-progress-track');
+
+    function updateTopProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100))) : 0;
+      if (topFillBar) topFillBar.style.width = pct + '%';
+      if (topPct) topPct.textContent = pct + '%';
+      if (topMarker) topMarker.style.left = pct + '%';
+    }
+    window.addEventListener('scroll', updateTopProgress, { passive: true });
+    updateTopProgress();
+
+    topTrack?.addEventListener('click', (e) => {
+      const rect = topTrack.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const ratio = Math.max(0, Math.min(1, clickX / rect.width));
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: ratio * docHeight, behavior: 'smooth' });
+    });
+
+    // Sound feedback on interactive controls
+    const hubInteractive = 'a, button, .pixel-btn, .topic-card, .mission-card, input, select, label, .top-progress-track-wrapper, [role="button"], [data-hero-cursor]';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest(hubInteractive)) {
+        hubAudio.playHover();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (e.target.closest(hubInteractive)) {
+        hubAudio.playClick();
+      }
+    });
+  </script>
+</body>
+</html>

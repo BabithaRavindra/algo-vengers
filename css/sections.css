@@ -1,0 +1,665 @@
+/* ==========================================================================
+   ALGO-VENGERS — 7 HOMEPAGE SECTIONS STYLING
+   ========================================================================== */
+
+/* Section Spacing & Staging Base */
+.homepage-section {
+  padding: var(--section-pad);
+  position: relative;
+  border-bottom: 2px solid #141b33;
+}
+
+/* SECTION 01: HERO (IRON MAN) */
+.section-hero {
+  min-height: calc(100vh - var(--nav-height));
+  margin-top: var(--nav-height);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 75% 40%, rgba(255, 56, 56, 0.08) 0%, transparent 60%);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero-hud-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.hero-hud-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0d1224;
+  border: 1px solid #1e2c56;
+  padding: 6px 14px;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--color-cyan);
+  box-shadow: 0 2px 0 #000;
+}
+
+.hero-hud-chip.active {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 5.2vw, 4rem);
+  line-height: 1.15;
+  color: #ffffff;
+  text-shadow: 0 4px 0 #000, 0 0 30px rgba(255, 56, 56, 0.3);
+}
+
+.hero-title span {
+  color: var(--color-gold);
+  display: block;
+}
+
+.hero-subtitle {
+  font-family: var(--font-pixel-sub);
+  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
+  color: var(--color-cyan);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero-desc {
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  color: #cbd5e1;
+  max-width: 580px;
+  line-height: 1.7;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+/* SECTION 02: WHAT IS DAA? (CAPTAIN AMERICA) */
+.section-what-is-daa {
+  background: radial-gradient(circle at 20% 50%, rgba(30, 144, 255, 0.08) 0%, transparent 60%);
+}
+
+.daa-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  align-items: center;
+  gap: 50px;
+}
+
+.daa-core-definition {
+  background: var(--bg-card);
+  border: 2px solid #243565;
+  padding: 24px;
+  margin-bottom: 30px;
+  position: relative;
+  box-shadow: 0 6px 0 #000;
+}
+
+.daa-def-text {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #ffffff;
+  border-left: 4px solid var(--color-gold);
+  padding-left: 16px;
+  margin-bottom: 12px;
+}
+
+.daa-questions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 34px;
+}
+
+.daa-question-item {
+  background: #0a0e1e;
+  border: 1px solid #1b2646;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 3px 0 #000;
+  transition: transform var(--trans-fast);
+}
+
+.daa-question-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--avenger-captain);
+}
+
+.question-num {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--color-cyan);
+  background: #111a36;
+  padding: 4px 6px;
+}
+
+.question-text {
+  font-size: 0.92rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+/* Flowchart: PROBLEM -> DESIGN -> ALGORITHM -> ANALYZE -> EFFICIENT SOLUTION */
+.daa-flow-container {
+  margin-bottom: 34px;
+}
+
+.daa-flow-title {
+  font-family: var(--font-pixel);
+  font-size: 0.72rem;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.daa-flow-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.daa-flow-step {
+  flex: 1;
+  min-width: 130px;
+  background: #0f152d;
+  border: 2px solid #22325c;
+  padding: 12px 10px;
+  text-align: center;
+  box-shadow: 0 4px 0 #000;
+  cursor: pointer;
+  transition: all var(--trans-fast);
+}
+
+.daa-flow-step:hover,
+.daa-flow-step.active {
+  border-color: var(--color-cyan);
+  background: #182348;
+  transform: translateY(-2px);
+}
+
+.step-label {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.step-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.flow-arrow {
+  color: var(--color-gold);
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+}
+
+/* SECTION 03: THE ALGORITHM INITIATIVE (THOR) */
+.section-missions {
+  background: radial-gradient(circle at 85% 30%, rgba(0, 210, 211, 0.08) 0%, transparent 60%);
+}
+
+.missions-layout {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.missions-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.mission-card {
+  background: var(--bg-card);
+  border: 2px solid #1a2546;
+  padding: 22px 26px;
+  box-shadow: 0 6px 0 #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  transition: all var(--trans-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--color-cyan);
+  transition: width 0.25s ease;
+}
+
+.mission-card:hover {
+  border-color: var(--color-cyan);
+  background: #131b38;
+  transform: translateX(6px);
+  box-shadow: 0 8px 20px rgba(0, 240, 255, 0.15), 0 8px 0 #000;
+}
+
+.mission-card:hover::before {
+  width: 8px;
+}
+
+.mission-header-info {
+  flex: 1;
+}
+
+.mission-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.mission-code {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--color-gold);
+}
+
+.mission-topics-count {
+  font-family: var(--font-pixel);
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  background: #090e1d;
+  padding: 3px 8px;
+  border: 1px solid #1c274b;
+}
+
+.mission-name {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.mission-topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mission-topic-chip {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+}
+
+.mission-action-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* SECTION 04: THE ALGORITHM ARSENAL (HULK) */
+.section-arsenal {
+  background: radial-gradient(circle at 15% 40%, rgba(16, 172, 132, 0.08) 0%, transparent 60%);
+}
+
+.arsenal-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.arsenal-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.arsenal-card {
+  background: #0c1122;
+  border: 2px solid #1b284c;
+  padding: 24px;
+  box-shadow: 0 6px 0 #000;
+  transition: all var(--trans-normal);
+  position: relative;
+}
+
+.arsenal-card:hover {
+  border-color: var(--avenger-hulk);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(16, 172, 132, 0.15), 0 8px 0 #000;
+}
+
+.arsenal-card-icon {
+  width: 44px;
+  height: 44px;
+  background: #111a36;
+  border: 2px solid var(--avenger-hulk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 3px 0 #000;
+}
+
+.arsenal-card-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--avenger-hulk);
+}
+
+.arsenal-card-title {
+  font-family: var(--font-pixel);
+  font-size: 0.85rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.arsenal-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.arsenal-topics-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.arsenal-tag {
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.arsenal-tag::before {
+  content: '▸';
+  color: var(--avenger-hulk);
+  font-weight: bold;
+}
+
+/* SECTION 05: HOW WE LEARN (BLACK WIDOW) */
+.section-how-we-learn {
+  background: radial-gradient(circle at 80% 50%, rgba(255, 56, 56, 0.08) 0%, transparent 60%);
+}
+
+.learning-layout {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.learning-steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.learning-step-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: #0d1224;
+  border: 2px solid #1c2748;
+  padding: 18px 22px;
+  box-shadow: 0 5px 0 #000;
+  transition: all var(--trans-fast);
+}
+
+.learning-step-card:hover {
+  border-color: var(--avenger-widow);
+  transform: translateX(6px);
+  background: #141b36;
+}
+
+.step-num-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+  color: var(--color-red);
+  background: #1e131d;
+  border: 2px solid var(--color-red);
+  padding: 8px 12px;
+  box-shadow: 0 2px 0 #000;
+}
+
+.step-content-body h4 {
+  font-family: var(--font-pixel);
+  font-size: 0.78rem;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.step-content-body p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.learning-pipeline-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #080b17;
+  border: 2px solid #1a2340;
+  padding: 14px 20px;
+  margin-top: 10px;
+  box-shadow: 0 4px 0 #000;
+}
+
+.pipeline-node {
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  color: var(--color-gold);
+}
+
+.pipeline-connector {
+  color: var(--color-red);
+  font-weight: bold;
+}
+
+/* SECTION 06: CHOOSE YOUR HERO (HAWKEYE) */
+.section-choose-hero {
+  background: radial-gradient(circle at 20% 40%, rgba(136, 84, 208, 0.08) 0%, transparent 60%);
+}
+
+.choose-hero-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.algorithm-match-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.algo-hero-card {
+  background: #0d1224;
+  border: 2px solid #1e2a4d;
+  padding: 22px;
+  box-shadow: 0 5px 0 #000;
+  cursor: pointer;
+  transition: all var(--trans-normal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.algo-hero-card:hover {
+  border-color: var(--avenger-hawkeye);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(136, 84, 208, 0.18), 0 8px 0 #000;
+  background: #141c38;
+}
+
+.algo-card-top {
+  margin-bottom: 14px;
+}
+
+.algo-hero-name {
+  font-family: var(--font-pixel);
+  font-size: 0.82rem;
+  color: #fff;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.algo-complexity-badge {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--color-cyan);
+  background: #090e1f;
+  padding: 2px 6px;
+  border: 1px solid #1a254c;
+}
+
+.algo-hero-slogan {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.algo-quote-box {
+  background: #090c18;
+  border-left: 3px solid var(--avenger-hawkeye);
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  color: var(--color-gold);
+  font-style: italic;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+/* SECTION 07: FINAL CTA (SPIDER-MAN) */
+.section-final-cta {
+  background: radial-gradient(circle at 50% 50%, rgba(235, 77, 75, 0.08) 0%, transparent 70%);
+  padding-bottom: 60px;
+}
+
+.cta-banner-card {
+  background: var(--bg-card);
+  border: 3px solid #283765;
+  box-shadow: 0 8px 0 #000, 0 12px 30px rgba(0, 0, 0, 0.7);
+  padding: 60px 40px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 40px;
+}
+
+.cta-banner-content h2 {
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-shadow: 0 4px 0 #000;
+}
+
+.cta-banner-content p {
+  font-size: 1.15rem;
+  color: #cbd5e1;
+  margin-bottom: 30px;
+}
+
+.cta-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* FOOTER */
+.site-footer {
+  background: #05070f;
+  border-top: 3px solid #141b33;
+  padding: 40px 24px 30px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  position: relative;
+  z-index: 2;
+}
+
+.footer-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.footer-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-bottom: 1px solid #141b33;
+  padding-bottom: 24px;
+}
+
+.footer-brand {
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  color: #fff;
+}
+
+.footer-academic-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--color-cyan);
+  background: #090e1f;
+  border: 1px solid #1d274c;
+  padding: 4px 10px;
+}
+
+.footer-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}

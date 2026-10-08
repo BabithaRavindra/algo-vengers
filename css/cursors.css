@@ -1,0 +1,106 @@
+/* ==========================================================================
+   ALGO-VENGERS — CUSTOM PIXEL CURSOR SYSTEM
+   Interactive Avenger Cursors for Hero Sections
+   ========================================================================== */
+
+/* Hardware accelerated custom cursor follower element */
+#custom-cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.08s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.8));
+}
+
+#custom-cursor-follower.visible {
+  opacity: 1;
+}
+
+#custom-cursor-follower.clicking {
+  transform: translate(-50%, -50%) scale(0.85);
+}
+
+/* Inner cursor icon rendering */
+.cursor-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.cursor-icon-wrapper svg {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+/* Section Specific Native Cursor Fallbacks for Interactive Elements */
+/* Iron Man Section: Helmet in circular frame */
+[data-hero-cursor="ironman"] button:hover,
+[data-hero-cursor="ironman"] a.pixel-btn:hover,
+[data-hero-cursor="ironman"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="%23b71515" stroke="%23f5b722" stroke-width="2.5"/><rect x="10" y="10" width="16" height="16" fill="%23f5b722"/><rect x="12" y="14" width="4" height="2" fill="%2300f0ff"/><rect x="20" y="14" width="4" height="2" fill="%2300f0ff"/><rect x="14" y="20" width="8" height="2" fill="%23b71515"/></svg>') 18 18, pointer;
+}
+
+/* Captain America Section: Vibranium Shield */
+[data-hero-cursor="captain"] button:hover,
+[data-hero-cursor="captain"] a.pixel-btn:hover,
+[data-hero-cursor="captain"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="%23d63031" stroke="%23ffffff" stroke-width="2"/><circle cx="18" cy="18" r="11" fill="%23ffffff"/><circle cx="18" cy="18" r="7" fill="%230984e3"/><polygon points="18,13 19.5,17 23.5,17 20.2,19.5 21.5,23.5 18,21 14.5,23.5 15.8,19.5 12.5,17 16.5,17" fill="%23ffffff"/></svg>') 18 18, pointer;
+}
+
+/* Thor Section: Mjolnir */
+[data-hero-cursor="thor"] button:hover,
+[data-hero-cursor="thor"] a.pixel-btn:hover,
+[data-hero-cursor="thor"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><rect x="10" y="6" width="16" height="12" fill="%2395a5a6" stroke="%232c3e50" stroke-width="2"/><rect x="16" y="18" width="4" height="14" fill="%23795548" stroke="%233e2723" stroke-width="1.5"/><rect x="14" y="32" width="8" height="3" fill="%23bdc3c7"/><line x1="8" y1="12" x2="28" y2="12" stroke="%2300f0ff" stroke-width="1.5"/></svg>') 18 18, pointer;
+}
+
+/* Hulk Section: Hulk Fist */
+[data-hero-cursor="hulk"] button:hover,
+[data-hero-cursor="hulk"] a.pixel-btn:hover,
+[data-hero-cursor="hulk"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><rect x="8" y="10" width="20" height="18" rx="4" fill="%2327ae60" stroke="%231e8449" stroke-width="2"/><rect x="10" y="8" width="4" height="6" fill="%232ecc71"/><rect x="15" y="7" width="4" height="7" fill="%232ecc71"/><rect x="20" y="8" width="4" height="6" fill="%232ecc71"/><rect x="12" y="22" width="12" height="4" fill="%231e8449"/></svg>') 18 18, pointer;
+}
+
+/* Black Widow Section: Hourglass Symbol */
+[data-hero-cursor="widow"] button:hover,
+[data-hero-cursor="widow"] a.pixel-btn:hover,
+[data-hero-cursor="widow"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="%231e272e" stroke="%23d63031" stroke-width="2"/><polygon points="12,10 24,10 18,18" fill="%23ff3838"/><polygon points="18,18 24,26 12,26" fill="%23ff3838"/></svg>') 18 18, pointer;
+}
+
+/* Hawkeye Section: Arrow / Reticle */
+[data-hero-cursor="hawkeye"] button:hover,
+[data-hero-cursor="hawkeye"] a.pixel-btn:hover,
+[data-hero-cursor="hawkeye"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><line x1="8" y1="28" x2="26" y2="10" stroke="%238854d0" stroke-width="3"/><polygon points="28,8 20,10 26,16" fill="%23e056fd"/><polygon points="6,30 12,28 8,24" fill="%23f5cd79"/></svg>') 18 18, pointer;
+}
+
+/* Spider-Man Section: Mask / Web */
+[data-hero-cursor="spiderman"] button:hover,
+[data-hero-cursor="spiderman"] a.pixel-btn:hover,
+[data-hero-cursor="spiderman"] .interactive-target:hover {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><path d="M10,8 C10,4 26,4 26,8 C28,14 28,24 18,32 C8,24 8,14 10,8 Z" fill="%23eb4d4b" stroke="%23130f40" stroke-width="2"/><ellipse cx="13" cy="16" rx="3.5" ry="5.5" fill="%23ffffff" stroke="%23130f40" stroke-width="1.5"/><ellipse cx="23" cy="16" rx="3.5" ry="5.5" fill="%23ffffff" stroke="%23130f40" stroke-width="1.5"/></svg>') 18 18, pointer;
+}
+
+/* Mobile & Touch Devices Fallback (Disable custom cursor follower) */
+@media (hover: none) or (pointer: coarse) {
+  #custom-cursor-follower {
+    display: none !important;
+  }
+}

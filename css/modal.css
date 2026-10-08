@@ -1,0 +1,169 @@
+/* ==========================================================================
+   ALGO-VENGERS — MISSION DOSSIER & TOPIC PREVIEW MODAL
+   ========================================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 6, 14, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  background: var(--bg-dark-secondary);
+  border: 3px solid var(--color-cyan);
+  box-shadow: 
+    -6px 0 0 0 #000,
+    6px 0 0 0 #000,
+    0 -6px 0 0 #000,
+    0 6px 0 0 #000,
+    0 16px 40px rgba(0, 240, 255, 0.25);
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-backdrop.active .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  background: #090d1f;
+  border-bottom: 2px solid #1a254c;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--color-gold);
+  background: #161f3d;
+  padding: 4px 8px;
+  border: 1px solid var(--color-gold);
+}
+
+.modal-title {
+  font-family: var(--font-pixel);
+  font-size: 0.95rem;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: 2px solid #ff3838;
+  color: #ff3838;
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #000;
+  transition: all var(--trans-fast);
+}
+
+.modal-close-btn:hover {
+  background: #ff3838;
+  color: #fff;
+}
+
+.modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-dossier-intro {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.modal-section-title {
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-topic-item {
+  background: #0a0e20;
+  border: 1px solid #1b264b;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.topic-item-title {
+  font-weight: 500;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.topic-item-meta {
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  color: var(--color-gold);
+  background: #131a33;
+  padding: 2px 6px;
+  border: 1px solid #23315d;
+}
+
+.modal-notice-box {
+  background: #080d1e;
+  border-left: 3px solid var(--color-gold);
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+}
+
+.modal-footer {
+  background: #090d1f;
+  border-top: 2px solid #1a254c;
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
